@@ -33,15 +33,16 @@ export default {
   },
   methods: {
     async login() {
-      const userData = {
-                uid: this.uid,
-                password: this.password
-            }
-             this.$axios.post('http://localhost:3000/user/signin', userData).then(response => {
-                console.log(response.data);
-            }).catch(error => {
-                console.error(error);
-            });
+      try {
+        const userData = {
+          uid: this.uid,
+          password: this.password
+        };
+        const response = await this.$axios.post('http://localhost:3000/user/signup', userData);
+        console.log(response.data);
+      }catch (error) {
+        console.error(error);
+        }         
     },
     moveToRegister() {
       this.$router.push('/RegisterForm');
