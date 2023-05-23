@@ -33,18 +33,18 @@ export default {
   },
   methods: {
     async login() {
-      // try {
-      //   const response = await this.axios.post('/endpoint-for-login', {
-      //     uid: this.uid,
-      //     password: this.password
-      //   }); 
-      // }catch (error) {
-      //   console.error(error);
-      // }
+      const userData = {
+                uid: this.uid,
+                password: this.password
+            }
+             this.$axios.post('http://localhost:3000/user/signin', userData).then(response => {
+                console.log(response.data);
+            }).catch(error => {
+                console.error(error);
+            });
     },
     moveToRegister() {
       this.$router.push('/RegisterForm');
-      // Navigate to the registration page
     }
   }
 };

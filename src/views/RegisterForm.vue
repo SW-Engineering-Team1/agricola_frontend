@@ -33,20 +33,16 @@ export default {
 
     methods: {
        async register() {
-            // try {
-            //     const response = await this.axios.post('localhost:3000/user/signup', {
-            //     uid: this.uid,
-            //     password: this.password
-            // }); //URL 수정 해야함
-            // if (response.status === 200) {
-            //       console.log("로그인 성공")  
-            // } else {
-            //     console.log("이미있는 아이디")
-            // }
-
-            // } catch (error) {
-                
-            // }
+            try {
+                const userData = {
+                    uid: this.uid,
+                    password: this.password
+                };
+                const response = await this.$axios.post('http://localhost:3000/user/signup', userData);
+                console.log(response.data);
+            } catch (error) {
+                console.error(error);
+            }
         },
         moveToLogin() {
             this.$router.push('/')
