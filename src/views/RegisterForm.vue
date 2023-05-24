@@ -21,6 +21,7 @@
 </template>
 
 <script>
+
 export default {
     name: 'RegisterPage',
     data() {
@@ -36,11 +37,11 @@ export default {
                     id: this.uid,
                     password: this.password
                 };
+                let self = this;
                 this.$axios.post('http://localhost:3000/user/signup', userData).then(function (res) {
                 console.log(res);
                 if (res.status == 200) {
-                    alert('회원 가입 완료되었습니다.');
-                    this.$router.push('/');
+                    self.$router.push({path:'/'});
                 }
                 else {
                     alert('회원 가입 실패하였습니다.');
