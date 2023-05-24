@@ -21,7 +21,11 @@
 </template>
 
 <script>
+// import LobbyPage from '../views/LobbyPage'
 export default {
+  // components:{
+  //   LobbyPage
+  // },
   name: 'LoginPage',
   data() {
     return {
@@ -30,13 +34,25 @@ export default {
     };
   },
   methods: {
+
     async login() {
         const userData = {
           uid: this.uid,
           password: this.password
         };
-        this.$axios.defaults.withCredentials = true
-        this.$axios.post('http://localhost:3000/user/signup', userData) 
+        let self = this;
+        console.log(userData);
+        this.$axios.post('http://localhost:3000/user/signin', userData).then(function(res){
+          if(res.data) {
+            self.$router.push({path: '/lobby'});
+          }
+          else{
+            alert('아이디와 비밀번호를 확인해주세요.');
+          }
+        }).catch(function (err) {
+          alert('로그인 오류');
+          console.log(err);
+        });
     },
     moveToRegister() {
       this.$router.push('/RegisterForm');
