@@ -1,15 +1,17 @@
+// 각 player당 1개 이므로 구분해서 하나 더 필요
+
 <template>
     <div>
-        <MainFacModal v-if="isModalOpen" @close-modal="isModalOpen=false"></MainFacModal>
-        <button class="rounded" @click="isModalOpen=true">주요설비창</button>    
+        <AssiFacModal v-if="isModalOpen" @close-modal="isModalOpen=false"></AssiFacModal>
+        <button class="rounded" @click="isModalOpen=true">보조설비창</button>    
     </div>
 </template>
 <script>
-   import MainFacModal from '@/components/MainFacModal.vue';
+   import AssiFacModal from '@/components/AssiFacModal.vue';
 
     export default {
     components: {
-        MainFacModal,
+        AssiFacModal,
     },
     data() {
         return {
