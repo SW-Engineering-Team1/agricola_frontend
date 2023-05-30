@@ -4,6 +4,7 @@ import { createApp } from 'vue'
 import LoginPage from '../views/LoginPage'
 import LobbyPage from '../views/LobbyPage'
 import RoomPage from '../views/RoomPage'
+import RegisterForm from '../views/RegisterForm'
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
     path: '/room/:room',
     name: 'room',
     component: RoomPage,
+  },
+  {
+    path: '/RegisterForm',
+    name: 'Register',
+    component: RegisterForm,
   }
 ]
 
