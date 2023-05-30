@@ -5,7 +5,8 @@ import LoginPage from '../views/LoginPage'
 import LobbyPage from '../views/LobbyPage'
 import RoomPage from '../views/RoomPage'
 import RegisterForm from '../views/RegisterForm'
-import GameBoard from '../components/GameBoard'
+import FullScreen from '../views/FullScreen'
+
 
 const routes = [
   {
@@ -29,9 +30,9 @@ const routes = [
     component: RegisterForm,
   },
   {
-    path: '/GameBoard',
-    name: 'GameBoard',
-    component: GameBoard,
+    path: '/FullScreen',
+    name: 'FullScreen',
+    component: FullScreen,
   }
 ]
 

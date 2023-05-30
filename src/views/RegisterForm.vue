@@ -40,12 +40,12 @@ export default {
                 let self = this;
                 this.$axios.post('http://localhost:3000/user/signup', userData).then(function (res) {
                 console.log(res);
-                if (res.status == 200) {
-                    self.$router.push({path:'/'});
-                }
-                else {
-                    alert('회원 가입 실패하였습니다.');
-                }
+                    if (res.status == 200) {
+                        self.$router.push({path:'/'});
+                    }
+                    else {
+                        alert('회원 가입 실패하였습니다.');
+                    }
                 }).catch(function (err) {
                     console.log(err);
                 });

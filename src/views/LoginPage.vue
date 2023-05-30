@@ -44,6 +44,7 @@ export default {
         console.log(userData);
         this.$axios.post('http://localhost:3000/user/signin', userData).then(function(res){
           if(res.data) {
+            console.log(res.data)
             self.$router.push({path: '/lobby'});
           }
           else{
@@ -55,7 +56,7 @@ export default {
         });
     },
     moveToRegister() {
-      this.$router.push('/GameBoard');
+      this.$router.push('/FullScreen');
     }
   }
 };
