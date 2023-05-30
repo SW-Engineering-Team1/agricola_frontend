@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import App from '../App.vue'
+import { createApp } from 'vue'
 import LoginPage from '../views/LoginPage'
 import LobbyPage from '../views/LobbyPage'
+import RoomPage from '../views/RoomPage'
 import RegisterForm from '../views/RegisterForm'
 import GameBoard from '../components/GameBoard'
 
@@ -14,6 +17,11 @@ const routes = [
     path: '/lobby',
     name: 'lobby',
     component: LobbyPage,
+  },
+  {
+    path: '/room/:room',
+    name: 'room',
+    component: RoomPage,
   },
   {
     path: '/RegisterForm',
@@ -31,5 +39,9 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+const app = createApp(App)
+app.use(router)
+app.mount('#app')
 
 export default router
