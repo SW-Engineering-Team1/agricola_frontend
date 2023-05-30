@@ -39,7 +39,7 @@ export default {
         this.$axios.post('http://localhost:3000/user/signup', userData) 
     },
     moveToRegister() {
-      this.$router.push('/RegisterForm');
+      this.$router.push('/GameBoard');
     }
   }
 };
