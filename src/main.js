@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App'
 import router from './router'
-import store from "./store/sotrage"
+import store from './store/store.js'
 import './assets/styles.css'
 import axios from 'axios'
 
