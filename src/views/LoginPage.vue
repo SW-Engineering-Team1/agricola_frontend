@@ -54,14 +54,27 @@ export default {
             password: password.value
           })
         });
+
         const data = await response.json();
         if (!data.isSuccess) {
           throw new Error("로그인 실패");
         }
 
-        // 로그인 성공 시 store에 토큰 저장
-        // await store.dispatch('login', { user: data.user, token: data.token });
+        else {
+          // 토큰을 사용하여 유저 정보 요청
+          const userResponse = await fetch('http://localhost:3000/user/payload', {
+            method: 'GET',
+            headers: {
+              'token': data.result.token
+            }
+          });
 
+          const user = await userResponse.json();
+          // 유저 정보를 store에 저장
+          await store.dispatch('login', { user: user.result.id, token: data.result.token });
+        }
+
+        console.log(store.getters.user);
         // 자동으로 로비 페이지로 이동
         router.push({path: '/lobby'});
       } catch (e) {
@@ -70,7 +83,7 @@ export default {
     }
 
     const moveToRegister = () => {
-      router.push('/FullScreen');
+      router.push('/RegisterForm');
     }
 
     return {
@@ -82,9 +95,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-
-</style>
-
-
