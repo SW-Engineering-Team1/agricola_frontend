@@ -56,6 +56,9 @@ export default {
         });
 
         const data = await response.json();
+        // localStorage에 토큰 저장
+        localStorage.setItem('token', data.result.token);
+
         if (!data.isSuccess) {
           throw new Error("로그인 실패");
         }
