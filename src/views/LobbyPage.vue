@@ -42,15 +42,16 @@
           v-for="room in rooms"
           :key="room.room_id"
           class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          <router-link
-            :to="'/room/' + room.room_id"
+          <!-- TODO: 방 입장 기능 개발 -->
+          <button
+            @click="joinRoom(room.room_id)"
             class="block text-center">
             {{ room.room_name }} ({{ room.participant_num }} / {{ room.limit_num }})
             <br>
             게임 상태 : {{ room.status }}
             <br>
             방장 : {{ room.host_id }}
-          </router-link>
+          </button>
         </div>
       </div>
     </div>
@@ -95,6 +96,14 @@ export default {
       limitNum.value = '';
     };
 
+    const joinRoom = (roomId) => {
+      socket.emit("joinRoom", {
+        roomId: roomId,
+        userId: user.value,
+      });
+      router.push(`/room/${roomId}`);
+    };
+
     onMounted(() => {
       // 로비 방문 시 자동으로 GET 요청 후 방 목록 불러오기
       axios.get('http://localhost:3000/room')
@@ -108,8 +117,7 @@ export default {
 
       socket.on("patchRoomList", (data) => {
         rooms.value = data.result;
-        // 방 생성 확인 시 본인이 만든 방으로 자동으로 이동
-        router.push('/room/' + user.value);
+        // TODO: 방 생성 확인 시 본인이 만든 방으로 자동으로 이동하는 기능 추가
       });
     });
 
@@ -123,6 +131,7 @@ export default {
       limitNum,
       rooms,
       createRoom,
+      joinRoom,
       user
     }
   },
