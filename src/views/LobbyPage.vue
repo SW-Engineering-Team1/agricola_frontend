@@ -54,9 +54,6 @@
         </div>
       </div>
     </div>
-
-    <!-- 방 목록 초기화 -->
-    <button @click="resetRooms" class="border-2">방 목록 초기화</button>
     <router-view/>
   </div>
 </template>
