@@ -61,7 +61,7 @@
 <script>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { io } from "socket.io-client";
 import axios from 'axios'
 
@@ -74,7 +74,7 @@ export default {
   },
 
   setup() {
-    // const router = useRouter();
+    const router = useRouter();
     const socket = io("localhost:3000");
     const roomName = ref(''); // 방 이름
     const hostId = ref(''); // 방장 아이디
@@ -87,9 +87,7 @@ export default {
     const createRoom = () => {
       socket.emit("createRoom", {
         roomName: roomName.value,
-        // TODO: 방 생성 시 본인의 아이디를 hostId로 넣어주기
-        // hostId: hostId.value,
-        hostId: "ohgnues",
+        hostId: user.value,
         limitNum: limitNum.value,
       });
       roomName.value = '';
@@ -98,7 +96,7 @@ export default {
     };
 
     onMounted(() => {
-      // /room 방문 시 자동으로 GET 요청 후 방 목록 불러오기
+      // 로비 방문 시 자동으로 GET 요청 후 방 목록 불러오기
       axios.get('http://localhost:3000/room')
         .then((res) => {
           rooms.value = res.data.result;
@@ -110,27 +108,20 @@ export default {
 
       socket.on("patchRoomList", (data) => {
         rooms.value = data.result;
-
-        // TODO: 방 생성 확인 시 본인이 만든 방으로 자동으로 이동하는 기능 구현 (hostId와 본인의 아이디가 일치할 경우)
-        // router.push('/room/' + hostId);
+        // 방 생성 확인 시 본인이 만든 방으로 자동으로 이동
+        router.push('/room/' + user.value);
       });
     });
 
     onUnmounted(() => {
       socket.off("patchRoomList");
     });
-
-    const resetRooms = () => {
-      localStorage.setItem('rooms', JSON.stringify(rooms.value));
-      rooms.value = [];
-    }
     
     return {
       roomName,
       hostId,
       limitNum,
       rooms,
-      resetRooms,
       createRoom,
       user
     }
