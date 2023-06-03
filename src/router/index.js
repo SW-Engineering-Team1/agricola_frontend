@@ -3,7 +3,7 @@ import App from '../App.vue'
 import { createApp } from 'vue'
 import LoginPage from '../views/LoginPage'
 import LobbyPage from '../views/LobbyPage'
-import RoomPage from '../views/RoomPage'
+import ReadyRoomPage from '../views/ReadyRoomPage.vue'
 import RegisterForm from '../views/RegisterForm'
 import FullScreen from '../views/FullScreen'
 
@@ -22,7 +22,7 @@ const routes = [
   {
     path: '/room/:room',
     name: 'room',
-    component: RoomPage,
+    component: ReadyRoomPage,
   },
   {
     path: '/RegisterForm',
