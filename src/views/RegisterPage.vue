@@ -49,9 +49,9 @@ export default {
 
       try {
         const response = await axios.post('http://localhost:3000/user/signup', userData);
-        if (response.status == 200) {
+        if (response.status === 200) {
           alert('회원가입 성공')
-          router.push({path:'/'});
+          await router.push({path: '/'});
         }
         else {
           alert('회원가입 실패하였습니다.');

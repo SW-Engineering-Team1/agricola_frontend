@@ -83,7 +83,7 @@ export default {
     }
 
     const moveToRegister = () => {
-      router.push('/RegisterForm');
+      router.push('/register');
     }
 
     return {
