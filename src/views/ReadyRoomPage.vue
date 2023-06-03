@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <h1>{{ roomName }}</h1>
-    </div>
+  <div>
+    <h1>roomId : {{ roomId }}</h1>
+  </div>
 </template>
 
 <script>
@@ -13,14 +13,14 @@ export default {
 
   setup() {
     const route = useRoute()
-    const roomName = ref('')
+    const roomId = ref('')
 
     onMounted(() => {
-      roomName.value = route.params.room
+      roomId.value = route.params.room
     })
 
     return {
-      roomName
+      roomId
     }
   }
 }
