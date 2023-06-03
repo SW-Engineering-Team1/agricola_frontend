@@ -94,6 +94,10 @@ export default {
       roomName.value = '';
       hostId.value = '';
       limitNum.value = '';
+
+      socket.once("updatedRooms", (data) => {
+        joinRoom(data.result[data.result.length - 1].room_id);
+      });
     };
 
     const joinRoom = (roomId) => {
@@ -115,14 +119,13 @@ export default {
         }
       );
 
-      socket.on("patchRoomList", (data) => {
+      socket.on("updatedRooms", (data) => {
         rooms.value = data.result;
-        // TODO: 방 생성 확인 시 본인이 만든 방으로 자동으로 이동하는 기능 추가
       });
     });
 
     onUnmounted(() => {
-      socket.off("patchRoomList");
+      socket.off("updatedRooms");
     });
     
     return {
