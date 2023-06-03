@@ -5,7 +5,7 @@
       <p>현재 로그인한 유저 : {{ user }}</p>
       <p>방 이름 : {{ roomName }}</p>
       <p>방장 : {{ hostId }}</p>
-      <p>참여 인원 : {{participantNum}} / 제한 인원 : {{ limitNum }}</p>
+      <p>참여 인원 : {{ participantNum }} / 제한 인원 : {{ limitNum }}</p>
     </div>
     <!--TODO: 현재 방에 들어와있는 유저 목록 및 정보 표시-->
     <div class="mb-10 w-1/2">
@@ -67,13 +67,12 @@ export default {
       router.push('/lobby');
     };
 
-    // 게임 시작
+    // TODO: 게임 시작 기능 개발
     const startGame = () => {
-      console.log("게임 시작");
       // socket.emit("startGame", {
       //   roomId: roomId.value,
       // });
-      // router.push('/game')
+      router.push(`/room/${roomId.value}/game`);
     };
 
     onMounted(async () => {

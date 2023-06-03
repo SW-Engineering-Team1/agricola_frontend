@@ -5,8 +5,7 @@ import LoginPage from '../views/LoginPage'
 import LobbyPage from '../views/LobbyPage'
 import ReadyRoomPage from '../views/ReadyRoomPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
-import FullScreen from '../views/FullScreen'
-
+import GamePage from '../views/GamePage.vue'
 
 const routes = [
   {
@@ -30,9 +29,9 @@ const routes = [
     component: RegisterPage,
   },
   {
-    path: '/FullScreen',
-    name: 'FullScreen',
-    component: FullScreen,
+    path: '/room/:room/game',
+    name: 'game',
+    component: GamePage,
   }
 ]
 
