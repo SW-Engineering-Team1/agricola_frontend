@@ -4,20 +4,8 @@
       <form @submit.prevent="login" class="mx-auto">
         <div class="input p-5">
           <h2 class="text-xl font-bold mb-2">로그인</h2>
-          <input
-            type="text"
-            v-model="uid"
-            name="username"
-            class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
-            placeholder="ID를 입력해주세요."
-          />
-          <input
-            type="password"
-            v-model="password"
-            name="password"
-            class="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
-            placeholder="비밀번호를 입력해주세요."
-          />
+          <InputField type="text" v-model="uid" placeholder="ID를 입력해주세요." />
+          <InputField type="password" v-model="password" placeholder="비밀번호를 입력해주세요." />
         </div>
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit" >로그인</button>
       </form>
@@ -33,9 +21,13 @@
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import InputField from '@/components/InputField.vue';
 
 export default {
   name: 'LoginPage',
+  components: {
+    InputField
+  },
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -76,7 +68,7 @@ export default {
 
         console.log(store.getters.user);
         // 자동으로 로비 페이지로 이동
-        router.push({path: '/lobby'});
+        await router.push({path: '/lobby'});
       } catch (e) {
         console.log(e);
       }
