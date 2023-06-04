@@ -1,16 +1,16 @@
 <template>
   <div>
-    <MainFacModal v-if="isModalOpen" @close-modal="closeModal"></MainFacModal>
+    <MajorFacModal v-if="isModalOpen" @close-modal="closeModal"></MajorFacModal>
     <button class="rounded" @click="openModal">주요설비창</button>
   </div>
 </template>
 <script>
-import MainFacModal from '@/components/MainFacModal.vue';
+import MajorFacModal from '@/components/MajorFacModal.vue';
 import { ref } from 'vue';
 
 export default {
   components: {
-    MainFacModal,
+    MajorFacModal,
   },
   setup() {
     const isModalOpen = ref(false);
