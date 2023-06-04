@@ -12,7 +12,7 @@
     <P2AssiFacModal v-if="isP2AssiFacModalOpen" @close-modal="closeP2AssiFacModal"></P2AssiFacModal>
     <button class="rounded p2-assi-fac" @click="openP2AssiFacModal">P2보조설비</button>
 
-    <P2JobCardModal v-if="isJobCardModalOpen" @close-modal="closeP2JobCardModal"></P2JobCardModal>
+    <P2JobCardModal v-if="isP2JobCardModalOpen" @close-modal="closeP2JobCardModal"></P2JobCardModal>
     <button class="rounded p2-job-card" @click="openP2JobCardModal">P2직업카드</button>
   </div>
 </template>
@@ -59,16 +59,16 @@ export default {
       isP1JobCardModalOpen.value = false;
     };
     const openP2AssiFacModal = () => {
-      isP1AssiFacModalOpen.value = true;
+      isP2AssiFacModalOpen.value = true;
     };
     const closeP2AssiFacModal = () => {
-      isP1AssiFacModalOpen.value = false;
+      isP2AssiFacModalOpen.value = false;
     };
     const openP2JobCardModal = () => {
-      isP1JobCardModalOpen.value = true;
+      isP2JobCardModalOpen.value = true;
     };
     const closeP2JobCardModal = () => {
-      isP1JobCardModalOpen.value = false;
+      isP2JobCardModalOpen.value = false;
     };
 
     return {
@@ -93,10 +93,6 @@ export default {
 </script>
 
 <style>
-.button-container {
-  /* 필요한 경우 스타일을 수정하세요 */
-}
-
 .major-fac {
   position: absolute;
   top: 50%;
