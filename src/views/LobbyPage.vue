@@ -6,9 +6,7 @@
 
       <div class="bg-gray-300 p-5 rounded-lg shadow-lg">
         <div class="flex justify-center">
-          <button @click="showModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-            방 만들기
-          </button>
+          <CreateRoomButton @openModal="showModal = true"></CreateRoomButton>
         </div>
 
         <!-- 방 만들기 모달 창 -->
@@ -82,14 +80,11 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { io } from "socket.io-client";
 import axios from 'axios'
+import CreateRoomButton from '@/components/CreateRoomButton.vue'
 
 export default {
   name: 'LobbyPage',
-  methods: {
-    goToMakeRoom() {
-      this.$router.push('/make-room')
-    }
-  },
+  components: {CreateRoomButton},
 
   setup() {
     const router = useRouter();
