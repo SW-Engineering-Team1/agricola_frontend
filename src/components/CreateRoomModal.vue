@@ -12,11 +12,11 @@
               </h3>
               <div class="mt-2">
                 <label for="roomName">방 이름</label>
-                <input v-model="roomName" placeholder="방 이름을 작성해주세요." class="mt-1 p-1 block w-full rounded-md border-gray-300 focus:ring-indigo-500">
+                <input id="roomName" v-model="roomName" placeholder="방 이름을 작성해주세요." class="mt-1 p-1 block w-full rounded-md border-gray-300 focus:ring-indigo-500">
               </div>
               <div class="mt-2">
                 <label for="playerCount">플레이어 수</label>
-                <select v-model="limitNum" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <select id="playterCount" v-model="limitNum" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                   <option value="1">1명</option>
                   <option value="2">2명</option>
                   <option value="3">3명</option>
