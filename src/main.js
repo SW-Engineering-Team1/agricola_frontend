@@ -5,6 +5,7 @@ import store from './store/store.js'
 import './assets/styles.css'
 import axios from 'axios'
 
+
 const app = createApp(App)
 
 app.config.globalProperties.$axios = axios
