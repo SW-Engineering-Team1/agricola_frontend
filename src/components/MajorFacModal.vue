@@ -17,16 +17,16 @@ export default{
     data(){
         return {
             card:[
-                {id: '0',title: 'Stove'},
-                {id: '1',title: 'Stove'},
-                {id: '2',title: 'Earthen klin'},
-                {id: '3',title: 'Earthen klin'},
-                {id: '4',title: 'Earthen klin'},
-                {id: '5',title: 'Brazier'},
-                {id: '6',title: 'Brazier'},
-                {id: '7',title: 'Brazier'},
-                {id: '8',title: 'Brazier'},
-                {id: '9',title: 'Brazier'},
+                {id: '0',title: 'Brazier1'},
+                {id: '1',title: 'Brazier2'},
+                {id: '2',title: 'Stove1'},
+                {id: '3',title: 'Stove2'},
+                {id: '4',title: 'Well'},
+                {id: '5',title: 'Earthen kiln'},
+                {id: '6',title: 'Stone kiln'},
+                {id: '7',title: 'Furniture factory'},
+                {id: '8',title: 'Bowl factory'},
+                {id: '9',title: 'Basket factocry'},
             ],
             isCardAvailalbe: true
         }
