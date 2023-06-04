@@ -22,6 +22,7 @@ import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import InputField from '@/components/InputField.vue';
+import authService from '@/service/authService';
 
 export default {
   name: 'LoginPage',
@@ -36,38 +37,9 @@ export default {
 
     const login = async () => {
       try {
-        const response = await fetch('http://localhost:3000/user/signin', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            id: uid.value,
-            password: password.value
-          })
-        });
-
-        const data = await response.json();
-        if (!data.isSuccess) {
-          throw new Error("로그인 실패");
-        }
-
-        else {
-          // 토큰을 사용하여 유저 정보 요청
-          const userResponse = await fetch('http://localhost:3000/user/payload', {
-            method: 'GET',
-            headers: {
-              'token': data.result.token
-            }
-          });
-
-          const user = await userResponse.json();
-          // 유저 정보를 store에 저장
-          await store.dispatch('login', { user: user.result.id, token: data.result.token });
-        }
-
-        console.log(store.getters.user);
-        // 자동으로 로비 페이지로 이동
+        const data = await authService.signIn(uid.value, password.value);
+        const user = await authService.getPayload(data.result.token);
+        await store.dispatch('login', {user: user.result.id, token: data.result.token});
         await router.push({path: '/lobby'});
       } catch (e) {
         console.log(e);

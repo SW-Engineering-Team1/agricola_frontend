@@ -20,8 +20,8 @@
 <script>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
 import InputField from '@/components/InputField.vue';
+import authService from '@/service/authService';
 
 export default {
   name: 'RegisterPage',
@@ -34,22 +34,16 @@ export default {
     const password = ref('');
 
     const register = async () => {
-      const userData = {
-        id: uid.value,
-        password: password.value
-      };
-
       try {
-        const response = await axios.post('http://localhost:3000/user/signup', userData);
-        if (response.status === 200) {
-          alert('회원가입 성공')
+        const success = await authService.signUp(uid.value, password.value);
+        if (success) {
+          alert('회원가입 성공');
           await router.push({path: '/'});
-        }
-        else {
+        } else {
           alert('회원가입 실패하였습니다.');
         }
-      } catch (err) {
-        console.log(err);
+      } catch (e) {
+        console.log(e);
       }
     };
 
