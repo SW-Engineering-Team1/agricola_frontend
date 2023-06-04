@@ -1,30 +1,36 @@
 <template>
-    <div>
-        <JobCardModal v-if="isModalOpen" @close-modal="isModalOpen=false"></JobCardModal>
-        <button class="rounded" @click="isModalOpen=true">보조설비창</button>    
-    </div>
+   <div class='modal'>
+        <div class='overlay' @click="$emit('close-modal')"></div>
+        <div class='modal-card'>
+            
+        </div>
+   </div>
 </template>
 <script>
-   import JobCardModal from '@/components/JobCardModal.vue';
 
-    export default {
-    components: {
-        JobCardModal,
-    },
-    data() {
-        return {
-        isModalOpen: false,
-        };
-    },
-    methods: {
-        openModal() {
-        this.isModalOpen = true;
-        },
-        closeModal() {
-        this.isModalOpen = false;
-        },
-    },
-    }; 
 </script>
-
-
+<style scoped>
+.modal,
+.overlay{
+   width:100%;
+   height:100%;
+   position: fixed;
+   left: 0;
+   top: 0; 
+}
+.overlay{
+    opacity: 0.5;
+    background-color: black;
+}
+.modal-card{
+    position: relative;
+    max-width: 80%;
+    margin: auto;
+    margin-top: 30px;
+    padding:20px;
+    background-color: white;
+    min-height: 500px;
+    z-index: 10;
+    opacity: 1;
+}   
+</style>
