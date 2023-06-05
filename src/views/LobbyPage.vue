@@ -6,7 +6,7 @@
 
       <div class="bg-gray-300 p-5 rounded-lg shadow-lg">
         <div class="flex justify-center">
-          <CreateRoomButton @openModal="showModal = true"></CreateRoomButton>
+          <CreateRoomButton @openModal="showModal = true" />
         </div>
         <!-- 방 만들기 모달 창 -->
         <CreateRoomModal
@@ -44,7 +44,6 @@ export default {
   setup() {
     const router = useRouter();
     const socket = io("localhost:3000");
-    const hostId = ref(''); // 방장 아이디
     const rooms = ref([]);
 
     const store = useStore();
@@ -97,7 +96,6 @@ export default {
     });
     
     return {
-      hostId,
       rooms,
       handleCreateRoom,
       handleJoinRoom,
