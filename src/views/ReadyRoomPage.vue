@@ -1,17 +1,19 @@
 <template>
   <div class="flex flex-col items-center justify-center min-h-screen bg-gray-200">
-    <div class="text-3xl font-bold mb-10">
-      <p>방 번호 : {{ roomId }}</p>
-      <p>현재 로그인한 유저 : {{ user }}</p>
-      <p>방 이름 : {{ roomName }}</p>
-      <p>방장 : {{ hostId }}</p>
-      <p>참여 인원 : {{ participantNum }} / 제한 인원 : {{ limitNum }}</p>
-    </div>
-    <!--TODO: 현재 방에 들어와있는 유저 목록 및 정보 표시-->
-    <div class="mb-10 w-1/2">
-<!--      <div v-for="user in users" :key="user.id" class="flex items-center p-4 bg-white rounded shadow mb-2">-->
-<!--        <p class="text-lg font-medium">{{ user.name }}</p>-->
-<!--      </div>-->
+    <h1 class="text-4xl text-center my-5">게임 대기방 ({{ roomName }})</h1>
+    <p>참여 인원 : {{ participantNum }} / 제한 인원 : {{ limitNum }}</p>
+    <div class="flex justify-center flex-wrap mb-10">
+      <div
+        v-for="player in playersInRoom"
+        :key="player"
+        class="m-1 flex-auto min-w-0 rounded shadow p-4 text-center mb-2"
+        :class="{
+          'bg-yellow-500 text-white': isHost(player),
+          'bg-white': !isHost(player)
+        }"
+      >
+        <p class="text-lg font-medium">{{ player === user ? player + ' (나)' : player }}</p>
+      </div>
     </div>
     <div>
       <button
@@ -20,7 +22,7 @@
       >방 나가기
       </button>
       <button
-        v-if="isHost"
+        v-if="isHost(user)"
         @click="startGame"
         class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200 ml-4"
       >게임 시작
@@ -44,19 +46,24 @@ export default {
     const route = useRoute();
     const store = useStore();
     const socket = io("localhost:3000");
-
     const roomId = ref('');
-    const user = computed(() => store.state.user);
     const rooms = ref([]);
     const roomName = ref('');
     const hostId = ref('');
     const limitNum = ref('');
     const participantNum = ref('');
+    const user = computed(() => store.state.user);
+    const playersInRoom = ref(computed(() => store.state.playersInRoom));
 
     // 방장 구분
-    const isHost = computed(() => {
-      return hostId.value === user.value;
-    });
+    const isHost = (player) => {
+      return hostId.value === player;
+    };
+
+    // 방에 접속한 유저 목록 업데이트
+    const updatePlayersInRoom = (playerInRoom) => {
+      store.commit('setPlayersInRoom', playerInRoom);
+    }
 
     // 방 나가기
     const exitRoom = () => {
@@ -67,11 +74,13 @@ export default {
       router.push('/lobby');
     };
 
-    // TODO: 게임 시작 기능 개발
     const startGame = () => {
-      // socket.emit("startGame", {
-      //   roomId: roomId.value,
-      // });
+      const roomUsers = computed(() => playersInRoom.value.map(player => ({
+        roomId: roomId.value,
+        userId: player,
+      })));
+
+      socket.emit("startGame", roomUsers.value);
       router.push(`/room/${roomId.value}/game`);
     };
 
@@ -90,20 +99,30 @@ export default {
           }
         });
 
-        socket.on("patchRoomList", (data) => {
+        socket.on("updatedRooms", (data) => {
           rooms.value = data.result;
         });
+
+        socket.on("joinRoom", (playerInRoom) => {
+          updatePlayersInRoom(playerInRoom);
+        });
+
+        socket.on("exitRoom", (playerInRoom) => {
+          updatePlayersInRoom(playerInRoom);
+        });
+
       } catch (err) {
         console.log(err);
       }
     });
 
     onUnmounted(() => {
-      socket.off("patchRoomList");
+      socket.off("updatedRooms");
+      socket.off("joinRoom");
+      socket.off("exitRoom");
     });
 
     return {
-      roomId,
       user,
       exitRoom,
       roomName,
@@ -112,6 +131,7 @@ export default {
       limitNum,
       isHost,
       startGame,
+      playersInRoom,
     }
   }
 }
