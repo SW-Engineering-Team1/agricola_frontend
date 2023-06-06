@@ -65,173 +65,390 @@
     >
       <img src="../assets/images/JobCardBack/P2JobCardBack.png" width="80" />
     </button>
+
     <!-- MainGameBoard -->
-    <div class="Action1">
+    <button
+      class="rounded Action1"
+      @click="openAction1"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/Action/1_FarmExpand.jpg" width="108" />
-    </div>
-    <div class="Action2">
+    </button>
+    <button
+      class="rounded Action2"
+      @click="openAction2"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/Action/2_MeetingPlace.jpg" width="108" />
-    </div>
-    <div class="Action3">
+    </button>
+    <button
+      class="rounded Action3"
+      @click="openAction3"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/Action/3_SeedGrain.jpg" width="108" />
-    </div>
-    <div class="Action4">
+    </button>
+    <button
+      class="rounded Action4"
+      @click="openAction4"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/Action/4_Farmland.jpg" width="108" />
-    </div>
-    <div class="Action5">
+    </button>
+    <button
+      class="rounded Action5"
+      @click="openAction5"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/Action/5_Instruction.jpg" width="108" />
-    </div>
-    <div class="Action6">
+    </button>
+    <button
+      class="rounded Action6"
+      @click="openAction6"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/Action/6_DayLabor.jpg" width="108" />
-    </div>
-    <div class="Action7">
+    </button>
+    <button
+      class="rounded Action7"
+      @click="openAction7"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/Action/7_Forest.jpg" width="108" />
-    </div>
-    <div class="Action8">
+    </button>
+    <button
+      class="rounded Action8"
+      @click="openAction8"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/Action/8_SoilMining.jpg" width="108" />
-    </div>
-    <div class="Action9">
+    </button>
+    <button
+      class="rounded Action9"
+      @click="openAction9"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/Action/9_ReedField.jpg" width="108" />
-    </div>
-    <div class="Action10">
+    </button>
+    <button
+      class="rounded Action10"
+      @click="openAction10"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/Action/10_Fishing.jpg" width="108" />
-    </div>
-    <div class="Round1">
+    </button>
+    <button
+      class="rounded Round1"
+      @click="openRound1"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/1Cycle1.png" width="112" />
-    </div>
-    <div class="Round2">
+    </button>
+    <button
+      class="rounded Round2"
+      @click="openRound2"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/1Cycle2.png" width="112" />
-    </div>
-    <div class="Round3">
+    </button>
+    <button
+      class="rounded Round3"
+      @click="openRound3"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/1Cycle3.png" width="112" />
-    </div>
-    <div class="Round4">
+    </button>
+    <button
+      class="rounded Round4"
+      @click="openRound4"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/1Cycle4.png" width="112" />
-    </div>
-    <div class="Round5">
+    </button>
+    <button
+      class="rounded Round5"
+      @click="openRound5"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/2Cycle1.png" width="112" />
-    </div>
-    <div class="Round6">
+    </button>
+    <button
+      class="rounded Round6"
+      @click="openRound6"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/2Cycle2.png" width="112" />
-    </div>
-    <div class="Round7">
+    </button>
+    <button
+      class="rounded Round7"
+      @click="openRound7"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/2Cycle3.png" width="112" />
-    </div>
-    <div class="Round8">
+    </button>
+    <button
+      class="rounded Round8"
+      @click="openRound8"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/3Cycle1.png" width="112" />
-    </div>
-    <div class="Round9">
+    </button>
+    <button
+      class="rounded Round9"
+      @click="openRound9"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/3Cycle2.png" width="112" />
-    </div>
-    <div class="Round10">
+    </button>
+    <button
+      class="rounded Round10"
+      @click="openRound10"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/4Cycle1.png" width="112" />
-    </div>
-    <div class="Round11">
+    </button>
+    <button
+      class="rounded Round11"
+      @click="openRound11"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/4Cycle2.png" width="112" />
-    </div>
-    <div class="Round12">
+    </button>
+    <button
+      class="rounded Round12"
+      @click="openRound12"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/5Cycle1.png" width="112" />
-    </div>
-    <div class="Round13">
+    </button>
+    <button
+      class="rounded Round13"
+      @click="openRound13"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/5Cycle2.png" width="112" />
-    </div>
-    <div class="Round14">
+    </button>
+    <button
+      class="rounded Round14"
+      @click="openRound14"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/RoundCardBack/6Cycle.png" width="112" />
-    </div>
+    </button>
 
     <!-- P1 FarmBoard -->
-    <div class="P1Farm1">
+    <button
+      class="P1Farm1"
+      @click="openP1Farm1"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm1.jpg" width="60" />
-    </div>
-    <div class="P1Farm2">
+    </button>
+    <button
+      class="P1Farm2"
+      @click="openP1Farm2"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm2.jpg" width="60" />
-    </div>
-    <div class="P1Farm3">
+    </button>
+    <button
+      class="P1Farm3"
+      @click="openP1Farm3"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm3.jpg" width="60" />
-    </div>
-    <div class="P1Farm4">
+    </button>
+    <button
+      class="P1Farm4"
+      @click="openP1Farm4"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm4.jpg" width="60" />
-    </div>
-    <div class="P1Farm5">
+    </button>
+    <button
+      class="P1Farm5"
+      @click="openP1Farm5"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm5.jpg" width="60" />
-    </div>
-    <div class="P1Farm6">
+    </button>
+    <button
+      class="P1Farm6"
+      @click="openP1Farm6"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm6.jpg" width="60" />
-    </div>
-    <div class="P1Farm7">
+    </button>
+    <button
+      class="P1Farm7"
+      @click="openP1Farm7"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm7.jpg" width="60" />
-    </div>
-    <div class="P1Farm8">
+    </button>
+    <button
+      class="P1Farm8"
+      @click="openP1Farm8"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm8.jpg" width="60" />
-    </div>
-    <div class="P1Farm9">
+    </button>
+    <button
+      class="P1Farm9"
+      @click="openP1Farm9"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm9.jpg" width="60" />
-    </div>
-    <div class="P1Farm10">
+    </button>
+    <button
+      class="P1Farm10"
+      @click="openP1Farm10"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm10.jpg" width="60" />
-    </div>
-    <div class="P1Farm11">
+    </button>
+    <button
+      class="P1Farm11"
+      @click="openP1Farm11"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm11.jpg" width="60" />
-    </div>
-    <div class="P1Farm12">
+    </button>
+    <button
+      class="P1Farm12"
+      @click="openP1Farm12"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm12.jpg" width="60" />
-    </div>
-    <div class="P1Farm13">
+    </button>
+    <button
+      class="P1Farm13"
+      @click="openP1Farm13"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1Farm13.jpg" width="60" />
-    </div>
-    <div class="P1WoodRoom1">
+    </button>
+    <button
+      class="P1WoodRoom1"
+      @click="openP1WoodRoom1"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1WoodRoom1.png" width="60" />
-    </div>
-    <div class="P1WoodRoom2">
+    </button>
+    <button
+      class="P1WoodRoom2"
+      @click="openP1WoodRoom2"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P1FarmBoard/P1WoodRoom2.png" width="60" />
-    </div>
+    </button>
 
     <!-- P2 FarmBoard -->
-    <div class="P2Farm1">
+    <button
+      class="P2Farm1"
+      @click="openP2Farm1"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm1.jpg" width="60" />
-    </div>
-    <div class="P2Farm2">
+    </button>
+    <button
+      class="P2Farm2"
+      @click="openP2Farm2"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm2.jpg" width="60" />
-    </div>
-    <div class="P2Farm3">
+    </button>
+    <button
+      class="P2Farm3"
+      @click="openP2Farm3"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm3.jpg" width="60" />
-    </div>
-    <div class="P2Farm4">
+    </button>
+    <button
+      class="P2Farm4"
+      @click="openP2Farm4"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm4.jpg" width="60" />
-    </div>
-    <div class="P2Farm5">
+    </button>
+    <button
+      class="P2Farm5"
+      @click="openP2Farm5"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm5.jpg" width="60" />
-    </div>
-    <div class="P2Farm6">
+    </button>
+    <button
+      class="P2Farm6"
+      @click="openP2Farm6"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm6.jpg" width="60" />
-    </div>
-    <div class="P2Farm7">
+    </button>
+    <button
+      class="P2Farm7"
+      @click="openP2Farm7"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm7.jpg" width="60" />
-    </div>
-    <div class="P2Farm8">
+    </button>
+    <button
+      class="P2Farm8"
+      @click="openP2Farm8"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm8.jpg" width="60" />
-    </div>
-    <div class="P2Farm9">
+    </button>
+    <button
+      class="P2Farm9"
+      @click="openP2Farm9"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm9.jpg" width="60" />
-    </div>
-    <div class="P2Farm10">
+    </button>
+    <button
+      class="P2Farm10"
+      @click="openP2Farm10"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm10.jpg" width="60" />
-    </div>
-    <div class="P2Farm11">
+    </button>
+    <button
+      class="P2Farm11"
+      @click="openP2Farm11"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm11.jpg" width="60" />
-    </div>
-    <div class="P2Farm12">
+    </button>
+    <button
+      class="P2Farm12"
+      @click="openP2Farm12"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm12.jpg" width="60" />
-    </div>
-    <div class="P2Farm13">
+    </button>
+    <button
+      class="P2Farm13"
+      @click="openP2Farm13"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2Farm13.jpg" width="60" />
-    </div>
-    <div class="P2WoodRoom1">
+    </button>
+    <button
+      class="P2WoodRoom1"
+      @click="openP2WoodRoom1"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2WoodRoom1.png" width="60" />
-    </div>
-    <div class="P2WoodRoom2">
+    </button>
+    <button
+      class="P2WoodRoom2"
+      @click="P2WoodRoom2"
+      style="background: transparent; border: none; padding: 0"
+    >
       <img src="../assets/images/P2FarmBoard/P2WoodRoom2.png" width="60" />
-    </div>
+    </button>
   </div>
 </template>
 
