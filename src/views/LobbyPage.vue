@@ -53,7 +53,7 @@ export default {
     const createRoom = (room) => {
       socket.emit("createRoom", room);
       socket.once("updatedRooms", (data) => {
-        joinRoom(data.result[data.result.length - 1].room_id);
+        router.push(`/room/${data.result[data.result.length - 1].room_id}`);
       });
     };
 

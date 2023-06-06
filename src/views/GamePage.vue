@@ -23,7 +23,8 @@ import P1AssiFacModal from '@/components/P1AssiFacModal.vue';
 import P1JobCardModal from '@/components/P1JobCardModal.vue';
 import P2AssiFacModal from '@/components/P2AssiFacModal.vue';
 import P2JobCardModal from '@/components/P2JobCardModal.vue';
-import { ref } from 'vue';
+import {onMounted, ref} from 'vue';
+import {io} from 'socket.io-client';
 
 export default {
   components: {
@@ -34,6 +35,8 @@ export default {
     P2JobCardModal,
   },
   setup() {
+    const socket = io("localhost:3000");
+
     const isMajorFacModalOpen = ref(false);
     const isP1AssiFacModalOpen = ref(false);
     const isP1JobCardModalOpen = ref(false);
@@ -70,6 +73,12 @@ export default {
     const closeP2JobCardModal = () => {
       isP2JobCardModalOpen.value = false;
     };
+
+    onMounted(() => {
+      socket.on('startGame', (gameStatus) => {
+        console.log(gameStatus);
+      });
+    });
 
     return {
       isMajorFacModalOpen,
