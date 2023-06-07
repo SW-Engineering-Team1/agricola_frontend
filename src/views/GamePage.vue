@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--  자원 표시  -->
-    <div class="flex justify-between w-full bg-white rounded-lg shadow-md">
+    <div class="flex justify-between w-full bg-white rounded-lg">
       <div>
         <div class="grid grid-rows-12">
           <div class="flex">
