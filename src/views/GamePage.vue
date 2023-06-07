@@ -68,88 +68,17 @@
     </button>
 
     <!-- MainGameBoard -->
-    <FarmExpand
-      v-if="isAction1Click"
-    ></FarmExpand>
-    <button
-      class="rounded Action1"
-      @click="openAction1"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/1_FarmExpand.jpg" width="108" />
-    </button>
-    <MeetingPlace
-      v-if="isAction2Click"
-    ></MeetingPlace>
-    <button
-      class="rounded Action2"
-      @click="openAction2"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/2_MeetingPlace.jpg" width="108" />
-    </button>
+    <FarmExpand></FarmExpand>
+    <MeetingPlace></MeetingPlace>
     <GrainSeed></GrainSeed>
-    <Farmland
-      v-if="isAction4Click"
-    ></Farmland>
-    <button
-      class="rounded Action4"
-      @click="openAction4"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/4_Farmland.jpg" width="108" />
-    </button>
-    <Instruction
-      v-if="isAction5Click"
-    ></Instruction>
-    <button
-      class="rounded Action5"
-      @click="openAction5"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/5_Instruction.jpg" width="108" />
-    </button>
+    <Farmland></Farmland>
+    <Instruction></Instruction>
     <DayLabor></DayLabor>
-    <Forest
-      v-if="isAction7Click"
-    ></Forest>
-    <button
-      class="rounded Action7"
-      @click="openAction7"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/7_Forest.jpg" width="108" />
-    </button>
-    <SoilMining
-      v-if="isAction8Click"
-    ></SoilMining>
-    <button
-      class="rounded Action8"
-      @click="openAction8"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/8_SoilMining.jpg" width="108" />
-    </button>
-    <ReedField
-      v-if="isAction9Click"
-    ></ReedField>
-    <button
-      class="rounded Action9"
-      @click="openAction9"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/9_ReedField.jpg" width="108" />
-    </button>
-    <Fishing
-      v-if="isAction10Click"
-    ></Fishing>
-    <button
-      class="rounded Action10"
-      @click="openAction10"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/10_Fishing.jpg" width="108" />
-    </button>
+    <Forest></Forest>
+    <SoilMining></SoilMining>
+    <ReedField></ReedField>
+    <Fishing></Fishing>
+
     <button
       class="rounded Round1"
       @click="openRound1"
