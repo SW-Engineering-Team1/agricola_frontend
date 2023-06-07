@@ -1,7 +1,8 @@
 <template>
   <div>
-    <button class="rounded Action3" @click="useGrainSeed" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/Action/3_GrainSeed.jpg" width="108" />
+    <button
+      class="rounded Action6" @click="useDayLabor" style="background: transparent; border: none; padding: 0">
+        <img src="../assets/images/Action/6_DayLabor.jpg" width="108" />
     </button>
   </div>
 </template>
@@ -20,15 +21,15 @@ export default {
     const roomId = ref("");
     const user = computed(() => store.state.user);
 
-    const useGrainSeed = () => {
+    const useDayLabor = () => {
       socket.emit("useActionSpace", {
-        actionName: "addGrainSeed",
+        actionName: "GetFood",
         userId: "vincent_test1",
         roomId: 1,
         goods: [
           {
-            name: "grain",
-            num: 1,
+            name: "food",
+            num: 2,
             isAdd: true,
           },
         ],
@@ -40,7 +41,7 @@ export default {
     });
     onUnmounted();
     return {
-      useGrainSeed,
+      useDayLabor,
       roomId,
       user,
     };

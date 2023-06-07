@@ -1,6 +1,5 @@
 <template>
   <div>
-    <GrainSeed></GrainSeed>
     <MajorFacModal
       v-if="isMajorFacModalOpen"
       @close-modal="closeMajorFacModal"
@@ -15,6 +14,7 @@
         width="80"
       />
     </button>
+
     <P1AssiFacModal
       v-if="isP1AssiFacModalOpen"
       @close-modal="closeP1AssiFacModal"
@@ -27,6 +27,7 @@
       <img
         src="../assets/images/AssiFacCardBack/P1AssiFacCardBack.png" width="80" />
     </button>
+
     <P1JobCardModal
       v-if="isP1JobCardModalOpen"
       @close-modal="closeP1JobCardModal"
@@ -38,6 +39,7 @@
     >
       <img src="../assets/images/JobCardBack/P1JobCardBack.png" width="80" />
     </button>
+
     <P2AssiFacModal
       v-if="isP2AssiFacModalOpen"
       @close-modal="closeP2AssiFacModal"
@@ -52,6 +54,7 @@
         width="80"
       />
     </button>
+
     <P2JobCardModal
       v-if="isP2JobCardModalOpen"
       @close-modal="closeP2JobCardModal"
@@ -65,76 +68,17 @@
     </button>
 
     <!-- MainGameBoard -->
-    <button
-      class="rounded Action1"
-      @click="openAction1"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/1_FarmExpand.jpg" width="108" />
-    </button>
-    <button
-      class="rounded Action2"
-      @click="openAction2"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/2_MeetingPlace.jpg" width="108" />
-    </button>
-    <button
-      class="rounded Action3"
-      @click="openAction3"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/3_GrainSeed.jpg" width="108" />
-    </button>
-    <button
-      class="rounded Action4"
-      @click="openAction4"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/4_Farmland.jpg" width="108" />
-    </button>
-    <button
-      class="rounded Action5"
-      @click="openAction5"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/5_Instruction.jpg" width="108" />
-    </button>
-    <button
-      class="rounded Action6"
-      @click="openAction6"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/6_DayLabor.jpg" width="108" />
-    </button>
-    <button
-      class="rounded Action7"
-      @click="openAction7"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/7_Forest.jpg" width="108" />
-    </button>
-    <button
-      class="rounded Action8"
-      @click="openAction8"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/8_SoilMining.jpg" width="108" />
-    </button>
-    <button
-      class="rounded Action9"
-      @click="openAction9"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/9_ReedField.jpg" width="108" />
-    </button>
-    <button
-      class="rounded Action10"
-      @click="openAction10"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/10_Fishing.jpg" width="108" />
-    </button>
+    <FarmExpand></FarmExpand>
+    <MeetingPlace></MeetingPlace>
+    <GrainSeed></GrainSeed>
+    <Farmland></Farmland>
+    <Instruction></Instruction>
+    <DayLabor></DayLabor>
+    <Forest></Forest>
+    <SoilMining></SoilMining>
+    <ReedField></ReedField>
+    <Fishing></Fishing>
+
     <button
       class="rounded Round1"
       @click="openRound1"
@@ -456,7 +400,16 @@ import P1AssiFacModal from "@/components/P1AssiFacModal.vue";
 import P1JobCardModal from "@/components/P1JobCardModal.vue";
 import P2AssiFacModal from "@/components/P2AssiFacModal.vue";
 import P2JobCardModal from "@/components/P2JobCardModal.vue";
+import FarmExpand from "@/components/FarmExpand.vue";
+import MeetingPlace from "@/components/MeetingPlace.vue";
 import GrainSeed from "@/components/GrainSeed.vue";
+import Farmland from "@/components/Farmland.vue";
+import Instruction from "@/components/Instruction.vue";
+import DayLabor from "@/components/DayLabor.vue";
+import Forest from "@/components/Forest.vue";
+import SoilMining from "@/components/SoilMining.vue";
+import ReedField from "@/components/ReedField.vue";
+import Fishing from "@/components/Fishing.vue";
 import { onMounted, ref } from "vue";
 import { io } from "socket.io-client";
 
@@ -467,7 +420,16 @@ export default {
     P1JobCardModal,
     P2AssiFacModal,
     P2JobCardModal,
+    FarmExpand,
+    MeetingPlace,
     GrainSeed,
+    Farmland,
+    Instruction,
+    DayLabor,
+    Forest,
+    SoilMining,
+    ReedField,
+    Fishing
   },
   setup() {
     const socket = io("localhost:3000");
