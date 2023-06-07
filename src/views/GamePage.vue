@@ -200,8 +200,8 @@
         <td class="custom-cell">돼지</td></tr>
       <tr><td class="custom-cell"><img src="../assets/images/Resources/10_Cow.png" width="50" /></td>
         <td class="custom-cell">소</td></tr>
-      <tr><td class="custom-cell">구걸토큰</td>
-        <td class="custom-cell">마이너스</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Etc/BeggingToken.png" width="50" /></td>
+        <td class="custom-cell">구걸토큰</td></tr>
     </table>
   </div>
 
@@ -229,8 +229,8 @@
         <td class="custom-cell">돼지</td></tr>
       <tr><td class="custom-cell"><img src="../assets/images/Resources/10_Cow.png" width="50" /></td>
         <td class="custom-cell">소</td></tr>
-      <tr><td class="custom-cell">구걸토큰</td>
-        <td class="custom-cell">마이너스</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Etc/BeggingToken.png" width="50" /></td>
+        <td class="custom-cell">구걸토큰</td></tr>
     </table>
   </div>
   </div>
