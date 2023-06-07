@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>로그인 유저 : {{ user }}</h1>
     <GrainSeed />
     <!--  주요 설비 모달  -->
     <MajorFacModal v-if="isMajorFacModalOpen" @close-modal="closeMajorFacModal"/>
@@ -128,8 +129,9 @@ import P1JobCardModal from "@/components/P1JobCardModal.vue";
 import P2AssiFacModal from "@/components/P2AssiFacModal.vue";
 import P2JobCardModal from "@/components/P2JobCardModal.vue";
 import GrainSeed from "@/components/GrainSeed.vue";
-import { onMounted, ref } from "vue";
+import {computed, onMounted, ref} from "vue";
 import { io } from "socket.io-client";
+import {useStore} from 'vuex';
 
 export default {
   components: {
@@ -142,6 +144,18 @@ export default {
   },
   setup() {
     const socket = io("localhost:3000");
+    const store = useStore();
+    const user = computed(() => store.state.user);
+    // const playersInRoom = ref(computed(() => store.state.playersInRoom));
+    const gameStatus = ref(computed(() => store.state.gameStatus));
+    const myGameStatus = computed(() => {
+      return gameStatus.value.find(status => status.UserId === user.value)
+    })
+
+    console.log(myGameStatus.value);
+
+
+    console.log(gameStatus.value);
 
     const isMajorFacModalOpen = ref(false);
     const isP1AssiFacModalOpen = ref(false);
@@ -159,6 +173,10 @@ export default {
     const closeP2AssiFacModal = () => isP2AssiFacModalOpen.value = false;
     const openP2JobCardModal = () => isP2JobCardModalOpen.value = true;
     const closeP2JobCardModal = () => isP2JobCardModalOpen.value = false;
+
+
+
+
 
     const actions = ref([
       {
@@ -524,6 +542,8 @@ export default {
       ...p2FarmFunctions,
       p2WoodRooms,
       ...p2WoodRoomFunctions,
+      user,
+      gameStatus
     };
   },
 };
