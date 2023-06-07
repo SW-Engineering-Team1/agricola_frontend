@@ -3,7 +3,7 @@
     <!--  주요 설비 모달  -->
     <MajorFacModal v-if="isMajorFacModalOpen" @close-modal="closeMajorFacModal"/>
     <button
-      class="rounded major-fac" @click="openMajorFacModal" style="background: transparent; border: none; padding: 0">
+      class="rounded major-fac" @click="openMajorFacModal" :class="{ 'hidden': isMajorFacModalOpen }" style="background: transparent; border: none; padding: 0">
       <img src="../assets/images/MajorFacCardBack/MajorFacCardBack.png" width="80" />
     </button>
     <!--  플레이어 1 보조 설비 카드  -->
@@ -323,7 +323,7 @@ export default {
 
 <style>
 /* Card */
-.major-fac { position: absolute; top: 50vh; right: 25vw; }
+.major-fac { position: absolute; top: 50vh; right: 25vw;}
 .p1-assi-fac { position: absolute; bottom: 3vh; left: 40vw; }
 .p1-job-card { position: absolute; bottom: 3vh; left: 45vw; }
 .p2-assi-fac { position: absolute; top: 3vh; right: 45vw; }
@@ -394,4 +394,8 @@ export default {
 .p2-table-container { position: absolute; top: 10vh; left: 3vw; }
 .custom-table { width: 150px; height: 300px; border-collapse: collapse; }
 .custom-cell { border: 1px solid black; padding: 8px; width: 30vh; height: 60px; }
+
+.hidden {
+  display: none;
+}
 </style>
