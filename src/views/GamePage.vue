@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>로그인 유저 : {{ user }}</h1>
     <!--  주요 설비 모달  -->
     <MajorFacModal v-if="isMajorFacModalOpen" @close-modal="closeMajorFacModal"/>
     <button
@@ -176,6 +175,64 @@
     <button class="P2WoodRoom2" @click="openP1WoodRoom2" style="background: transparent; border: none; padding: 0">
       <img src="../assets/images/P2FarmBoard/P2WoodRoom2.png" width="60" />
     </button>
+  
+  <!--  P1 Resource Table  -->
+  <div class="p1-table-container">
+    <table class="custom-table">
+      <tr><td class="custom-cell" colspan="2">Player1</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/1_Wood.png" width="50" /></td>
+        <td class="custom-cell">나무</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/2_Soil.png" width="50" /></td>
+        <td class="custom-cell">흙</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/3_Stone.png" width="50" /></td>
+        <td class="custom-cell">돌</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/4_Reed.png" width="50" /></td>
+        <td class="custom-cell">갈대</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/5_Grain.png" width="50" /></td>
+        <td class="custom-cell">곡식</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/6_Vegetable.png" width="50" /></td>
+        <td class="custom-cell">채소</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/7_Food.png" width="50" /></td>
+        <td class="custom-cell">음식</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/8_Sheep.png" width="50" /></td>
+        <td class="custom-cell">양</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/9_Pig.png" width="50" /></td>
+        <td class="custom-cell">돼지</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/10_Cow.png" width="50" /></td>
+        <td class="custom-cell">소</td></tr>
+      <tr><td class="custom-cell">구걸토큰</td>
+        <td class="custom-cell">마이너스</td></tr>
+    </table>
+  </div>
+
+  <!--  P2 Resource Table  -->
+  <div class="p2-table-container">
+    <table class="custom-table">
+      <tr><td class="custom-cell" colspan="2">Player2</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/1_Wood.png" width="50" /></td>
+        <td class="custom-cell">나무</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/2_Soil.png" width="50" /></td>
+        <td class="custom-cell">흙</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/3_Stone.png" width="50" /></td>
+        <td class="custom-cell">돌</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/4_Reed.png" width="50" /></td>
+        <td class="custom-cell">갈대</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/5_Grain.png" width="50" /></td>
+        <td class="custom-cell">곡식</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/6_Vegetable.png" width="50" /></td>
+        <td class="custom-cell">채소</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/7_Food.png" width="50" /></td>
+        <td class="custom-cell">음식</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/8_Sheep.png" width="50" /></td>
+        <td class="custom-cell">양</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/9_Pig.png" width="50" /></td>
+        <td class="custom-cell">돼지</td></tr>
+      <tr><td class="custom-cell"><img src="../assets/images/Resources/10_Cow.png" width="50" /></td>
+        <td class="custom-cell">소</td></tr>
+      <tr><td class="custom-cell">구걸토큰</td>
+        <td class="custom-cell">마이너스</td></tr>
+    </table>
+  </div>
   </div>
 </template>
 
@@ -265,309 +322,76 @@ export default {
 </script>
 
 <style>
-.major-fac {
-  position: absolute;
-  top: 50vh;
-  right: 25vw;
-}
-
-.p1-assi-fac {
-  position: absolute;
-  bottom: 3vh;
-  left: 40vw;
-}
-
-.p1-job-card {
-  position: absolute;
-  bottom: 3vh;
-  left: 45vw;
-}
-
-.p2-assi-fac {
-  position: absolute;
-  top: 3vh;
-  right: 45vw;
-}
-
-.p2-job-card {
-  position: absolute;
-  top: 3vh;
-  right: 50vw;
-}
+/* Card */
+.major-fac { position: absolute; top: 50vh; right: 25vw; }
+.p1-assi-fac { position: absolute; bottom: 3vh; left: 40vw; }
+.p1-job-card { position: absolute; bottom: 3vh; left: 45vw; }
+.p2-assi-fac { position: absolute; top: 3vh; right: 45vw; }
+.p2-job-card { position: absolute; top: 3vh; right: 50vw; }
 
 /* MainGameBoard */
-.Action1 {
-  position: absolute;
-  top: 26vh;
-  right: 70vw;
-}
-.Action2 {
-  position: absolute;
-  top: 41vh;
-  right: 70vw;
-}
-.Action3 {
-  position: absolute;
-  top: 49vh;
-  right: 70vw;
-}
-.Action4 {
-  position: absolute;
-  top: 56vh;
-  right: 70vw;
-}
-.Action5 {
-  position: absolute;
-  top: 64.5vh;
-  right: 70vw;
-}
-.Action6 {
-  position: absolute;
-  top: 74vh;
-  right: 70vw;
-}
-.Action7 {
-  position: absolute;
-  top: 46vh;
-  right: 64vw;
-}
-.Action8 {
-  position: absolute;
-  top: 55vh;
-  right: 64vw;
-}
-.Action9 {
-  position: absolute;
-  top: 64vh;
-  right: 64vw;
-}
-.Action10 {
-  position: absolute;
-  top: 73vh;
-  right: 64vw;
-}
-.Round1 {
-  position: absolute;
-  top: 26vh;
-  right: 64vw;
-}
-.Round2 {
-  position: absolute;
-  top: 26vh;
-  right: 58vw;
-}
-.Round3 {
-  position: absolute;
-  top: 44.5vh;
-  right: 58vw;
-}
-.Round4 {
-  position: absolute;
-  top: 63vh;
-  right: 58vw;
-}
-.Round5 {
-  position: absolute;
-  top: 26vh;
-  right: 52vw;
-}
-.Round6 {
-  position: absolute;
-  top: 44.5vh;
-  right: 52vw;
-}
-.Round7 {
-  position: absolute;
-  top: 63vh;
-  right: 52vw;
-}
-.Round8 {
-  position: absolute;
-  top: 26vh;
-  right: 46vw;
-}
-.Round9 {
-  position: absolute;
-  top: 44.5vh;
-  right: 46vw;
-}
-.Round10 {
-  position: absolute;
-  top: 26vh;
-  right: 40vw;
-}
-.Round11 {
-  position: absolute;
-  top: 44.5vh;
-  right: 40vw;
-}
-.Round12 {
-  position: absolute;
-  top: 26vh;
-  right: 34vw;
-}
-.Round13 {
-  position: absolute;
-  top: 44.5vh;
-  right: 34vw;
-}
-.Round14 {
-  position: absolute;
-  top: 26vh;
-  right: 28vw;
-}
+.Action1 { position: absolute; top: 26vh; right: 70vw; }
+.Action2 { position: absolute; top: 41vh; right: 70vw; }
+.Action3 { position: absolute; top: 49vh; right: 70vw; }
+.Action4 { position: absolute; top: 56vh; right: 70vw; }
+.Action5 { position: absolute; top: 64.5vh; right: 70vw; }
+.Action6 { position: absolute; top: 74vh; right: 70vw; }
+.Action7 { position: absolute; top: 46vh; right: 64vw; }
+.Action8 { position: absolute; top: 55vh; right: 64vw; }
+.Action9 { position: absolute; top: 64vh; right: 64vw; }
+.Action10 { position: absolute; top: 73vh; right: 64vw; }
+.Round1 { position: absolute; top: 26vh; right: 64vw; }
+.Round2 { position: absolute; top: 26vh; right: 58vw; }
+.Round3 { position: absolute; top: 44.5vh; right: 58vw; }
+.Round4 { position: absolute; top: 63vh; right: 58vw; }
+.Round5 { position: absolute; top: 26vh; right: 52vw; }
+.Round6 { position: absolute; top: 44.5vh; right: 52vw; }
+.Round7 { position: absolute; top: 63vh; right: 52vw; }
+.Round8 { position: absolute; top: 26vh; right: 46vw; }
+.Round9 { position: absolute; top: 44.5vh; right: 46vw; }
+.Round10 { position: absolute; top: 26vh; right: 40vw; }
+.Round11 { position: absolute; top: 44.5vh; right: 40vw; }
+.Round12 { position: absolute; top: 26vh; right: 34vw; }
+.Round13 { position: absolute; top: 44.5vh; right: 34vw; }
+.Round14 { position: absolute; top: 26vh; right: 28vw; }
 
 /* P1 FarmBoard */
-.P1Farm1 {
-  position: absolute;
-  bottom: 18vh;
-  right: 46vw;
-}
-.P1Farm2 {
-  position: absolute;
-  bottom: 18vh;
-  right: 42vw;
-}
-.P1Farm3 {
-  position: absolute;
-  bottom: 18vh;
-  right: 38vw;
-}
-.P1Farm4 {
-  position: absolute;
-  bottom: 18vh;
-  right: 34vw;
-}
-.P1Farm5 {
-  position: absolute;
-  bottom: 10vh;
-  right: 46vw;
-}
-.P1Farm6 {
-  position: absolute;
-  bottom: 10vh;
-  right: 42vw;
-}
-.P1Farm7 {
-  position: absolute;
-  bottom: 10vh;
-  right: 38vw;
-}
-.P1Farm8 {
-  position: absolute;
-  bottom: 10vh;
-  right: 34vw;
-}
-.P1Farm9 {
-  position: absolute;
-  bottom: 2vh;
-  right: 46vw;
-}
-.P1Farm10 {
-  position: absolute;
-  bottom: 2vh;
-  right: 42vw;
-}
-.P1Farm11 {
-  position: absolute;
-  bottom: 2vh;
-  right: 38vw;
-}
-.P1Farm12 {
-  position: absolute;
-  bottom: 2vh;
-  right: 34vw;
-}
-.P1Farm13 {
-  position: absolute;
-  bottom: 2vh;
-  right: 30vw;
-}
-.P1WoodRoom1 {
-  position: absolute;
-  bottom: 18vh;
-  right: 30vw;
-}
-.P1WoodRoom2 {
-  position: absolute;
-  bottom: 10vh;
-  right: 30vw;
-}
+.P1Farm1 { position: absolute; bottom: 18vh; right: 46vw; }
+.P1Farm2 { position: absolute; bottom: 18vh; right: 42vw; }
+.P1Farm3 { position: absolute; bottom: 18vh; right: 38vw; }
+.P1Farm4 { position: absolute; bottom: 18vh; right: 34vw; }
+.P1Farm5 { position: absolute; bottom: 10vh; right: 46vw; }
+.P1Farm6 { position: absolute; bottom: 10vh; right: 42vw; }
+.P1Farm7 { position: absolute; bottom: 10vh; right: 38vw; }
+.P1Farm8 { position: absolute; bottom: 10vh; right: 34vw; }
+.P1Farm9 { position: absolute; bottom: 2vh; right: 46vw; }
+.P1Farm10 { position: absolute; bottom: 2vh; right: 42vw; }
+.P1Farm11 { position: absolute; bottom: 2vh; right: 38vw; }
+.P1Farm12 { position: absolute; bottom: 2vh; right: 34vw; }
+.P1Farm13 { position: absolute; bottom: 2vh; right: 30vw; }
+.P1WoodRoom1 { position: absolute; bottom: 18vh; right: 30vw; }
+.P1WoodRoom2 { position: absolute; bottom: 10vh; right: 30vw; }
 
 /* P2 FarmBoard */
-.P2Farm1 {
-  position: absolute;
-  top: 2vh;
-  right: 72vw;
-}
-.P2Farm2 {
-  position: absolute;
-  top: 2vh;
-  right: 68vw;
-}
-.P2Farm3 {
-  position: absolute;
-  top: 2vh;
-  right: 64vw;
-}
-.P2Farm4 {
-  position: absolute;
-  top: 2vh;
-  right: 60vw;
-}
-.P2Farm5 {
-  position: absolute;
-  top: 2vh;
-  right: 56vw;
-}
-.P2Farm6 {
-  position: absolute;
-  top: 10vh;
-  right: 68vw;
-}
-.P2Farm7 {
-  position: absolute;
-  top: 10vh;
-  right: 64vw;
-}
-.P2Farm8 {
-  position: absolute;
-  top: 10vh;
-  right: 60vw;
-}
-.P2Farm9 {
-  position: absolute;
-  top: 10vh;
-  right: 56vw;
-}
-.P2Farm10 {
-  position: absolute;
-  top: 18vh;
-  right: 68vw;
-}
-.P2Farm11 {
-  position: absolute;
-  top: 18vh;
-  right: 64vw;
-}
-.P2Farm12 {
-  position: absolute;
-  top: 18vh;
-  right: 60vw;
-}
-.P2Farm13 {
-  position: absolute;
-  top: 18vh;
-  right: 56vw;
-}
-.P2WoodRoom1 {
-  position: absolute;
-  top: 10vh;
-  right: 72vw;
-}
-.P2WoodRoom2 {
-  position: absolute;
-  top: 18vh;
-  right: 72vw;
-}
+.P2Farm1 { position: absolute; top: 2vh; right: 72vw; }
+.P2Farm2 { position: absolute; top: 2vh; right: 68vw; }
+.P2Farm3 { position: absolute; top: 2vh; right: 64vw; }
+.P2Farm4 { position: absolute; top: 2vh; right: 60vw; }
+.P2Farm5 { position: absolute; top: 2vh; right: 56vw; }
+.P2Farm6 { position: absolute; top: 10vh; right: 68vw; }
+.P2Farm7 { position: absolute; top: 10vh; right: 64vw; }
+.P2Farm8 { position: absolute; top: 10vh; right: 60vw; }
+.P2Farm9 { position: absolute; top: 10vh; right: 56vw; }
+.P2Farm10 { position: absolute; top: 18vh; right: 68vw; }
+.P2Farm11 { position: absolute; top: 18vh; right: 64vw; }
+.P2Farm12 { position: absolute; top: 18vh; right: 60vw; }
+.P2Farm13 { position: absolute; top: 18vh; right: 56vw; }
+.P2WoodRoom1 { position: absolute; top: 10vh; right: 72vw; }
+.P2WoodRoom2 { position: absolute; top: 18vh; right: 72vw; }
+
+/* Resource Table */
+.p1-table-container { position: absolute; top: 10vh; right: 3vw; }
+.p2-table-container { position: absolute; top: 10vh; left: 3vw; }
+.custom-table { width: 150px; height: 300px; border-collapse: collapse; }
+.custom-cell { border: 1px solid black; padding: 8px; width: 30vh; height: 60px; }
 </style>
