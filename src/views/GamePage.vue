@@ -109,16 +109,7 @@
     >
       <img src="../assets/images/Action/5_Instruction.jpg" width="108" />
     </button>
-    <DayLabor
-      v-if="isAction6Click"
-    ></DayLabor>
-    <button
-      class="rounded Action6"
-      @click="openAction6"
-      style="background: transparent; border: none; padding: 0"
-    >
-      <img src="../assets/images/Action/6_DayLabor.jpg" width="108" />
-    </button>
+    <DayLabor></DayLabor>
     <Forest
       v-if="isAction7Click"
     ></Forest>
