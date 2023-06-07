@@ -1,7 +1,39 @@
 <template>
   <div>
-    <h1>로그인 유저 : {{ user }}</h1>
-    <GrainSeed />
+    <!--  자원 표시  -->
+    <div class="flex justify-between w-full bg-white rounded-lg shadow-md">
+      <div>
+        <div class="grid grid-rows-12">
+          <div class="flex">
+            <div class="p-3 border border-black w-full">{{ opponent }}</div>
+          </div>
+          <div class="flex" v-for="(item, index) in oppoGameResources" :key="index">
+            <div class="p-3 border border-black w-1/2 flex justify-center">
+              <img :src="item.image" :alt="item.name" class="w-10 h-10"/>
+            </div>
+            <div class="p-3 border border-black w-1/2 flex justify-center">
+              <p class="flex items-center text-2xl">{{ item.value }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="grid grid-rows-12">
+          <div class="flex">
+            <div class="p-3 border border-black w-full">{{ user }} (나)</div>
+          </div>
+          <div class="flex" v-for="(item, index) in myGameResources" :key="index">
+            <div class="p-3 border border-black w-1/2 flex justify-center">
+              <p class="flex items-center text-2xl">{{ item.value }}</p>
+            </div>
+            <div class="p-3 border border-black w-1/2 flex justify-center">
+              <img :src="item.image" :alt="item.name" class="w-10 h-10"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!--  주요 설비 모달  -->
     <MajorFacModal v-if="isMajorFacModalOpen" @close-modal="closeMajorFacModal"/>
     <button
@@ -230,6 +262,7 @@ import ReedField from "@/components/ReedField.vue";
 import Fishing from "@/components/Fishing.vue";
 import { io } from "socket.io-client";
 import {useStore} from 'vuex';
+import { resourceMap } from '@/constants';
 
 export default {
   components: {
@@ -252,16 +285,38 @@ export default {
   setup() {
     const socket = io("localhost:3000");
     const store = useStore();
-    const user = computed(() => store.state.user);
-    // const playersInRoom = ref(computed(() => store.state.playersInRoom));
+    const playersInRoom = ref(computed(() => store.state.playersInRoom));
     const gameStatus = ref(computed(() => store.state.gameStatus));
+
+    // user 정보
+    const user = computed(() => store.state.user);
     const myGameStatus = computed(() => {
       return gameStatus.value.find(status => status.UserId === user.value)
-    })
+    });
+    const myGameResources = computed(() => {
+      return Object.entries(resourceMap).map(([key, { name, image }]) => ({
+        name,
+        image,
+        value: myGameStatus.value[key],
+      }));
+    });
+
+    // opponent(상대방) 정보
+    const opponent = computed(() => {
+      return playersInRoom.value.find(player => player !== user.value)
+    });
+    const oppoGameStatus = computed(() => {
+      return gameStatus.value.find(status => status.UserId !== user.value)
+    });
+    const oppoGameResources = computed(() => {
+      return Object.entries(resourceMap).map(([key, { name, image }]) => ({
+        name,
+        image,
+        value: oppoGameStatus.value[key],
+      }));
+    });
 
     console.log(myGameStatus.value);
-
-
     console.log(gameStatus.value);
 
     const isMajorFacModalOpen = ref(false);
@@ -280,9 +335,6 @@ export default {
     const closeP2AssiFacModal = () => isP2AssiFacModalOpen.value = false;
     const openP2JobCardModal = () => isP2JobCardModalOpen.value = true;
     const closeP2JobCardModal = () => isP2JobCardModalOpen.value = false;
-
-
-
 
 
     const actions = ref([
@@ -649,8 +701,13 @@ export default {
       ...p2FarmFunctions,
       p2WoodRooms,
       ...p2WoodRoomFunctions,
+      gameStatus,
       user,
-      gameStatus
+      myGameStatus,
+      myGameResources,
+      opponent,
+      oppoGameStatus,
+      oppoGameResources,
     };
   },
 };
