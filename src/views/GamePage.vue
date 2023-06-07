@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>로그인 유저 : {{ user }}</h1>
-    <GrainSeed />
     <!--  주요 설비 모달  -->
     <MajorFacModal v-if="isMajorFacModalOpen" @close-modal="closeMajorFacModal"/>
     <button
@@ -48,9 +47,7 @@
       <img src="../assets/images/JobCardBack/P2JobCardBack.png" width="80" />
     </button>
 
-    <!--  MainGameBoard  -->
-    <!--  Action(행동)  -->
-    <!-- MainGameBoard -->
+    <!--  MainGameBoard Action  -->
     <FarmExpand></FarmExpand>
     <MeetingPlace></MeetingPlace>
     <GrainSeed></GrainSeed>
@@ -139,6 +136,8 @@
     >
       <img src="../assets/images/RoundCardBack/4Cycle2.png" width="112" />
     </button>
+
+    <!--  Action  -->
     <button
       v-for="action in actions"
       :key="action.id"
@@ -149,7 +148,7 @@
     >
       <img :src="action.imgSrc" width="108" />
     </button>
-    <!--  Round(라운드)  -->
+    <!--  Round  -->
     <button
       v-for="round in rounds"
       :key="round.id"
@@ -249,6 +248,7 @@ export default {
     ReedField,
     Fishing
   },
+
   setup() {
     const socket = io("localhost:3000");
     const store = useStore();
@@ -260,7 +260,6 @@ export default {
     })
 
     console.log(myGameStatus.value);
-
 
     console.log(gameStatus.value);
 
@@ -281,62 +280,19 @@ export default {
     const openP2JobCardModal = () => isP2JobCardModalOpen.value = true;
     const closeP2JobCardModal = () => isP2JobCardModalOpen.value = false;
 
-
-
-
-
     const actions = ref([
-      {
-        id: 1,
-        class: "Action1",
-        imgSrc: require("../assets/images/Action/1_FarmExpand.jpg")
-      },
-      {
-        id: 2,
-        class: "Action2",
-        imgSrc: require("../assets/images/Action/2_MeetingPlace.jpg")
-      },
-      {
-        id: 3,
-        class: "Action3",
-        imgSrc: require("../assets/images/Action/3_GrainSeed.jpg")
-      },
-      {
-        id: 4,
-        class: "Action4",
-        imgSrc: require("../assets/images/Action/4_Farmland.jpg")
-      },
-      {
-        id: 5,
-        class: "Action5",
-        imgSrc: require("../assets/images/Action/5_Instruction.jpg")
-      },
-      {
-        id: 6,
-        class: "Action6",
-        imgSrc: require("../assets/images/Action/6_DayLabor.jpg")
-      },
-      {
-        id: 7,
-        class: "Action7",
-        imgSrc: require("../assets/images/Action/7_Forest.jpg")
-      },
-      {
-        id: 8,
-        class: "Action8",
-        imgSrc: require("../assets/images/Action/8_SoilMining.jpg")
-      },
-      {
-        id: 9,
-        class: "Action9",
-        imgSrc: require("../assets/images/Action/9_ReedField.jpg")
-      },
-      {
-        id: 10,
-        class: "Action10",
-        imgSrc: require("../assets/images/Action/10_Fishing.jpg")
-      },
+      { id: 1, class: "Action1", imgSrc: require("../assets/images/Action/1_FarmExpand.jpg") },
+      { id: 2, class: "Action2", imgSrc: require("../assets/images/Action/2_MeetingPlace.jpg") },
+      { id: 3, class: "Action3", imgSrc: require("../assets/images/Action/3_GrainSeed.jpg") },
+      { id: 4, class: "Action4", imgSrc: require("../assets/images/Action/4_Farmland.jpg") },
+      { id: 5, class: "Action5", imgSrc: require("../assets/images/Action/5_Instruction.jpg") },
+      { id: 6, class: "Action6", imgSrc: require("../assets/images/Action/6_DayLabor.jpg") },
+      { id: 7, class: "Action7", imgSrc: require("../assets/images/Action/7_Forest.jpg") },
+      { id: 8, class: "Action8", imgSrc: require("../assets/images/Action/8_SoilMining.jpg") },
+      { id: 9, class: "Action9", imgSrc: require("../assets/images/Action/9_ReedField.jpg") },
+      { id: 10, class: "Action10", imgSrc: require("../assets/images/Action/10_Fishing.jpg") },
     ]);
+    
     // action을 위한 함수들을 동적으로 생성
     const actionFunctions = {};
     for (let i = 1; i <= 10; i++) {
@@ -352,77 +308,22 @@ export default {
     }
 
     const rounds = ref([
-      {
-        id: 1,
-        class: "Round1",
-        imgSrc: require("../assets/images/RoundCardBack/1Cycle1.png")
-      },
-      {
-        id: 2,
-        class: "Round2",
-        imgSrc: require("../assets/images/RoundCardBack/1Cycle2.png")
-      },
-      {
-        id: 3,
-        class: "Round3",
-        imgSrc: require("../assets/images/RoundCardBack/1Cycle3.png")
-      },
-      {
-        id: 4,
-        class: "Round4",
-        imgSrc: require("../assets/images/RoundCardBack/1Cycle4.png")
-      },
-      {
-        id: 5,
-        class: "Round5",
-        imgSrc: require("../assets/images/RoundCardBack/2Cycle1.png")
-      },
-      {
-        id: 6,
-        class: "Round6",
-        imgSrc: require("../assets/images/RoundCardBack/2Cycle2.png")
-      },
-      {
-        id: 7,
-        class: "Round7",
-        imgSrc: require("../assets/images/RoundCardBack/2Cycle3.png")
-      },
-      {
-        id: 8,
-        class: "Round8",
-        imgSrc: require("../assets/images/RoundCardBack/3Cycle1.png")
-      },
-      {
-        id: 9,
-        class: "Round9",
-        imgSrc: require("../assets/images/RoundCardBack/3Cycle2.png")
-      },
-      {
-        id: 10,
-        class: "Round10",
-        imgSrc: require("../assets/images/RoundCardBack/4Cycle1.png")
-      },
-      {
-        id: 11,
-        class: "Round11",
-        imgSrc: require("../assets/images/RoundCardBack/4Cycle2.png")
-      },
-      {
-        id: 12,
-        class: "Round12",
-        imgSrc: require("../assets/images/RoundCardBack/5Cycle1.png")
-      },
-      {
-        id: 13,
-        class: "Round13",
-        imgSrc: require("../assets/images/RoundCardBack/5Cycle2.png")
-      },
-      {
-        id: 14,
-        class: "Round14",
-        imgSrc: require("../assets/images/RoundCardBack/6Cycle.png")
-      },
+      { id: 1, class: "Round1", imgSrc: require("../assets/images/RoundCardBack/1Cycle1.png") },
+      { id: 2, class: "Round2", imgSrc: require("../assets/images/RoundCardBack/1Cycle2.png") },
+      { id: 3, class: "Round3", imgSrc: require("../assets/images/RoundCardBack/1Cycle3.png") },
+      { id: 4, class: "Round4", imgSrc: require("../assets/images/RoundCardBack/1Cycle4.png") },
+      { id: 5, class: "Round5", imgSrc: require("../assets/images/RoundCardBack/2Cycle1.png") },
+      { id: 6, class: "Round6", imgSrc: require("../assets/images/RoundCardBack/2Cycle2.png") },
+      { id: 7, class: "Round7", imgSrc: require("../assets/images/RoundCardBack/2Cycle3.png") },
+      { id: 8, class: "Round8", imgSrc: require("../assets/images/RoundCardBack/3Cycle1.png") },
+      { id: 9, class: "Round9", imgSrc: require("../assets/images/RoundCardBack/3Cycle2.png") },
+      { id: 10, class: "Round10", imgSrc: require("../assets/images/RoundCardBack/4Cycle1.png") },
+      { id: 11, class: "Round11", imgSrc: require("../assets/images/RoundCardBack/4Cycle2.png") },
+      { id: 12, class: "Round12", imgSrc: require("../assets/images/RoundCardBack/5Cycle1.png") },
+      { id: 13, class: "Round13", imgSrc: require("../assets/images/RoundCardBack/5Cycle2.png") },
+      { id: 14, class: "Round14", imgSrc: require("../assets/images/RoundCardBack/6Cycle.png") },
     ]);
+
     // round를 위한 함수들을 동적으로 생성
     const roundFunctions = {};
     for (let i = 1; i <= 14; i++) {
@@ -438,58 +339,19 @@ export default {
     }
 
     const p1Farms = ref([
-      {
-        id: 1,
-        class: "P1Farm1",
-      },
-      {
-        id: 2,
-        class: "P1Farm2",
-      },
-      {
-        id: 3,
-        class: "P1Farm3",
-      },
-      {
-        id: 4,
-        class: "P1Farm4",
-      },
-      {
-        id: 5,
-        class: "P1Farm5",
-      },
-      {
-        id: 6,
-        class: "P1Farm6",
-      },
-      {
-        id: 7,
-        class: "P1Farm7",
-      },
-      {
-        id: 8,
-        class: "P1Farm8",
-      },
-      {
-        id: 9,
-        class: "P1Farm9",
-      },
-      {
-        id: 10,
-        class: "P1Farm10",
-      },
-      {
-        id: 11,
-        class: "P1Farm11",
-      },
-      {
-        id: 12,
-        class: "P1Farm12",
-      },
-      {
-        id: 13,
-        class: "P1Farm13",
-      }
+      { id: 1,class: "P1Farm1" },
+      { id: 2, class: "P1Farm2" },
+      { id: 3, class: "P1Farm3" },
+      { id: 4, class: "P1Farm4" },
+      { id: 5, class: "P1Farm5" },
+      { id: 6, class: "P1Farm6" },
+      { id: 7, class: "P1Farm7" },
+      { id: 8, class: "P1Farm8" },
+      { id: 9, class: "P1Farm9" },
+      { id: 10, class: "P1Farm10" },
+      { id: 11, class: "P1Farm11" },
+      { id: 12, class: "P1Farm12" },
+      { id: 13, class: "P1Farm13" }
     ]);
     // p1Farms을 위한 함수들을 동적으로 생성
     const p1FarmFunctions = {};
@@ -504,14 +366,8 @@ export default {
       }
     }
     const p1WoodRooms = ref([
-      {
-        id: 1,
-        class: "P1WoodRoom1",
-      },
-      {
-        id: 2,
-        class: "P1WoodRoom2",
-      }
+      { id: 1, class: "P1WoodRoom1" },
+      { id: 2, class: "P1WoodRoom2" }
     ]);
     // p1WoodRooms을 위한 함수들을 동적으로 생성
     const p1WoodRoomFunctions = {};
@@ -527,58 +383,19 @@ export default {
     }
 
     const p2Farms = ref([
-      {
-        id: 1,
-        class: "P2Farm1",
-      },
-      {
-        id: 2,
-        class: "P2Farm2",
-      },
-      {
-        id: 3,
-        class: "P2Farm3",
-      },
-      {
-        id: 4,
-        class: "P2Farm4",
-      },
-      {
-        id: 5,
-        class: "P2Farm5",
-      },
-      {
-        id: 6,
-        class: "P2Farm6",
-      },
-      {
-        id: 7,
-        class: "P2Farm7",
-      },
-      {
-        id: 8,
-        class: "P2Farm8",
-      },
-      {
-        id: 9,
-        class: "P2Farm9",
-      },
-      {
-        id: 10,
-        class: "P2Farm10",
-      },
-      {
-        id: 11,
-        class: "P2Farm11",
-      },
-      {
-        id: 12,
-        class: "P2Farm12",
-      },
-      {
-        id: 13,
-        class: "P2Farm13",
-      }
+      { id: 1, class: "P2Farm1" },
+      { id: 2, class: "P2Farm2" },
+      { id: 3, class: "P2Farm3" },
+      { id: 4, class: "P2Farm4" },
+      { id: 5, class: "P2Farm5" },
+      { id: 6, class: "P2Farm6" },
+      { id: 7, class: "P2Farm7" },
+      { id: 8, class: "P2Farm8" },
+      { id: 9, class: "P2Farm9" },
+      { id: 10, class: "P2Farm10" },
+      { id: 11, class: "P2Farm11" },
+      { id: 12, class: "P2Farm12" },
+      { id: 13, class: "P2Farm13" }
     ]);
     // p2Farms을 위한 함수들을 동적으로 생성
     const p2FarmFunctions = {};
@@ -593,14 +410,8 @@ export default {
       }
     }
     const p2WoodRooms = ref([
-      {
-        id: 1,
-        class: "P2WoodRoom1",
-      },
-      {
-        id: 2,
-        class: "P2WoodRoom2",
-      }
+      { id: 1, class: "P2WoodRoom1" },
+      { id: 2, class: "P2WoodRoom2" }
     ]);
     // p2WoodRooms을 위한 함수들을 동적으로 생성
     const p2WoodRoomFunctions = {};
