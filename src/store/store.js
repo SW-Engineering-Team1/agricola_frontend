@@ -6,6 +6,7 @@ export default createStore({
     user: null,
     token: null,
     playersInRoom: [],
+    gameStatus: [],
   },
   mutations: {
     setUser(state, user) {
@@ -17,6 +18,12 @@ export default createStore({
     setPlayersInRoom(state, players) {
       state.playersInRoom = players;
     },
+    resetPlayersInRoom(state) {
+      state.playersInRoom = [];
+    },
+    setGameStatus(state, gameStatus) {
+      state.gameStatus = gameStatus;
+    }
   },
   actions: {
     login({ commit }, payload) {

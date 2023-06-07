@@ -72,8 +72,12 @@ export default {
         userId: user.value,
       });
       router.push('/lobby');
+
+      // 방장이 방 나가면 store 초기화
+      if (isHost(user.value)) store.commit('resetPlayersInRoom');
     };
 
+    // 게임 시작
     const startGame = () => {
       const roomUsers = computed(() => playersInRoom.value.map(player => ({
         roomId: roomId.value,
@@ -109,9 +113,10 @@ export default {
           updatePlayersInRoom(playerInRoom);
         });
 
-        socket.on("startGame", () => {
+        socket.on("startGame", (gameStatus) => {
+          store.commit('setGameStatus', gameStatus.result);
           router.push(`/room/${roomId.value}/game`);
-        })
+        });
 
       } catch (err) {
         console.log(err);
