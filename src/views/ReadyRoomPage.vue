@@ -79,9 +79,7 @@ export default {
         roomId: roomId.value,
         userId: player,
       })));
-
       socket.emit("startGame", roomUsers.value);
-      router.push(`/room/${roomId.value}/game`);
     };
 
     onMounted(async () => {
@@ -110,6 +108,10 @@ export default {
         socket.on("exitRoom", (playerInRoom) => {
           updatePlayersInRoom(playerInRoom);
         });
+
+        socket.on("startGame", () => {
+          router.push(`/room/${roomId.value}/game`);
+        })
 
       } catch (err) {
         console.log(err);
