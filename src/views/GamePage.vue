@@ -25,9 +25,7 @@
       style="background: transparent; border: none; padding: 0"
     >
       <img
-        src="../assets/images/AssiFacCardBack/P1AssiFacCardBack.png"
-        width="80"
-      />
+        src="../assets/images/AssiFacCardBack/P1AssiFacCardBack.png" width="80" />
     </button>
     <P1JobCardModal
       v-if="isP1JobCardModalOpen"
@@ -541,303 +539,309 @@ export default {
 <style>
 .major-fac {
   position: absolute;
-  top: 50%;
-  right: 25%;
+  top: 50vh;
+  right: 25vw;
 }
+
 .p1-assi-fac {
   position: absolute;
-  bottom: 3%;
-  left: 40%;
+  bottom: 3vh;
+  left: 40vw;
 }
+
 .p1-job-card {
   position: absolute;
-  bottom: 3%;
-  left: 45%;
+  bottom: 3vh;
+  left: 45vw;
 }
+
 .p2-assi-fac {
   position: absolute;
-  top: 3%;
-  right: 45%;
+  top: 3vh;
+  right: 45vw;
 }
+
 .p2-job-card {
   position: absolute;
-  top: 3%;
-  right: 50%;
+  top: 3vh;
+  right: 50vw;
 }
 
 /* MainGameBoard */
 .Action1 {
   position: absolute;
-  top: 26%;
-  right: 70%;
+  top: 26vh;
+  right: 70vw;
 }
 .Action2 {
   position: absolute;
-  top: 41%;
-  right: 70%;
+  top: 41vh;
+  right: 70vw;
 }
 .Action3 {
   position: absolute;
-  top: 49%;
-  right: 70%;
+  top: 49vh;
+  right: 70vw;
 }
 .Action4 {
   position: absolute;
-  top: 56%;
-  right: 70%;
+  top: 56vh;
+  right: 70vw;
 }
 .Action5 {
   position: absolute;
-  top: 64.5%;
-  right: 70%;
+  top: 64.5vh;
+  right: 70vw;
 }
 .Action6 {
   position: absolute;
-  top: 74%;
-  right: 70%;
+  top: 74vh;
+  right: 70vw;
 }
 .Action7 {
   position: absolute;
-  top: 46%;
-  right: 64%;
+  top: 46vh;
+  right: 64vw;
 }
 .Action8 {
   position: absolute;
-  top: 55%;
-  right: 64%;
+  top: 55vh;
+  right: 64vw;
 }
 .Action9 {
   position: absolute;
-  top: 64%;
-  right: 64%;
+  top: 64vh;
+  right: 64vw;
 }
 .Action10 {
   position: absolute;
-  top: 73%;
-  right: 64%;
+  top: 73vh;
+  right: 64vw;
 }
 .Round1 {
   position: absolute;
-  top: 26%;
-  right: 64%;
+  top: 26vh;
+  right: 64vw;
 }
 .Round2 {
   position: absolute;
-  top: 26%;
-  right: 58%;
+  top: 26vh;
+  right: 58vw;
 }
 .Round3 {
   position: absolute;
-  top: 44.5%;
-  right: 58%;
+  top: 44.5vh;
+  right: 58vw;
 }
 .Round4 {
   position: absolute;
-  top: 63%;
-  right: 58%;
+  top: 63vh;
+  right: 58vw;
 }
 .Round5 {
   position: absolute;
-  top: 26%;
-  right: 52%;
+  top: 26vh;
+  right: 52vw;
 }
 .Round6 {
   position: absolute;
-  top: 44.5%;
-  right: 52%;
+  top: 44.5vh;
+  right: 52vw;
 }
 .Round7 {
   position: absolute;
-  top: 63%;
-  right: 52%;
+  top: 63vh;
+  right: 52vw;
 }
 .Round8 {
   position: absolute;
-  top: 26%;
-  right: 46%;
+  top: 26vh;
+  right: 46vw;
 }
 .Round9 {
   position: absolute;
-  top: 44.5%;
-  right: 46%;
+  top: 44.5vh;
+  right: 46vw;
 }
 .Round10 {
   position: absolute;
-  top: 26%;
-  right: 40%;
+  top: 26vh;
+  right: 40vw;
 }
 .Round11 {
   position: absolute;
-  top: 44.5%;
-  right: 40%;
+  top: 44.5vh;
+  right: 40vw;
 }
 .Round12 {
   position: absolute;
-  top: 26%;
-  right: 34%;
+  top: 26vh;
+  right: 34vw;
 }
 .Round13 {
   position: absolute;
-  top: 44.5%;
-  right: 34%;
+  top: 44.5vh;
+  right: 34vw;
 }
 .Round14 {
   position: absolute;
-  top: 26%;
-  right: 28%;
+  top: 26vh;
+  right: 28vw;
 }
 
 /* P1 FarmBoard */
 .P1Farm1 {
   position: absolute;
-  bottom: 18%;
-  right: 46%;
+  bottom: 18vh;
+  right: 46vw;
 }
+
+/* P2 FarmBoard */
 .P1Farm2 {
   position: absolute;
-  bottom: 18%;
-  right: 42%;
+  bottom: 18vh;
+  right: 42vw;
 }
 .P1Farm3 {
   position: absolute;
-  bottom: 18%;
-  right: 38%;
+  bottom: 18vh;
+  right: 38vw;
 }
 .P1Farm4 {
   position: absolute;
-  bottom: 18%;
-  right: 34%;
+  bottom: 18vh;
+  right: 34vw;
 }
 .P1Farm5 {
   position: absolute;
-  bottom: 10%;
-  right: 46%;
+  bottom: 10vh;
+  right: 46vw;
 }
 .P1Farm6 {
   position: absolute;
-  bottom: 10%;
-  right: 42%;
+  bottom: 10vh;
+  right: 42vw;
 }
 .P1Farm7 {
   position: absolute;
-  bottom: 10%;
-  right: 38%;
+  bottom: 10vh;
+  right: 38vw;
 }
 .P1Farm8 {
   position: absolute;
-  bottom: 10%;
-  right: 34%;
+  bottom: 10vh;
+  right: 34vw;
 }
 .P1Farm9 {
   position: absolute;
-  bottom: 2%;
-  right: 46%;
+  bottom: 2vh;
+  right: 46vw;
 }
 .P1Farm10 {
   position: absolute;
-  bottom: 2%;
-  right: 42%;
+  bottom: 2vh;
+  right: 42vw;
 }
 .P1Farm11 {
   position: absolute;
-  bottom: 2%;
-  right: 38%;
+  bottom: 2vh;
+  right: 38vw;
 }
 .P1Farm12 {
   position: absolute;
-  bottom: 2%;
-  right: 34%;
+  bottom: 2vh;
+  right: 34vw;
 }
 .P1Farm13 {
   position: absolute;
-  bottom: 2%;
-  right: 30%;
+  bottom: 2vh;
+  right: 30vw;
 }
 .P1WoodRoom1 {
   position: absolute;
-  bottom: 18%;
-  right: 30%;
+  bottom: 18vh;
+  right: 30vw;
 }
 .P1WoodRoom2 {
   position: absolute;
-  bottom: 10%;
-  right: 30%;
+  bottom: 10vh;
+  right: 30vw;
 }
 
 /* P2 FarmBoard */
 .P2Farm1 {
   position: absolute;
-  top: 2%;
-  right: 72%;
+  top: 2vh;
+  right: 72vw;
 }
 .P2Farm2 {
   position: absolute;
-  top: 2%;
-  right: 68%;
+  top: 2vh;
+  right: 68vw;
 }
 .P2Farm3 {
   position: absolute;
-  top: 2%;
-  right: 64%;
+  top: 2vh;
+  right: 64vw;
 }
 .P2Farm4 {
   position: absolute;
-  top: 2%;
-  right: 60%;
+  top: 2vh;
+  right: 60vw;
 }
 .P2Farm5 {
   position: absolute;
-  top: 2%;
-  right: 56%;
+  top: 2vh;
+  right: 56vw;
 }
 .P2Farm6 {
   position: absolute;
-  top: 10%;
-  right: 68%;
+  top: 10vh;
+  right: 68vw;
 }
 .P2Farm7 {
   position: absolute;
-  top: 10%;
-  right: 64%;
+  top: 10vh;
+  right: 64vw;
 }
 .P2Farm8 {
   position: absolute;
-  top: 10%;
-  right: 60%;
+  top: 10vh;
+  right: 60vw;
 }
 .P2Farm9 {
   position: absolute;
-  top: 10%;
-  right: 56%;
+  top: 10vh;
+  right: 56vw;
 }
 .P2Farm10 {
   position: absolute;
-  top: 18%;
-  right: 68%;
+  top: 18vh;
+  right: 68vw;
 }
 .P2Farm11 {
   position: absolute;
-  top: 18%;
-  right: 64%;
+  top: 18vh;
+  right: 64vw;
 }
 .P2Farm12 {
   position: absolute;
-  top: 18%;
-  right: 60%;
+  top: 18vh;
+  right: 60vw;
 }
 .P2Farm13 {
   position: absolute;
-  top: 18%;
-  right: 56%;
+  top: 18vh;
+  right: 56vw;
 }
 .P2WoodRoom1 {
   position: absolute;
-  top: 10%;
-  right: 72%;
+  top: 10vh;
+  right: 72vw;
 }
 .P2WoodRoom2 {
   position: absolute;
-  top: 18%;
-  right: 72%;
+  top: 18vh;
+  right: 72vw;
 }
 </style>
