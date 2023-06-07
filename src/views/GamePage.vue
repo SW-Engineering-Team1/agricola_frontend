@@ -86,7 +86,7 @@
       @click="openAction3"
       style="background: transparent; border: none; padding: 0"
     >
-      <img src="../assets/images/Action/3_SeedGrain.jpg" width="108" />
+      <img src="../assets/images/Action/3_GrainSeed.jpg" width="108" />
     </button>
     <button
       class="rounded Action4"
