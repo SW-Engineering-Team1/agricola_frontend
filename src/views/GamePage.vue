@@ -228,7 +228,6 @@ import Forest from "@/components/Forest.vue";
 import SoilMining from "@/components/SoilMining.vue";
 import ReedField from "@/components/ReedField.vue";
 import Fishing from "@/components/Fishing.vue";
-import { onMounted, ref } from "vue";
 import { io } from "socket.io-client";
 import {useStore} from 'vuex';
 
