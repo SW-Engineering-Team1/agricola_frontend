@@ -62,22 +62,21 @@
               </button>
             </div>
           </div>
-          <!--  상대 직업 카드  -->
-          <div >
-            <P2JobCardModal v-if="isP2JobCardModalOpen" @close-modal="closeP2JobCardModal" />
-            <button @click="openP2JobCardModal">
-              <img src="../assets/images/CardBack/JobCardBack.png" class="w-auto h-56 rotate-180" alt="jobCard"/>
-            </button>
+          <!--  상대가 사용한 카드  -->
+          <div v-for="(card, index) in oppoCardData" :key="index">
+            <img
+              class="w-auto h-56 cursor-pointer rotate-180"
+              :src="card.imgSrc"
+              @click="card.modal.toggleModal"
+              :alt="card.alt"
+            />
+            <CardModal
+              :show="card.modal.showModal.value"
+              :cards="card.cards.value"
+              @close="card.modal.toggleModal"
+              :cardType="card.cardType"
+            />
           </div>
-          <!--  상대 보조 설비 카드  -->
-          <div>
-            <P2AssiFacModal v-if="isP2AssiFacModalOpen" @close-modal="closeP2AssiFacModal" />
-            <button @click="openP2AssiFacModal">
-              <img src="../assets/images/CardBack/AssiFacCardBack.png" class="w-auto h-56 rotate-180" alt="assiFacCard"/>
-            </button>
-          </div>
-          <!--  상대 주요 설비 카드  -->
-          <div class="bg-gray-500">상대 주요 설비 카드</div>
         </div>
 
         <!--  게임 진행판  -->
@@ -160,50 +159,19 @@
               </button>
             </div>
           </div>
-          <!--  내 직업 카드  -->
-          <div >
-            <P1JobCardModal v-if="isP1JobCardModalOpen" @close-modal="closeP1JobCardModal" />
-            <button @click="openP1JobCardModal">
-              <img src="../assets/images/CardBack/JobCardBack.png" class="w-auto h-56" alt="jobCard"/>
-            </button>
-          </div>
-          <!--  내 보조 설비 카드  -->
-          <div>
-            <P1AssiFacModal v-if="isP1AssiFacModalOpen" @close-modal="closeP1AssiFacModal" />
-            <button @click="openP1AssiFacModal">
-              <img src="../assets/images/CardBack/AssiFacCardBack.png" class="w-auto h-56" alt="assiFacCard"/>
-            </button>
-          </div>
-          <!--  내 주요 설비 카드  -->
-          <div class="bg-gray-500">내 주요 설비 카드</div>
-          <!--  사용하지 않은 보조 설비 카드  -->
-          <div>
+          <!--  내 카드  -->
+          <div v-for="(card, index) in myCardData" :key="index">
             <img
               class="w-auto h-56 cursor-pointer"
-              src="../assets/images/CardBack/NotUsedAssiFacCardBack.png"
-              @click="toggleNotUsedAssiCardModal"
-              alt="remainedAssiFacCard"
+              :src="card.imgSrc"
+              @click="card.modal.toggleModal"
+              :alt="card.alt"
             />
-            <NotUsedCardModal
-              :show="showNotUsedAssiCardModal"
-              :cards="notUsedAssiFacCard"
-              @close="toggleNotUsedAssiCardModal"
-              :cardType="'보조 설비'"
-            />
-          </div>
-          <!--  사용하지 않은 직업 카드  -->
-          <div>
-            <img
-              class="w-auto h-56 cursor-pointer"
-              src="../assets/images/CardBack/NotUsedJobCardBack.png"
-              @click="toggleNotUsedJobCardModal"
-              alt="remainedJobCard"
-            />
-            <NotUsedCardModal
-              :show="showNotUsedJobCardModal"
-              :cards="notUsedJobCard"
-              @close="toggleNotUsedJobCardModal"
-              :cardType="'직업'"
+            <CardModal
+              :show="card.modal.showModal.value"
+              :cards="card.cards.value"
+              @close="card.modal.toggleModal"
+              :cardType="card.cardType"
             />
           </div>
         </div>
@@ -231,10 +199,6 @@
 
 <script>
 import MajorFacModal from "@/components/MajorFacModal.vue";
-import P1AssiFacModal from "@/components/P1AssiFacModal.vue";
-import P1JobCardModal from "@/components/P1JobCardModal.vue";
-import P2AssiFacModal from "@/components/P2AssiFacModal.vue";
-import P2JobCardModal from "@/components/P2JobCardModal.vue";
 import FarmExpand from "@/components/FarmExpand.vue";
 import MeetingPlace from "@/components/MeetingPlace.vue";
 import GrainSeed from "@/components/GrainSeed.vue";
@@ -248,17 +212,13 @@ import ReedField from "@/components/ReedField.vue";
 import Fishing from "@/components/Fishing.vue";
 import { io } from "socket.io-client";
 import {useStore} from 'vuex';
-import { resourceMap, notUsedAssiCardMap, notUsedJobCardMap, roundsRef, actionsRef } from '@/constants';
-import NotUsedCardModal from "@/components/NotUsedCardModal.vue";
+import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef } from '@/constants';
+import CardModal from "@/components/CardModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
 
 export default {
   components: {
     MajorFacModal,
-    P1AssiFacModal,
-    P1JobCardModal,
-    P2AssiFacModal,
-    P2JobCardModal,
     FarmExpand,
     MeetingPlace,
     GrainSeed,
@@ -269,7 +229,7 @@ export default {
     SoilMining,
     ReedField,
     Fishing,
-    NotUsedCardModal,
+    CardModal,
     CardFlip,
   },
 
@@ -281,14 +241,23 @@ export default {
 
     console.log(gameStatus);
 
-    const showNotUsedAssiCardModal = ref(false);
-    const toggleNotUsedAssiCardModal = () => {
-      showNotUsedAssiCardModal.value = !showNotUsedAssiCardModal.value;
+    const createModalState = () => {
+      const showModal = ref(false);
+      const toggleModal = () => {
+        showModal.value = !showModal.value;
+      };
+
+      return { showModal, toggleModal };
     };
-    const showNotUsedJobCardModal = ref(false);
-    const toggleNotUsedJobCardModal = () => {
-      showNotUsedJobCardModal.value = !showNotUsedJobCardModal.value;
-    };
+
+    const notUsedAssiFacCardModal = createModalState();
+    const notUsedJobCardModal = createModalState();
+    const myUsedJobCardModal = createModalState();
+    const myUsedAssiFacCardModal = createModalState();
+    const myUsedMajorFacCardModal = createModalState();
+    const oppoUsedAssiFacCardModal = createModalState();
+    const oppoUsedJobCardModal = createModalState();
+    const oppoUsedMajorFacCardModal = createModalState();
 
     // user 정보
     const user = computed(() => store.state.user);
@@ -302,15 +271,57 @@ export default {
         value: myGameStatus.value[key],
       }));
     });
-    const getUnusedCards = (cardMap, remainedCards) => {
+
+    // 카드 정보
+    const getCards = (cardMap, status, Cards) => {
       return computed(() => {
         return Object.entries(cardMap)
-          .filter(([key]) => myGameStatus.value[remainedCards].includes(key))
-          .map(([key, { name, name_kr, image }]) => ({name, name_kr, image, value: myGameStatus.value[key]}));
+          .filter(([key]) => status.value[Cards].includes(key))
+          .map(([key, { name, name_kr, image }]) => ({name, name_kr, image, value: status.value[key]}));
       });
     };
-    const notUsedAssiFacCard = getUnusedCards(notUsedAssiCardMap, 'remainedSubFacilityCard');
-    const notUsedJobCard = getUnusedCards(notUsedJobCardMap, 'remainedJobCard');
+    const notUsedAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'remainedSubFacilityCard');
+    const notUsedJobCard = getCards(jobCardMap, myGameStatus,'remainedJobCard');
+    const myUsedAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'usedSubFacilityCard');
+    const myUsedJobCard = getCards(jobCardMap, myGameStatus, 'usedJobCard');
+    const myUsedMajorFacCard = getCards(majorFacCardMap, myGameStatus, 'usedMainFacilityCard');
+    const myCardData = [
+      {
+        imgSrc: require("@/assets/images/CardBack/JobCardBack.png"),
+        alt: "myUsedJobCard",
+        modal: myUsedJobCardModal,
+        cards: myUsedJobCard,
+        cardType: "사용한 직업",
+      },
+      {
+        imgSrc: require("@/assets/images/CardBack/AssiFacCardBack.png"),
+        alt: "myUsedAssiFacCard",
+        modal: myUsedAssiFacCardModal,
+        cards: myUsedAssiFacCard,
+        cardType: "사용한 보조 설비",
+      },
+      {
+        imgSrc: require("@/assets/images/CardBack/MajorFacCardBack.png"),
+        alt: "myUsedMajorFacCard",
+        modal: myUsedMajorFacCardModal,
+        cards: myUsedMajorFacCard,
+        cardType: "사용한 주요 설비",
+      },
+      {
+        imgSrc: require("@/assets/images/CardBack/NotUsedAssiFacCardBack.png"),
+        alt: "notUsedAssiFacCard",
+        modal: notUsedAssiFacCardModal,
+        cards: notUsedAssiFacCard,
+        cardType: "사용하지 않은 보조 설비",
+      },
+      {
+        imgSrc: require("@/assets/images/CardBack/NotUsedJobCardBack.png"),
+        alt: "notUsedJobCard",
+        modal: notUsedJobCardModal,
+        cards: notUsedJobCard,
+        cardType: "사용하지 않은 직업",
+      },
+    ];
 
     // opponent(상대방) 정보
     const opponent = computed(() => {
@@ -327,23 +338,37 @@ export default {
       }));
     });
 
+    const oppoUsedAssiFacCard = getCards(assiFacCardMap, oppoGameStatus, 'usedSubFacilityCard');
+    const oppoUsedJobCard = getCards(jobCardMap, oppoGameStatus, 'usedJobCard');
+    const oppoUsedMajorFacCard = getCards(majorFacCardMap, oppoGameStatus, 'usedMainFacilityCard');
+    const oppoCardData = [
+      {
+        imgSrc: require("@/assets/images/CardBack/JobCardBack.png"),
+        alt: "oppoUsedJobCard",
+        modal: oppoUsedJobCardModal,
+        cards: oppoUsedJobCard,
+        cardType: "상대가 사용한 직업",
+      },
+      {
+        imgSrc: require("@/assets/images/CardBack/AssiFacCardBack.png"),
+        alt: "oppoUsedAssiFacCard",
+        modal: oppoUsedAssiFacCardModal,
+        cards: oppoUsedAssiFacCard,
+        cardType: "상대가 사용한 보조 설비",
+      },
+      {
+        imgSrc: require("@/assets/images/CardBack/MajorFacCardBack.png"),
+        alt: "oppoUsedMajorFacCard",
+        modal: oppoUsedMajorFacCardModal,
+        cards: oppoUsedMajorFacCard,
+        cardType: "상대가 사용한 주요 설비",
+      },
+    ];
 
     const isMajorFacModalOpen = ref(false);
-    const isP1AssiFacModalOpen = ref(false);
-    const isP1JobCardModalOpen = ref(false);
-    const isP2AssiFacModalOpen = ref(false);
-    const isP2JobCardModalOpen = ref(false);
 
     const openMajorFacModal = () => isMajorFacModalOpen.value = true;
     const closeMajorFacModal = () => isMajorFacModalOpen.value = false;
-    const openP1AssiFacModal = () => isP1AssiFacModalOpen.value = true;
-    const closeP1AssiFacModal = () => isP1AssiFacModalOpen.value = false;
-    const openP1JobCardModal = () => isP1JobCardModalOpen.value = true;
-    const closeP1JobCardModal = () => isP1JobCardModalOpen.value = false;
-    const openP2AssiFacModal = () => isP2AssiFacModalOpen.value = true;
-    const closeP2AssiFacModal = () => isP2AssiFacModalOpen.value = false;
-    const openP2JobCardModal = () => isP2JobCardModalOpen.value = true;
-    const closeP2JobCardModal = () => isP2JobCardModalOpen.value = false;
 
     const actions = ref(actionsRef);
     // action을 위한 함수들을 동적으로 생성
@@ -561,20 +586,8 @@ export default {
 
     return {
       isMajorFacModalOpen,
-      isP1AssiFacModalOpen,
-      isP1JobCardModalOpen,
-      isP2AssiFacModalOpen,
-      isP2JobCardModalOpen,
       openMajorFacModal,
       closeMajorFacModal,
-      openP1AssiFacModal,
-      closeP1AssiFacModal,
-      openP1JobCardModal,
-      closeP1JobCardModal,
-      openP2AssiFacModal,
-      closeP2AssiFacModal,
-      openP2JobCardModal,
-      closeP2JobCardModal,
       actions,
       ...actionFunctions,
       rounds,
@@ -594,12 +607,8 @@ export default {
       opponent,
       oppoGameStatus,
       oppoGameResources,
-      showNotUsedAssiCardModal,
-      toggleNotUsedAssiCardModal,
-      showNotUsedJobCardModal,
-      toggleNotUsedJobCardModal,
-      notUsedAssiFacCard,
-      notUsedJobCard,
+      myCardData,
+      oppoCardData,
     };
   },
 };
