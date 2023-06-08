@@ -84,56 +84,28 @@
         <div class="bg-[#C4B15A] p-2">
           <div class="grid grid-cols-8 gap-0.5 grid-flow-row-dense">
             <FarmExpand class="flex justify-center items-center"/>
-            <button @click="openRound1" class="flex justify-center items-center row-span-2 p-0">
-              <img src="../assets/images/RoundCardBack/1Cycle1.png" class="w-full" alt="1Cycle1" />
-            </button>
-            <button @click="openRound2" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/1Cycle2.png" class="w-full" alt="1Cycle2" />
-            </button>
-            <button @click="openRound5" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/2Cycle1.png" class="w-full" alt="2Cycle1" />
-            </button>
-            <button @click="openRound8" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/3Cycle1.png" class="w-full" alt="3Cycle1" />
-            </button>
-            <button @click="openRound10" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/4Cycle1.png" class="w-full" alt="4Cycle1" />
-            </button>
-            <button @click="openRound12" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/5Cycle1.png" class="w-full" alt="5Cycle1" />
-            </button>
-            <button @click="openRound14" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/6Cycle.png" class="w-full" alt="6Cycle" />
-            </button>
+            <CardFlip @click="openRound1" :frontImage="rounds[0].imgSrc" :backImage="rounds[0].backImgSrc" />
+            <CardFlip @click="openRound2" :frontImage="rounds[1].imgSrc" :backImage="rounds[1].backImgSrc" />
+            <CardFlip @click="openRound5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" />
+            <CardFlip @click="openRound8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
+            <CardFlip @click="openRound10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
+            <CardFlip @click="openRound12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
+            <CardFlip @click="openRound14" :frontImage="rounds[13].imgSrc" :backImage="rounds[13].backImgSrc" />
             <MeetingPlace class="flex justify-center items-center"/>
             <GrainSeed class="flex justify-center items-center"/>
             <Forest class="flex justify-center items-center"/>
-            <button @click="openRound3" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/1Cycle3.png" class="w-full" alt="1Cycle3" />
-            </button>
-            <button @click="openRound6" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/2Cycle2.png" class="w-full" alt="2Cycle2" />
-            </button>
-            <button @click="openRound9" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/3Cycle2.png" class="w-full" alt="3Cycle2" />
-            </button>
-            <button @click="openRound11" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/4Cycle2.png" class="w-full" alt="4Cycle2" />
-            </button>
-            <button @click="openRound13" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/5Cycle2.png" class="w-full" alt="5Cycle2" />
-            </button>
+            <CardFlip @click="openRound3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
+            <CardFlip @click="openRound6" :frontImage="rounds[6].imgSrc" :backImage="rounds[6].backImgSrc" />
+            <CardFlip @click="openRound9" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
+            <CardFlip @click="openRound11" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
+            <CardFlip @click="openRound13" :frontImage="rounds[12].imgSrc" :backImage="rounds[12].backImgSrc" />
             <div class="row-span-2" />
             <Farmland class="flex justify-center items-center"/>
             <SoilMining class="flex justify-center items-center"/>
             <Instruction class="flex justify-center items-center"/>
             <ReedField class="flex justify-center items-center"/>
-            <button @click="openRound4" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/1Cycle4.png" class="w-full" alt="1Cycle4" />
-            </button>
-            <button @click="openRound7" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/RoundCardBack/2Cycle3.png" class="w-full" alt="2Cycle3" />
-            </button>
+            <CardFlip @click="openRound4" :frontImage="rounds[3].imgSrc" :backImage="rounds[3].backImgSrc" />
+            <CardFlip @click="openRound7" :frontImage="rounds[6].imgSrc" :backImage="rounds[6].backImgSrc" />
             <div class="row-span-2" />
             <div class="row-span-2" />
             <div class="row-span-2" />
@@ -276,8 +248,9 @@ import ReedField from "@/components/ReedField.vue";
 import Fishing from "@/components/Fishing.vue";
 import { io } from "socket.io-client";
 import {useStore} from 'vuex';
-import { resourceMap, notUsedAssiCardMap, notUsedJobCardMap } from '@/constants';
+import { resourceMap, notUsedAssiCardMap, notUsedJobCardMap, roundsRef, actionsRef } from '@/constants';
 import NotUsedCardModal from "@/components/NotUsedCardModal.vue";
+import CardFlip from "@/components/CardFlip.vue";
 
 export default {
   components: {
@@ -297,6 +270,7 @@ export default {
     ReedField,
     Fishing,
     NotUsedCardModal,
+    CardFlip,
   },
 
   setup() {
@@ -328,26 +302,15 @@ export default {
         value: myGameStatus.value[key],
       }));
     });
-    const notUsedAssiFacCard = computed(() => {
-      return Object.entries(notUsedAssiCardMap)
-        .filter(([key]) => myGameStatus.value.remainedSubFacilityCard.includes(key))
-        .map(([key, { name, name_kr, image }]) => ({
-          name,
-          name_kr,
-          image,
-          value: myGameStatus.value[key],
-        }));
-    });
-    const notUsedJobCard = computed(() => {
-      return Object.entries(notUsedJobCardMap)
-        .filter(([key]) => myGameStatus.value.remainedJobCard.includes(key))
-        .map(([key, { name, name_kr, image }]) => ({
-          name,
-          name_kr,
-          image,
-          value: myGameStatus.value[key],
-        }));
-    });
+    const getUnusedCards = (cardMap, remainedCards) => {
+      return computed(() => {
+        return Object.entries(cardMap)
+          .filter(([key]) => myGameStatus.value[remainedCards].includes(key))
+          .map(([key, { name, name_kr, image }]) => ({name, name_kr, image, value: myGameStatus.value[key]}));
+      });
+    };
+    const notUsedAssiFacCard = getUnusedCards(notUsedAssiCardMap, 'remainedSubFacilityCard');
+    const notUsedJobCard = getUnusedCards(notUsedJobCardMap, 'remainedJobCard');
 
     // opponent(상대방) 정보
     const opponent = computed(() => {
@@ -382,58 +345,7 @@ export default {
     const openP2JobCardModal = () => isP2JobCardModalOpen.value = true;
     const closeP2JobCardModal = () => isP2JobCardModalOpen.value = false;
 
-    const actions = ref([
-      {
-        id: 1,
-        class: "Action1",
-        imgSrc: require("../assets/images/Action/1_FarmExpand.jpg")
-      },
-      {
-        id: 2,
-        class: "Action2",
-        imgSrc: require("../assets/images/Action/2_MeetingPlace.jpg")
-      },
-      {
-        id: 3,
-        class: "Action3",
-        imgSrc: require("../assets/images/Action/3_GrainSeed.jpg")
-      },
-      {
-        id: 4,
-        class: "Action4",
-        imgSrc: require("../assets/images/Action/4_Farmland.jpg")
-      },
-      {
-        id: 5,
-        class: "Action5",
-        imgSrc: require("../assets/images/Action/5_Instruction.jpg")
-      },
-      {
-        id: 6,
-        class: "Action6",
-        imgSrc: require("../assets/images/Action/6_DayLabor.jpg")
-      },
-      {
-        id: 7,
-        class: "Action7",
-        imgSrc: require("../assets/images/Action/7_Forest.jpg")
-      },
-      {
-        id: 8,
-        class: "Action8",
-        imgSrc: require("../assets/images/Action/8_SoilMining.jpg")
-      },
-      {
-        id: 9,
-        class: "Action9",
-        imgSrc: require("../assets/images/Action/9_ReedField.jpg")
-      },
-      {
-        id: 10,
-        class: "Action10",
-        imgSrc: require("../assets/images/Action/10_Fishing.jpg")
-      },
-    ]);
+    const actions = ref(actionsRef);
     // action을 위한 함수들을 동적으로 생성
     const actionFunctions = {};
     for (let i = 1; i <= 10; i++) {
@@ -448,78 +360,7 @@ export default {
       }
     }
 
-    const rounds = ref([
-      {
-        id: 1,
-        class: "Round1",
-        imgSrc: require("../assets/images/RoundCardBack/1Cycle1.png")
-      },
-      {
-        id: 2,
-        class: "Round2",
-        imgSrc: require("../assets/images/RoundCardBack/1Cycle2.png")
-      },
-      {
-        id: 3,
-        class: "Round3",
-        imgSrc: require("../assets/images/RoundCardBack/1Cycle3.png")
-      },
-      {
-        id: 4,
-        class: "Round4",
-        imgSrc: require("../assets/images/RoundCardBack/1Cycle4.png")
-      },
-      {
-        id: 5,
-        class: "Round5",
-        imgSrc: require("../assets/images/RoundCardBack/2Cycle1.png")
-      },
-      {
-        id: 6,
-        class: "Round6",
-        imgSrc: require("../assets/images/RoundCardBack/2Cycle2.png")
-      },
-      {
-        id: 7,
-        class: "Round7",
-        imgSrc: require("../assets/images/RoundCardBack/2Cycle3.png")
-      },
-      {
-        id: 8,
-        class: "Round8",
-        imgSrc: require("../assets/images/RoundCardBack/3Cycle1.png")
-      },
-      {
-        id: 9,
-        class: "Round9",
-        imgSrc: require("../assets/images/RoundCardBack/3Cycle2.png")
-      },
-      {
-        id: 10,
-        class: "Round10",
-        imgSrc: require("../assets/images/RoundCardBack/4Cycle1.png")
-      },
-      {
-        id: 11,
-        class: "Round11",
-        imgSrc: require("../assets/images/RoundCardBack/4Cycle2.png")
-      },
-      {
-        id: 12,
-        class: "Round12",
-        imgSrc: require("../assets/images/RoundCardBack/5Cycle1.png")
-      },
-      {
-        id: 13,
-        class: "Round13",
-        imgSrc: require("../assets/images/RoundCardBack/5Cycle2.png")
-      },
-      {
-        id: 14,
-        class: "Round14",
-        imgSrc: require("../assets/images/RoundCardBack/6Cycle.png")
-      },
-    ]);
+    const rounds = ref(roundsRef);
     // round를 위한 함수들을 동적으로 생성
     const roundFunctions = {};
     for (let i = 1; i <= 14; i++) {

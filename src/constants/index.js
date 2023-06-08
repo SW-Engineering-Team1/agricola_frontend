@@ -31,3 +31,33 @@ export const notUsedJobCardMap = {
   'Merchandiser': { name: 'Merchandiser', name_kr: '잡화상인', image: require('@/assets/images/P1JobCard/6_Merchandiser.png') },
   'Organic farmer': { name: 'OrganicFarmer', name_kr: '유기 농부', image: require('@/assets/images/P1JobCard/7_OrganicFarmer.png') },
 }
+
+export const actionsRef = [
+  { id: 1, class: "FarmExpand", imgSrc: require("../assets/images/Action/1_FarmExpand.jpg") },
+  { id: 2, class: "MeetingPlace", imgSrc: require("../assets/images/Action/2_MeetingPlace.jpg") },
+  { id: 3, class: "GrainSeed", imgSrc: require("../assets/images/Action/3_GrainSeed.jpg") },
+  { id: 4, class: "Farmland", imgSrc: require("../assets/images/Action/4_Farmland.jpg") },
+  { id: 5, class: "Instruction", imgSrc: require("../assets/images/Action/5_Instruction.jpg") },
+  { id: 6, class: "DayLabor", imgSrc: require("../assets/images/Action/6_DayLabor.jpg") },
+  { id: 7, class: "Forest", imgSrc: require("../assets/images/Action/7_Forest.jpg") },
+  { id: 8, class: "SoilMining", imgSrc: require("../assets/images/Action/8_SoilMining.jpg") },
+  { id: 9, class: "ReedField", imgSrc: require("../assets/images/Action/9_ReedField.jpg") },
+  { id: 10, class: "Fishing", imgSrc: require("../assets/images/Action/10_Fishing.jpg") },
+]
+
+export const roundsRef = [
+  { id: 1, class: "Round1", imgSrc: require("@/assets/images/RoundCard/1R.png"), backImgSrc: require("@/assets/images/RoundCardBack/1Cycle.png") },
+  { id: 2, class: "Round2", imgSrc: require("@/assets/images/RoundCard/2R.png"), backImgSrc: require("@/assets/images/RoundCardBack/1Cycle.png") },
+  { id: 3, class: "Round3", imgSrc: require("@/assets/images/RoundCard/3R.png"), backImgSrc: require("@/assets/images/RoundCardBack/1Cycle.png") },
+  { id: 4, class: "Round4", imgSrc: require("@/assets/images/RoundCard/4R.png"), backImgSrc: require("@/assets/images/RoundCardBack/1Cycle.png") },
+  { id: 5, class: "Round5", imgSrc: require("@/assets/images/RoundCard/5R.png"), backImgSrc: require("@/assets/images/RoundCardBack/2Cycle.png") },
+  { id: 6, class: "Round6", imgSrc: require("@/assets/images/RoundCard/6R.png"), backImgSrc: require("@/assets/images/RoundCardBack/2Cycle.png") },
+  { id: 7, class: "Round7", imgSrc: require("@/assets/images/RoundCard/7R.png"), backImgSrc: require("@/assets/images/RoundCardBack/2Cycle.png") },
+  { id: 8, class: "Round8", imgSrc: require("@/assets/images/RoundCard/8R.png"), backImgSrc: require("@/assets/images/RoundCardBack/3Cycle.png") },
+  { id: 9, class: "Round9", imgSrc: require("@/assets/images/RoundCard/9R.png"), backImgSrc: require("@/assets/images/RoundCardBack/3Cycle.png") },
+  { id: 10, class: "Round10", imgSrc: require("@/assets/images/RoundCard/10R.png"), backImgSrc: require("@/assets/images/RoundCardBack/4Cycle.png") },
+  { id: 11, class: "Round11", imgSrc: require("@/assets/images/RoundCard/11R.png"), backImgSrc: require("@/assets/images/RoundCardBack/4Cycle.png") },
+  { id: 12, class: "Round12", imgSrc: require("@/assets/images/RoundCard/12R.png"), backImgSrc: require("@/assets/images/RoundCardBack/5Cycle.png") },
+  { id: 13, class: "Round13", imgSrc: require("@/assets/images/RoundCard/13R.png"), backImgSrc: require("@/assets/images/RoundCardBack/5Cycle.png") },
+  { id: 14, class: "Round14", imgSrc: require("@/assets/images/RoundCard/14R.png"), backImgSrc: require("@/assets/images/RoundCardBack/6Cycle.png") }
+]
