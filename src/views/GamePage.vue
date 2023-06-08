@@ -270,6 +270,7 @@ export default {
     ReedField,
     Fishing
   },
+
   setup() {
     const socket = io("localhost:3000");
     const store = useStore();
@@ -310,6 +311,7 @@ export default {
     const isP1JobCardModalOpen = ref(false);
     const isP2AssiFacModalOpen = ref(false);
     const isP2JobCardModalOpen = ref(false);
+
     const openMajorFacModal = () => isMajorFacModalOpen.value = true;
     const closeMajorFacModal = () => isMajorFacModalOpen.value = false;
     const openP1AssiFacModal = () => isP1AssiFacModalOpen.value = true;

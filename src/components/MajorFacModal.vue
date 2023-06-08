@@ -50,10 +50,11 @@ export default{
    height:100%;
    position: fixed;
    left: 0;
-   top: 0; 
+   top: 5vh;
+   z-index: 9999;
 }
 .overlay{
-    opacity: 0.5;
+    opacity: 0;
     background-color: black;
 }
 </style>
