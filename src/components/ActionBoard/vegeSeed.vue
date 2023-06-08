@@ -1,11 +1,6 @@
 <template>
-  <div>
-    <button class="w-full" @click="useGrainSeed">
-      <img src="../assets/images/Action/3_GrainSeed.jpg" alt="grainSeed" />
-    </button>
-  </div>
+  <div @click="getVegeSeed" class="bg-gray-100 p-4 w-1/4 h-1/4">채소종자요</div>
 </template>
-
 <script>
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { io } from "socket.io-client";
@@ -20,19 +15,20 @@ export default {
     const roomId = ref("");
     const user = computed(() => store.state.user);
 
-    const useGrainSeed = () => {
+    const getVegeSeed = () => {
       socket.emit("useActionSpace", {
-        actionName: "addGrainSeed",
+        actionName: "getVegeSeed",
         userId: user.value,
-        roomId: roomId.value,
+        roomId: 1,
         goods: [
           {
-            name: "grain",
+            name: "vegeOnStorage",
             num: 1,
             isAdd: true,
           },
         ],
       });
+      console.log(user.value);
     };
 
     onMounted(async () => {
@@ -40,7 +36,7 @@ export default {
     });
     onUnmounted();
     return {
-      useGrainSeed,
+      getVegeSeed,
       roomId,
       user,
     };
