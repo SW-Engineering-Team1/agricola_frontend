@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button class="rounded Action3" @click="useGrainSeed" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/Action/3_GrainSeed.jpg" width="108" />
+    <button class="w-full" @click="useGrainSeed" >
+      <img src="../assets/images/Action/3_GrainSeed.jpg" alt="grainSeed" />
     </button>
   </div>
 </template>

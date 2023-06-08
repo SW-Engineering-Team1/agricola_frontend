@@ -3,7 +3,7 @@
         <div class='overlay' @click="$emit('close-modal')"></div>
         <div class="relative max-w-7xl h-5/6 mx-auto mt-30 mb-30 bg-white opacity-100">
             <div class="grid grid-cols-5 gap-4 h-full my-8">
-                <CardView v-for="card, i in card" :key="i" v-bind:card="card"></CardView>
+                <CardView v-for="(card, i) in card" :key="i" v-bind:card="card"></CardView>
             </div>
         </div>
    </div>
