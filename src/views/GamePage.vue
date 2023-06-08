@@ -66,14 +66,14 @@
           <div >
             <P2JobCardModal v-if="isP2JobCardModalOpen" @close-modal="closeP2JobCardModal" />
             <button @click="openP2JobCardModal">
-              <img src="../assets/images/JobCardBack/P2JobCardBack.png" class="w-auto h-56" alt="jobCard"/>
+              <img src="../assets/images/CardBack/JobCardBack.png" class="w-auto h-56 rotate-180" alt="jobCard"/>
             </button>
           </div>
           <!--  상대 보조 설비 카드  -->
           <div>
             <P2AssiFacModal v-if="isP2AssiFacModalOpen" @close-modal="closeP2AssiFacModal" />
             <button @click="openP2AssiFacModal">
-              <img src="../assets/images/AssiFacCardBack/P2AssiFacCardBack.png" class="w-auto h-56" alt="assiFacCard"/>
+              <img src="../assets/images/CardBack/AssiFacCardBack.png" class="w-auto h-56 rotate-180" alt="assiFacCard"/>
             </button>
           </div>
           <!--  상대 주요 설비 카드  -->
@@ -139,7 +139,7 @@
             <div class="row-span-2" />
             <MajorFacModal v-if="isMajorFacModalOpen" @close-modal="closeMajorFacModal"/>
             <button @click="openMajorFacModal" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/MajorFacCardBack/MajorFacCardBack.png" class="w-full h-auto" alt="majorCard"/>
+              <img src="../assets/images/CardBack/MajorFacCardBack.png" class="w-full h-auto" alt="majorCard"/>
             </button>
             <DayLabor class="flex justify-center items-center"/>
             <Fishing class="flex justify-center items-center"/>
@@ -192,22 +192,48 @@
           <div >
             <P1JobCardModal v-if="isP1JobCardModalOpen" @close-modal="closeP1JobCardModal" />
             <button @click="openP1JobCardModal">
-              <img src="../assets/images/JobCardBack/P1JobCardBack.png" class="w-auto h-56" alt="jobCard"/>
+              <img src="../assets/images/CardBack/JobCardBack.png" class="w-auto h-56" alt="jobCard"/>
             </button>
           </div>
           <!--  내 보조 설비 카드  -->
           <div>
             <P1AssiFacModal v-if="isP1AssiFacModalOpen" @close-modal="closeP1AssiFacModal" />
             <button @click="openP1AssiFacModal">
-              <img src="../assets/images/AssiFacCardBack/P1AssiFacCardBack.png" class="w-auto h-56" alt="assiFacCard"/>
+              <img src="../assets/images/CardBack/AssiFacCardBack.png" class="w-auto h-56" alt="assiFacCard"/>
             </button>
           </div>
           <!--  내 주요 설비 카드  -->
           <div class="bg-gray-500">내 주요 설비 카드</div>
-          <!--  내 손의 보조 설비 카드  -->
-          <div class="bg-gray-500">내 손의 보조 설비 카드</div>
-          <!--  내 손의 직업 카드  -->
-          <div class="bg-gray-500">내 손의 직업 카드</div>
+          <!--  사용하지 않은 보조 설비 카드  -->
+          <div>
+            <img
+              class="w-auto h-56 cursor-pointer"
+              src="../assets/images/CardBack/NotUsedAssiFacCardBack.png"
+              @click="toggleNotUsedAssiCardModal"
+              alt="remainedAssiFacCard"
+            />
+            <NotUsedCardModal
+              :show="showNotUsedAssiCardModal"
+              :cards="notUsedAssiFacCard"
+              @close="toggleNotUsedAssiCardModal"
+              :cardType="'보조 설비'"
+            />
+          </div>
+          <!--  사용하지 않은 직업 카드  -->
+          <div>
+            <img
+              class="w-auto h-56 cursor-pointer"
+              src="../assets/images/CardBack/NotUsedJobCardBack.png"
+              @click="toggleNotUsedJobCardModal"
+              alt="remainedJobCard"
+            />
+            <NotUsedCardModal
+              :show="showNotUsedJobCardModal"
+              :cards="notUsedJobCard"
+              @close="toggleNotUsedJobCardModal"
+              :cardType="'직업'"
+            />
+          </div>
         </div>
       </div>
 
@@ -250,7 +276,8 @@ import ReedField from "@/components/ReedField.vue";
 import Fishing from "@/components/Fishing.vue";
 import { io } from "socket.io-client";
 import {useStore} from 'vuex';
-import { resourceMap } from '@/constants';
+import { resourceMap, notUsedAssiCardMap, notUsedJobCardMap } from '@/constants';
+import NotUsedCardModal from "@/components/NotUsedCardModal.vue";
 
 export default {
   components: {
@@ -268,7 +295,8 @@ export default {
     Forest,
     SoilMining,
     ReedField,
-    Fishing
+    Fishing,
+    NotUsedCardModal,
   },
 
   setup() {
@@ -276,6 +304,17 @@ export default {
     const store = useStore();
     const playersInRoom = ref(computed(() => store.state.playersInRoom));
     const gameStatus = ref(computed(() => store.state.gameStatus));
+
+    console.log(gameStatus);
+
+    const showNotUsedAssiCardModal = ref(false);
+    const toggleNotUsedAssiCardModal = () => {
+      showNotUsedAssiCardModal.value = !showNotUsedAssiCardModal.value;
+    };
+    const showNotUsedJobCardModal = ref(false);
+    const toggleNotUsedJobCardModal = () => {
+      showNotUsedJobCardModal.value = !showNotUsedJobCardModal.value;
+    };
 
     // user 정보
     const user = computed(() => store.state.user);
@@ -288,6 +327,26 @@ export default {
         image,
         value: myGameStatus.value[key],
       }));
+    });
+    const notUsedAssiFacCard = computed(() => {
+      return Object.entries(notUsedAssiCardMap)
+        .filter(([key]) => myGameStatus.value.remainedSubFacilityCard.includes(key))
+        .map(([key, { name, name_kr, image }]) => ({
+          name,
+          name_kr,
+          image,
+          value: myGameStatus.value[key],
+        }));
+    });
+    const notUsedJobCard = computed(() => {
+      return Object.entries(notUsedJobCardMap)
+        .filter(([key]) => myGameStatus.value.remainedJobCard.includes(key))
+        .map(([key, { name, name_kr, image }]) => ({
+          name,
+          name_kr,
+          image,
+          value: myGameStatus.value[key],
+        }));
     });
 
     // opponent(상대방) 정보
@@ -694,6 +753,12 @@ export default {
       opponent,
       oppoGameStatus,
       oppoGameResources,
+      showNotUsedAssiCardModal,
+      toggleNotUsedAssiCardModal,
+      showNotUsedJobCardModal,
+      toggleNotUsedJobCardModal,
+      notUsedAssiFacCard,
+      notUsedJobCard,
     };
   },
 };
