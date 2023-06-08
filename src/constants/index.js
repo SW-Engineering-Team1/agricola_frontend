@@ -1,5 +1,5 @@
 export const resourceMap = {
-  wood: { name: 'wood', image: require('@/assets/images/Resources/1_Wood.png') },
+  'wood': { name: 'wood', image: require('@/assets/images/Resources/1_Wood.png') },
   sand: { name: 'sand', image: require('@/assets/images/Resources/2_Sand.png') },
   stone: { name: 'stone', image: require('@/assets/images/Resources/3_Stone.png') },
   reed: { name: 'reed', image: require('@/assets/images/Resources/4_Reed.png') },

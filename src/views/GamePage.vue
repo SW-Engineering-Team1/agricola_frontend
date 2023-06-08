@@ -108,10 +108,20 @@
             <div class="row-span-2" />
             <div class="row-span-2" />
             <div class="row-span-2" />
-            <MajorFacModal v-if="isMajorFacModalOpen" @close-modal="closeMajorFacModal"/>
-            <button @click="openMajorFacModal" class="flex justify-center items-center row-span-2">
-              <img src="../assets/images/CardBack/MajorFacCardBack.png" class="w-full h-auto" alt="majorCard"/>
-            </button>
+            <div class="flex justify-center items-center row-span-2">
+              <img
+                class="w-auto h-56 cursor-pointer"
+                :src="notUsedMajorFacCardData.imgSrc"
+                @click="notUsedMajorFacCardData.modal.toggleModal"
+                :alt="notUsedMajorFacCardData.alt"
+              />
+              <CardModal
+                :show="notUsedMajorFacCardData.modal.showModal.value"
+                :cards="notUsedMajorFacCardData.cards.value"
+                @close="notUsedMajorFacCardData.modal.toggleModal"
+                :cardType="notUsedMajorFacCardData.cardType"
+              />
+            </div>
             <DayLabor class="flex justify-center items-center"/>
             <Fishing class="flex justify-center items-center"/>
           </div>
@@ -198,7 +208,6 @@
 </template>
 
 <script>
-import MajorFacModal from "@/components/MajorFacModal.vue";
 import FarmExpand from "@/components/FarmExpand.vue";
 import MeetingPlace from "@/components/MeetingPlace.vue";
 import GrainSeed from "@/components/GrainSeed.vue";
@@ -218,7 +227,6 @@ import CardFlip from "@/components/CardFlip.vue";
 
 export default {
   components: {
-    MajorFacModal,
     FarmExpand,
     MeetingPlace,
     GrainSeed,
@@ -241,6 +249,7 @@ export default {
 
     console.log(gameStatus);
 
+    // 모달 창 관련 함수
     const createModalState = () => {
       const showModal = ref(false);
       const toggleModal = () => {
@@ -258,21 +267,21 @@ export default {
     const oppoUsedAssiFacCardModal = createModalState();
     const oppoUsedJobCardModal = createModalState();
     const oppoUsedMajorFacCardModal = createModalState();
+    const notUsedMajorFacCardModal = createModalState();
 
-    // user 정보
-    const user = computed(() => store.state.user);
-    const myGameStatus = computed(() => {
-      return gameStatus.value.find(status => status.UserId === user.value)
-    });
-    const myGameResources = computed(() => {
+    // helper functions
+    const getUserStatus = (gameStatus, userId) => {
+      return gameStatus.value.find(status => status.UserId === userId);
+    };
+
+    const getGameResources = (resourceMap, gameStatus) => {
       return Object.entries(resourceMap).map(([key, { name, image }]) => ({
         name,
         image,
-        value: myGameStatus.value[key],
+        value: gameStatus.value[key],
       }));
-    });
+    };
 
-    // 카드 정보
     const getCards = (cardMap, status, Cards) => {
       return computed(() => {
         return Object.entries(cardMap)
@@ -280,11 +289,16 @@ export default {
           .map(([key, { name, name_kr, image }]) => ({name, name_kr, image, value: status.value[key]}));
       });
     };
-    const notUsedAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'remainedSubFacilityCard');
-    const notUsedJobCard = getCards(jobCardMap, myGameStatus,'remainedJobCard');
+
+    // user 정보
+    const user = computed(() => store.state.user);
+    const myGameStatus = computed(() => getUserStatus(gameStatus, user.value));
+    const myGameResources = computed(() => getGameResources(resourceMap, myGameStatus));
     const myUsedAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'usedSubFacilityCard');
     const myUsedJobCard = getCards(jobCardMap, myGameStatus, 'usedJobCard');
     const myUsedMajorFacCard = getCards(majorFacCardMap, myGameStatus, 'usedMainFacilityCard');
+    const notUsedAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'remainedSubFacilityCard');
+    const notUsedJobCard = getCards(jobCardMap, myGameStatus,'remainedJobCard');
     const myCardData = [
       {
         imgSrc: require("@/assets/images/CardBack/JobCardBack.png"),
@@ -324,20 +338,9 @@ export default {
     ];
 
     // opponent(상대방) 정보
-    const opponent = computed(() => {
-      return playersInRoom.value.find(player => player !== user.value)
-    });
-    const oppoGameStatus = computed(() => {
-      return gameStatus.value.find(status => status.UserId !== user.value)
-    });
-    const oppoGameResources = computed(() => {
-      return Object.entries(resourceMap).map(([key, { name, image }]) => ({
-        name,
-        image,
-        value: oppoGameStatus.value[key],
-      }));
-    });
-
+    const opponent = computed(() => playersInRoom.value.find(player => player !== user.value));
+    const oppoGameStatus = computed(() => getUserStatus(gameStatus, opponent.value));
+    const oppoGameResources = computed(() => getGameResources(resourceMap, oppoGameStatus));
     const oppoUsedAssiFacCard = getCards(assiFacCardMap, oppoGameStatus, 'usedSubFacilityCard');
     const oppoUsedJobCard = getCards(jobCardMap, oppoGameStatus, 'usedJobCard');
     const oppoUsedMajorFacCard = getCards(majorFacCardMap, oppoGameStatus, 'usedMainFacilityCard');
@@ -365,11 +368,27 @@ export default {
       },
     ];
 
-    const isMajorFacModalOpen = ref(false);
+    // 주요 설비 정보
+    const majorFacCards = Object.keys(majorFacCardMap);
+    // 사용되지 않은 주요 설비 카드
+    const notUsedMajorFacCard = computed(() => {
+      const usedMajorFacCards = new Set([...myUsedMajorFacCard.value, ...oppoUsedMajorFacCard.value]);
+      return majorFacCards
+        .filter(key => !usedMajorFacCards.has(key))
+        .map(key => {
+          const { name, name_kr, image } = majorFacCardMap[key];
+          return { name, name_kr, image, value: majorFacCards[key] };
+        })
+    });
+    const notUsedMajorFacCardData = {
+      imgSrc: require("@/assets/images/CardBack/MajorFacCardBack.png"),
+      alt: "notUsedMajorFacCard",
+      modal: notUsedMajorFacCardModal,
+      cards: notUsedMajorFacCard,
+      cardType: "사용되지 않는 주요 설비",
+    };
 
-    const openMajorFacModal = () => isMajorFacModalOpen.value = true;
-    const closeMajorFacModal = () => isMajorFacModalOpen.value = false;
-
+    // 행동 칸 정보
     const actions = ref(actionsRef);
     // action을 위한 함수들을 동적으로 생성
     const actionFunctions = {};
@@ -585,9 +604,6 @@ export default {
     });
 
     return {
-      isMajorFacModalOpen,
-      openMajorFacModal,
-      closeMajorFacModal,
       actions,
       ...actionFunctions,
       rounds,
@@ -604,11 +620,12 @@ export default {
       user,
       myGameStatus,
       myGameResources,
+      myCardData,
       opponent,
       oppoGameStatus,
       oppoGameResources,
-      myCardData,
       oppoCardData,
+      notUsedMajorFacCardData,
     };
   },
 };
