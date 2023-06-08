@@ -9,5 +9,5 @@ export const resourceMap = {
   sheep: { name: 'sheep', image: require('@/assets/images/Resources/8_Sheep.png') },
   pig: { name: 'pig', image: require('@/assets/images/Resources/9_Pig.png') },
   cow: { name: 'cow', image: require('@/assets/images/Resources/10_Cow.png') },
-  numOfBeggingToken: { name: 'debt', image: require('@/assets/images/Resources/debt.jpeg') },
+  numOfBeggingToken: { name: 'debt', image: require('@/assets/images/Etc/BeggingToken.png') },
 };
