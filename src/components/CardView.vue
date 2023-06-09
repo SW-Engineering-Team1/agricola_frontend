@@ -51,7 +51,7 @@ export default {
            
             socket.on("useActionSpace",(data) => {
                 // remainFacility.value = data.result;
-                console.log("Room Num",data.result);
+                console.log("Farm Num",data.result);
             })
             
         })
