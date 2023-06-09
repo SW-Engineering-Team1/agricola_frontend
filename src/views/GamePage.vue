@@ -1,5 +1,6 @@
 <template>
   <div>
+    <RoundModal v-if="showRoundModal" :round="currentRound" />
     <button class="flex justify-center fixed w-36 right-5 top-5 bg-red-400 text-white font-bold p-3 rounded" @click="skipGame(8)">
       8라운드 스킵
     </button>
@@ -181,6 +182,7 @@ import {useStore} from 'vuex';
 import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmRef } from '@/constants';
 import CardModal from "@/components/CardModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
+import RoundModal from '@/components/RoundModal.vue'
 
 export default {
   components: {
@@ -196,6 +198,7 @@ export default {
     Fishing,
     CardModal,
     CardFlip,
+    RoundModal
   },
 
   setup() {
@@ -379,7 +382,7 @@ export default {
     const currentRound = ref(computed(() => store.state.currentRound));
 
     const resetCurrentRound = () => {
-      store.commit("setCurrentRound", 0);
+      store.commit("setCurrentRound", 1);
     };
     const startRound = () => {
       socket.emit("startRound", gameStatus.value[0]);
@@ -414,11 +417,21 @@ export default {
     // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
 
 
-
+    // RoundModal
+    const showRoundModal = ref(false);
+    const showRound = () => {
+      showRoundModal.value = true;
+      setTimeout(() => {
+        showRoundModal.value = false;
+      }, 2000);
+    };
 
     onMounted(() => {
+      showRound();
+
       socket.once("startRound", () => {
         store.commit("setCurrentRound", currentRound.value + 1);
+        showRound();
       });
 
       socket.on("skipGame", (data) => {
@@ -426,6 +439,7 @@ export default {
         const updatedStatus = data.updatedPlayer.map(player => player.playerDetail);
         store.commit("setGameStatus", updatedStatus);
         store.commit("setMajorFac", data.updatedPlayer[0].reaminedMainFacilityCard);
+        showRound();
       });
     });
 
@@ -448,6 +462,8 @@ export default {
       resetCurrentRound,
       startRound,
       skipGame,
+      currentRound,
+      showRoundModal,
     };
   },
 };

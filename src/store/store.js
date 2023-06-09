@@ -10,7 +10,7 @@ const getDefaultState = () => {
     playersInRoom: [],
     gameStatus: [],
     majorFac: [],
-    currentRound: 0,
+    currentRound: 1,
   }
 }
 
