@@ -32,7 +32,7 @@
       </div>
 
       <!--  메인 게임 보드  -->
-      <div class="w-2/3 mx-auto grid content-between">
+      <div class="max-w-5xl mx-auto grid content-between">
         <!--  상대  -->
         <div class="flex gap-x-10">
           <!--  상대 농장판  -->
@@ -65,7 +65,7 @@
         </div>
 
         <!--  게임 진행판  -->
-        <div class="bg-[#C4B15A] p-2">
+        <div class="bg-gradient-to-r from-[#B2C95E] via-[#95AD4B] to-[#7C9432] p-2">
           <div class="grid grid-cols-8 gap-2 p-2">
             <FarmExpand class="flex justify-center items-center"/>
             <CardFlip :round="1" :frontImage="rounds[0].imgSrc" :backImage="rounds[0].backImgSrc" />
