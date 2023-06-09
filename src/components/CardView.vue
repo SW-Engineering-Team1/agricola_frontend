@@ -47,7 +47,11 @@ export default {
 
     onMounted(async () => {
       roomId.value = route.params.room;
-      console.log(user.value, roomId.value);
+
+      socket.on("useActionSpace", (data) => {
+        // remainFacility.value = data.result;
+        console.log("Farm Num", data.result);
+      });
     });
     onUnmounted(() => {
       socket.off("useActionSpace");

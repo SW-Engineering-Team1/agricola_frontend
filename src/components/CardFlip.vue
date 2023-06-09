@@ -1,7 +1,6 @@
 <template>
   <div
     class="flex justify-center items-center row-span-2 p-0 bg-transparent relative cursor-pointer"
-    @click="flipCard"
     :class="{ 'flip': isFlipped }"
   >
     <img
@@ -18,24 +17,33 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import {useStore} from 'vuex'
 
 export default {
   props: {
     frontImage: String,
-    backImage: String
+    backImage: String,
+    round: Number
   },
-  setup() {
+  setup(props) {
     const isFlipped = ref(false);
+    const store = useStore();
 
-    const flipCard = () => {
-      // 카드가 이미 뒤집혀 있다면 다시 뒤집지 않음
-      if (isFlipped.value) return;
+    // currentRound 값까지 카드를 모두 뒤집는다.
+    if (store.state.currentRound >= props.round) {
+      isFlipped.value = true;
+    }
 
-      isFlipped.value = !isFlipped.value;
-    };
+    // store의 currentRound 값이 변경될 때마다 실행되는 watcher
+    watch(() => store.state.currentRound, (newRound) => {
+      // 현재 라운드까지 카드를 모두 뒤집는다.
+      if (newRound >= props.round) {
+        isFlipped.value = true;
+      }
+    });
 
-    return { isFlipped, flipCard };
+    return { isFlipped };
   }
 };
 </script>

@@ -1,17 +1,34 @@
 <template>
   <div>
+    <RoundModal v-if="showRoundModal" :round="currentRound" />
+    <button
+      class="flex justify-center fixed w-36 right-5 top-5 bg-red-400 text-white font-bold p-3 rounded"
+      @click="skipGame(8)"
+    >
+      8라운드 스킵
+    </button>
+    <button
+      class="flex justify-center fixed w-36 right-5 top-20 bg-red-400 text-white font-bold p-3 rounded"
+      @click="skipGame(14)"
+    >
+      14라운드 스킵
+    </button>
+    <button
+      class="flex justify-center fixed w-36 right-5 top-36 bg-blue-400 text-white font-bold p-3 rounded"
+      @click="resetCurrentRound"
+    >
+      라운드 초기화
+    </button>
+    <button
+      class="flex justify-center fixed w-36 right-5 top-52 bg-yellow-400 text-white font-bold p-3 rounded"
+      @click="startRound"
+    >
+      라운드 시작
+    </button>
+
     <div
       class="flex justify-between w-full h-screen overflow-scroll bg-[#B3B85E]"
     >
-      <!-- 8라운드 스킵버튼 -->
-      <div class="flex justify-end">
-        <button
-          @click="goRoundEight"
-          class="bg-blue-500 text-white rounded-full py-2 px-1 text-sm"
-        >
-          Skip8
-        </button>
-      </div>
       <!--  상대 자원 표시  -->
       <div>
         <div class="grid grid-rows-12 fixed left-0 top-1/4 bg-[#A2CF5F]">
@@ -36,73 +53,25 @@
       </div>
 
       <!--  메인 게임 보드  -->
-      <div class="w-2/3 mx-auto grid content-between">
+      <div class="max-w-5xl mx-auto grid content-between">
         <!--  상대  -->
         <div class="flex gap-x-10">
           <!--  상대 농장판  -->
           <div class="flex justify-center">
-            <div class="bg-green-700 grid grid-cols-5 gap-2 p-2">
-              <button
-                v-for="p2Farm in p2Farms.slice(0, 5)"
-                :key="p2Farm.id"
-                @click="p2Farm.clickHandler"
-              >
-                <img
-                  src="../assets/images/Farm.jpg"
-                  alt="farm"
-                  class="w-16 h-16"
-                />
-              </button>
-              <button
-                v-for="p2WoodRoom in p2WoodRooms.slice(0, 1)"
-                :key="p2WoodRoom.id"
-                @click="p2WoodRoom.clickHandler"
-              >
-                <img
-                  src="../assets/images/Room/WoodRoom.png"
-                  alt="woodRoom"
-                  class="w-16 h-16"
-                />
-              </button>
-              <button
-                v-for="p2Farm in p2Farms.slice(5, 9)"
-                :key="p2Farm.id"
-                @click="p2Farm.clickHandler"
-              >
-                <img
-                  src="../assets/images/Farm.jpg"
-                  alt="farm"
-                  class="w-16 h-16"
-                />
-              </button>
-              <button
-                v-for="p2WoodRoom in p2WoodRooms.slice(1, 2)"
-                :key="p2WoodRoom.id"
-                @click="p2WoodRoom.clickHandler"
-              >
-                <img
-                  src="../assets/images/Room/WoodRoom.png"
-                  alt="woodRoom"
-                  class="w-16 h-16"
-                />
-              </button>
-              <button
-                v-for="p2Farm in p2Farms.slice(9, 13)"
-                :key="p2Farm.id"
-                @click="p2Farm.clickHandler"
-              >
-                <img
-                  src="../assets/images/Farm.jpg"
-                  alt="farm"
-                  class="w-16 h-16"
-                />
-              </button>
+            <div class="bg-green-700 grid grid-cols-5 gap-2 p-2 rotate-180">
+              <img
+                v-for="farm in oppoFarm"
+                :key="farm.id"
+                :src="farm.imgSrc"
+                alt="oppoFarm"
+                class="w-16 h-16"
+              />
             </div>
           </div>
           <!--  상대가 사용한 카드  -->
           <div v-for="(card, index) in oppoCardData" :key="index">
             <img
-              class="w-auto h-56 cursor-pointer rotate-180"
+              class="w-auto h-56 cursor-pointer rotate-180 transform transition duration-500 ease-in-out hover:scale-110"
               :src="card.imgSrc"
               @click="card.modal.toggleModal"
               :alt="card.alt"
@@ -117,41 +86,43 @@
         </div>
 
         <!--  게임 진행판  -->
-        <div class="bg-[#C4B15A] p-2">
-          <div class="grid grid-cols-8 gap-0.5 grid-flow-row-dense">
+        <div
+          class="bg-gradient-to-r from-[#B2C95E] via-[#95AD4B] to-[#7C9432] p-2"
+        >
+          <div class="grid grid-cols-8 gap-2 p-2">
             <FarmExpand class="flex justify-center items-center" />
             <CardFlip
-              @click="openRound1"
+              :round="1"
               :frontImage="rounds[0].imgSrc"
               :backImage="rounds[0].backImgSrc"
             />
             <CardFlip
-              @click="openRound2"
+              :round="2"
               :frontImage="rounds[1].imgSrc"
               :backImage="rounds[1].backImgSrc"
             />
             <CardFlip
-              @click="openRound5"
+              :round="5"
               :frontImage="rounds[4].imgSrc"
               :backImage="rounds[4].backImgSrc"
             />
             <CardFlip
-              @click="openRound8"
+              :round="8"
               :frontImage="rounds[7].imgSrc"
               :backImage="rounds[7].backImgSrc"
             />
             <CardFlip
-              @click="openRound10"
+              :round="10"
               :frontImage="rounds[9].imgSrc"
               :backImage="rounds[9].backImgSrc"
             />
             <CardFlip
-              @click="openRound12"
+              :round="12"
               :frontImage="rounds[11].imgSrc"
               :backImage="rounds[11].backImgSrc"
             />
             <CardFlip
-              @click="openRound14"
+              :round="14"
               :frontImage="rounds[13].imgSrc"
               :backImage="rounds[13].backImgSrc"
             />
@@ -159,27 +130,27 @@
             <GrainSeed class="flex justify-center items-center" />
             <Forest class="flex justify-center items-center" />
             <CardFlip
-              @click="openRound3"
+              :round="3"
               :frontImage="rounds[2].imgSrc"
               :backImage="rounds[2].backImgSrc"
             />
             <CardFlip
-              @click="openRound6"
-              :frontImage="rounds[6].imgSrc"
-              :backImage="rounds[6].backImgSrc"
+              :round="6"
+              :frontImage="rounds[5].imgSrc"
+              :backImage="rounds[5].backImgSrc"
             />
             <CardFlip
-              @click="openRound9"
-              :frontImage="rounds[9].imgSrc"
-              :backImage="rounds[9].backImgSrc"
+              :round="9"
+              :frontImage="rounds[8].imgSrc"
+              :backImage="rounds[8].backImgSrc"
             />
             <CardFlip
-              @click="openRound11"
-              :frontImage="rounds[11].imgSrc"
-              :backImage="rounds[11].backImgSrc"
+              :round="11"
+              :frontImage="rounds[10].imgSrc"
+              :backImage="rounds[10].backImgSrc"
             />
             <CardFlip
-              @click="openRound13"
+              :round="13"
               :frontImage="rounds[12].imgSrc"
               :backImage="rounds[12].backImgSrc"
             />
@@ -189,12 +160,12 @@
             <Instruction class="flex justify-center items-center" />
             <ReedField class="flex justify-center items-center" />
             <CardFlip
-              @click="openRound4"
+              :round="4"
               :frontImage="rounds[3].imgSrc"
               :backImage="rounds[3].backImgSrc"
             />
             <CardFlip
-              @click="openRound7"
+              :round="7"
               :frontImage="rounds[6].imgSrc"
               :backImage="rounds[6].backImgSrc"
             />
@@ -203,7 +174,7 @@
             <div class="row-span-2" />
             <div class="flex justify-center items-center row-span-2">
               <img
-                class="w-auto h-56 cursor-pointer"
+                class="w-auto h-56 cursor-pointer transform transition duration-500 ease-in-out hover:scale-110"
                 :src="notUsedMajorFacCardData.imgSrc"
                 @click="notUsedMajorFacCardData.modal.toggleModal"
                 :alt="notUsedMajorFacCardData.alt"
@@ -226,66 +197,22 @@
           <div class="flex justify-center">
             <div class="bg-green-700 grid grid-cols-5 gap-2 p-2">
               <button
-                v-for="p1Farm in p1Farms.slice(0, 4)"
-                :key="p1Farm.id"
-                @click="p1Farm.clickHandler"
+                v-for="farm in myFarm"
+                :key="farm.id"
+                @click="farm.clickHandler"
               >
-                <img
-                  src="../assets/images/Farm.jpg"
-                  alt="farm"
-                  class="w-16 h-16"
-                />
-              </button>
-              <button
-                v-for="p1WoodRoom in p1WoodRooms.slice(0, 1)"
-                :key="p1WoodRoom.id"
-                @click="p1WoodRoom.clickHandler"
-              >
-                <img
-                  src="../assets/images/Room/WoodRoom.png"
-                  alt="woodRoom"
-                  class="w-16 h-16"
-                />
-              </button>
-              <button
-                v-for="p1Farm in p1Farms.slice(4, 8)"
-                :key="p1Farm.id"
-                @click="p1Farm.clickHandler"
-              >
-                <img
-                  src="../assets/images/Farm.jpg"
-                  alt="farm"
-                  class="w-16 h-16"
-                />
-              </button>
-              <button
-                v-for="p1WoodRoom in p1WoodRooms.slice(1, 2)"
-                :key="p1WoodRoom.id"
-                @click="p1WoodRoom.clickHandler"
-              >
-                <img
-                  src="../assets/images/Room/WoodRoom.png"
-                  alt="woodRoom"
-                  class="w-16 h-16"
-                />
-              </button>
-              <button
-                v-for="p1Farm in p1Farms.slice(8, 13)"
-                :key="p1Farm.id"
-                @click="p1Farm.clickHandler"
-              >
-                <img
-                  src="../assets/images/Farm.jpg"
-                  alt="farm"
-                  class="w-16 h-16"
-                />
+                <img :src="farm.imgSrc" alt="farm" class="w-16 h-16" />
               </button>
             </div>
           </div>
           <!--  내 카드  -->
-          <div v-for="(card, index) in myCardData" :key="index">
+          <div
+            v-for="(card, index) in myCardData"
+            :key="index"
+            class="relative group"
+          >
             <img
-              class="w-auto h-56 cursor-pointer"
+              class="w-auto h-56 cursor-pointer transform transition duration-500 ease-in-out hover:scale-110"
               :src="card.imgSrc"
               @click="card.modal.toggleModal"
               :alt="card.alt"
@@ -340,7 +267,6 @@ import Fishing from "@/components/Fishing.vue";
 
 import { computed, onMounted, ref } from "vue";
 import { io } from "socket.io-client";
-import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import {
   resourceMap,
@@ -349,9 +275,11 @@ import {
   jobCardMap,
   roundsRef,
   actionsRef,
+  farmRef,
 } from "@/constants";
 import CardModal from "@/components/CardModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
+import RoundModal from "@/components/RoundModal.vue";
 
 export default {
   components: {
@@ -367,6 +295,7 @@ export default {
     Fishing,
     CardModal,
     CardFlip,
+    RoundModal,
   },
 
   setup() {
@@ -374,12 +303,7 @@ export default {
     const store = useStore();
     const playersInRoom = ref(computed(() => store.state.playersInRoom));
     const gameStatus = ref(computed(() => store.state.gameStatus));
-    const route = useRoute();
-
-    const roomId = ref("");
-    const isWoodFunction = ref(
-      computed(() => store.state.isWoodFunctionExecuted)
-    );
+    const roomId = gameStatus.value[0].roomId;
 
     console.log(gameStatus);
 
@@ -494,6 +418,8 @@ export default {
       },
     ];
 
+    console.log("나", user);
+
     // opponent(상대방) 정보
     const opponent = computed(() =>
       playersInRoom.value.find((player) => player !== user.value)
@@ -539,6 +465,17 @@ export default {
       },
     ];
 
+    console.log("상대방", opponent);
+
+    const host = ref(computed(() => store.state.host));
+    // host가 user인 경우 guest는 opponent
+    const guest = computed(() => {
+      if (host.value === user.value) {
+        return opponent.value;
+      }
+      return user.value;
+    });
+
     // 주요 설비 정보
     const majorFacCards = Object.keys(majorFacCardMap);
     // 사용되지 않은 주요 설비 카드
@@ -579,199 +516,48 @@ export default {
     }
 
     const rounds = ref(roundsRef);
-    // round를 위한 함수들을 동적으로 생성
-    const roundFunctions = {};
-    for (let i = 1; i <= 14; i++) {
-      const roundName = `openRound${i}`;
-      roundFunctions[roundName] = () => {
-        console.log(roundName);
-      };
+    const currentRound = ref(computed(() => store.state.currentRound));
 
-      // 해당 round의 clickHandler를 등록
-      for (const round of rounds.value) {
-        round.clickHandler = roundFunctions[`openRound${round.id}`];
-      }
-    }
+    const resetCurrentRound = () => {
+      store.commit("setCurrentRound", 1);
+    };
+    const startRound = () => {
+      socket.emit("startRound", gameStatus.value[0]);
+    };
+    const skipGame = (round) => {
+      const skipGameData = {
+        roomId: roomId,
+        skipRound: round,
+        userId: [{ userId: host.value }, { userId: guest.value }],
+      };
+      socket.emit("skipGame", skipGameData);
+    };
 
-    const p1Farms = ref([
-      {
-        id: 1,
-        class: "P1Farm1",
-      },
-      {
-        id: 2,
-        class: "P1Farm2",
-      },
-      {
-        id: 3,
-        class: "P1Farm3",
-      },
-      {
-        id: 4,
-        class: "P1Farm4",
-      },
-      {
-        id: 5,
-        class: "P1Farm5",
-      },
-      {
-        id: 6,
-        class: "P1Farm6",
-      },
-      {
-        id: 7,
-        class: "P1Farm7",
-      },
-      {
-        id: 8,
-        class: "P1Farm8",
-      },
-      {
-        id: 9,
-        class: "P1Farm9",
-      },
-      {
-        id: 10,
-        class: "P1Farm10",
-      },
-      {
-        id: 11,
-        class: "P1Farm11",
-      },
-      {
-        id: 12,
-        class: "P1Farm12",
-      },
-      {
-        id: 13,
-        class: "P1Farm13",
-      },
-    ]);
-    // p1Farms을 위한 함수들을 동적으로 생성
-    const p1FarmFunctions = {};
-    for (let i = 1; i <= 13; i++) {
-      const p1FarmName = `openP1Farm${i}`;
-      p1FarmFunctions[p1FarmName] = () => {
-        console.log(p1FarmName);
+    const myFarm = ref(farmRef);
+    const oppoFarm = ref(farmRef);
+    // myFarm을 위한 함수들을 동적으로 생성
+    const myFarmFunctions = {};
+    for (let i = 1; i <= 15; i++) {
+      const myFarmName = `openMyFarm${i}`;
+      myFarmFunctions[myFarmName] = () => {
+        console.log(myFarmName);
       };
-      // 해당 p1Farm의 clickHandler를 등록
-      for (const p1Farm of p1Farms.value) {
-        p1Farm.clickHandler = p1FarmFunctions[`openP1Farm${p1Farm.id}`];
-      }
-    }
-    const p1WoodRooms = ref([
-      {
-        id: 1,
-        class: "P1WoodRoom1",
-      },
-      {
-        id: 2,
-        class: "P1WoodRoom2",
-      },
-    ]);
-    // p1WoodRooms을 위한 함수들을 동적으로 생성
-    const p1WoodRoomFunctions = {};
-    for (let i = 1; i <= 2; i++) {
-      const p1WoodRoomName = `openP1WoodRoom${i}`;
-      p1WoodRoomFunctions[p1WoodRoomName] = () => {
-        console.log(p1WoodRoomName);
-      };
-      // 해당 p1WoodRoom의 clickHandler를 등록
-      for (const p1WoodRoom of p1WoodRooms.value) {
-        p1WoodRoom.clickHandler =
-          p1WoodRoomFunctions[`openP1WoodRoom${p1WoodRoom.id}`];
+      // 해당 myFarm의 clickHandler를 등록
+      for (const farm of myFarm.value) {
+        farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
       }
     }
 
-    const p2Farms = ref([
-      {
-        id: 1,
-        class: "P2Farm1",
-      },
-      {
-        id: 2,
-        class: "P2Farm2",
-      },
-      {
-        id: 3,
-        class: "P2Farm3",
-      },
-      {
-        id: 4,
-        class: "P2Farm4",
-      },
-      {
-        id: 5,
-        class: "P2Farm5",
-      },
-      {
-        id: 6,
-        class: "P2Farm6",
-      },
-      {
-        id: 7,
-        class: "P2Farm7",
-      },
-      {
-        id: 8,
-        class: "P2Farm8",
-      },
-      {
-        id: 9,
-        class: "P2Farm9",
-      },
-      {
-        id: 10,
-        class: "P2Farm10",
-      },
-      {
-        id: 11,
-        class: "P2Farm11",
-      },
-      {
-        id: 12,
-        class: "P2Farm12",
-      },
-      {
-        id: 13,
-        class: "P2Farm13",
-      },
-    ]);
-    // p2Farms을 위한 함수들을 동적으로 생성
-    const p2FarmFunctions = {};
-    for (let i = 1; i <= 13; i++) {
-      const p2FarmName = `openP2Farm${i}`;
-      p2FarmFunctions[p2FarmName] = () => {
-        console.log(p2FarmName);
-      };
-      // 해당 p2Farm의 clickHandler를 등록
-      for (const p2Farm of p2Farms.value) {
-        p2Farm.clickHandler = p2FarmFunctions[`openP2Farm${p2Farm.id}`];
-      }
-    }
-    const p2WoodRooms = ref([
-      {
-        id: 1,
-        class: "P2WoodRoom1",
-      },
-      {
-        id: 2,
-        class: "P2WoodRoom2",
-      },
-    ]);
-    // p2WoodRooms을 위한 함수들을 동적으로 생성
-    const p2WoodRoomFunctions = {};
-    for (let i = 1; i <= 2; i++) {
-      const p2WoodRoomName = `openP2WoodRoom${i}`;
-      p2WoodRoomFunctions[p2WoodRoomName] = () => {
-        console.log(p2WoodRoomName);
-      };
-      // 해당 p2WoodRoom의 clickHandler를 등록
-      for (const p2WoodRoom of p2WoodRooms.value) {
-        p2WoodRoom.clickHandler =
-          p2WoodRoomFunctions[`openP2WoodRoom${p2WoodRoom.id}`];
-      }
-    }
+    // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
+
+    // RoundModal
+    const showRoundModal = ref(false);
+    const showRound = () => {
+      showRoundModal.value = true;
+      setTimeout(() => {
+        showRoundModal.value = false;
+      }, 2000);
+    };
 
     //8라운드 시나리오를 위한 스킵 버튼
     const goRoundEight = () => {
@@ -826,10 +612,24 @@ export default {
     };
 
     onMounted(() => {
-      roomId.value = route.params.room;
+      showRound();
 
-      socket.on("startGame", (gameStatus) => {
-        console.log(gameStatus);
+      socket.once("startRound", () => {
+        store.commit("setCurrentRound", currentRound.value + 1);
+        showRound();
+      });
+
+      socket.on("skipGame", (data) => {
+        store.commit("setCurrentRound", data.skipRound);
+        const updatedStatus = data.updatedPlayer.map(
+          (player) => player.playerDetail
+        );
+        store.commit("setGameStatus", updatedStatus);
+        store.commit(
+          "setMajorFac",
+          data.updatedPlayer[0].reaminedMainFacilityCard
+        );
+        showRound();
       });
     });
 
@@ -837,15 +637,6 @@ export default {
       actions,
       ...actionFunctions,
       rounds,
-      ...roundFunctions,
-      p1Farms,
-      ...p1FarmFunctions,
-      p1WoodRooms,
-      ...p1WoodRoomFunctions,
-      p2Farms,
-      ...p2FarmFunctions,
-      p2WoodRooms,
-      ...p2WoodRoomFunctions,
       gameStatus,
       user,
       myGameStatus,
@@ -856,8 +647,13 @@ export default {
       oppoGameResources,
       oppoCardData,
       notUsedMajorFacCardData,
-      goRoundEight,
-      TurnEnd,
+      myFarm,
+      oppoFarm,
+      resetCurrentRound,
+      startRound,
+      skipGame,
+      currentRound,
+      showRoundModal,
     };
   },
 };
