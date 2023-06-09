@@ -94,9 +94,9 @@
             <GrainSeed class="flex justify-center items-center"/>
             <Forest class="flex justify-center items-center"/>
             <CardFlip @click="openRound3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
-            <CardFlip @click="openRound6" :frontImage="rounds[6].imgSrc" :backImage="rounds[6].backImgSrc" />
-            <CardFlip @click="openRound9" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
-            <CardFlip @click="openRound11" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
+            <CardFlip @click="openRound6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" />
+            <CardFlip @click="openRound9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" />
+            <CardFlip @click="openRound11" :frontImage="rounds[10].imgSrc" :backImage="rounds[10].backImgSrc" />
             <CardFlip @click="openRound13" :frontImage="rounds[12].imgSrc" :backImage="rounds[12].backImgSrc" />
             <div class="row-span-2" />
             <Farmland class="flex justify-center items-center"/>
