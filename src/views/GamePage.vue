@@ -213,7 +213,6 @@ export default {
     const playersInRoom = ref(computed(() => store.state.playersInRoom));
     const gameStatus = ref(computed(() => store.state.gameStatus));
     const roomId = gameStatus.value[0].roomId;
-
     console.log(gameStatus);
 
     // 모달 창 관련 함수
@@ -353,13 +352,14 @@ export default {
       }
       return user.value;
     });
-
+    
     // 주요 설비 정보
-    const majorFacCards = Object.keys(majorFacCardMap);
+    const majorFacCardsList = Object.keys(majorFacCardMap);
+    const majorFacCards = ref(computed(() => store.state.majorFac)); 
     // 사용되지 않은 주요 설비 카드
     const notUsedMajorFacCard = computed(() => {
       const usedMajorFacCards = new Set([...myUsedMajorFacCard.value, ...oppoUsedMajorFacCard.value]);
-      return majorFacCards
+      return majorFacCards.value
         .filter(key => !usedMajorFacCards.has(key))
         .map(key => {
           const { name, name_kr, image } = majorFacCardMap[key];
@@ -437,7 +437,7 @@ export default {
 
     onMounted(() => {
       showRound();
-
+      store.commit("setMajorFac",majorFacCardsList);
       socket.once("startRound", () => {
         store.commit("setCurrentRound", currentRound.value + 1);
         showRound();
@@ -447,7 +447,7 @@ export default {
         store.commit("setCurrentRound", data.skipRound);
         const updatedStatus = data.updatedPlayer.map(player => player.playerDetail);
         store.commit("setGameStatus", updatedStatus);
-        store.commit("setMajorFac", data.updatedPlayer[0].reaminedMainFacilityCard);
+        store.commit("setMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);
         showRound();
       });
     });
