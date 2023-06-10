@@ -1,7 +1,7 @@
 <template>
   <div>
     <button class="w-full" @click="useGrainSeed" >
-      <img src="../assets/images/Action/3_GrainSeed.jpg" alt="grainSeed" />
+      <img src="../../assets/images/Action/3_GrainSeed.jpg" alt="grainSeed" />
     </button>
   </div>
 </template>

@@ -2,7 +2,7 @@
 <template>
   <div>
     <button @click="useFishing">
-      <img src="../assets/images/Action/10_Fishing.jpg" class="w-full" alt="fishing" />
+      <img src="../../assets/images/Action/10_Fishing.jpg" class="w-full" alt="fishing" />
     </button>
   </div>
 </template>
