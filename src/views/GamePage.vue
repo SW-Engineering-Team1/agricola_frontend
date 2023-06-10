@@ -359,7 +359,7 @@ export default {
     // 사용되지 않은 주요 설비 카드
     const notUsedMajorFacCard = computed(() => {
       const usedMajorFacCards = new Set([...myUsedMajorFacCard.value, ...oppoUsedMajorFacCard.value]);
-      return majorFacCards.value
+      return majorFacCards
         .filter(key => !usedMajorFacCards.has(key))
         .map(key => {
           const { name, name_kr, image } = majorFacCardMap[key];
