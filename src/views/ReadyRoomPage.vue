@@ -100,6 +100,7 @@ export default {
             limitNum.value = room.limit_num;
           }
         });
+        store.commit('setHost', hostId.value);
 
         socket.on("updatedRooms", (data) => {
           rooms.value = data.result;
@@ -114,7 +115,8 @@ export default {
         });
 
         socket.on("startGame", (gameStatus) => {
-          store.commit('setGameStatus', gameStatus.result);
+          store.commit('setGameStatus', gameStatus.result.gameStatusList);
+          store.commit('setMajorFac', gameStatus.result.mainFacilityList);
           router.push(`/room/${roomId.value}/game`);
         });
 
