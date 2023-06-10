@@ -27,7 +27,7 @@
           </div>
           <div class="flex" v-for="(item, index) in oppoGameResources" :key="index">
             <div class="p-3 border border-black w-1/2 flex justify-center">
-              <img :src="item.image" :alt="item.name" class="w-10 h-10"/>
+              <img :src="item.image" :alt="item.name" class="w-10 h-10" />
             </div>
             <div class="p-3 border border-black w-1/2 flex justify-center">
               <p class="flex items-center text-2xl">{{ item.value }}</p>
@@ -112,8 +112,8 @@
                 :cardType="notUsedMajorFacCardData.cardType"
               />
             </div>
-            <DayLabor class="flex justify-center items-center"/>
-            <Fishing class="flex justify-center items-center"/>
+            <DayLabor class="flex justify-center items-center" />
+            <Fishing class="flex justify-center items-center" />
           </div>
         </div>
 
@@ -160,7 +160,7 @@
               <p class="flex items-center text-2xl">{{ item.value }}</p>
             </div>
             <div class="p-3 border border-black w-1/2 flex justify-center">
-              <img :src="item.image" :alt="item.name" class="w-10 h-10"/>
+              <img :src="item.image" :alt="item.name" class="w-10 h-10" />
             </div>
           </div>
         </div>
@@ -186,8 +186,8 @@ import {useStore} from 'vuex';
 import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmRef } from '@/constants';
 import CardModal from "@/components/CardModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
-import RoundModal from '@/components/RoundModal.vue'
-import ScoreTableModal from '@/components/ScoreTableModal.vue'
+import RoundModal from "@/components/RoundModal.vue";
+import ScoreTableModal from '@/components/ScoreTableModal.vue';
 
 export default {
   components: {
@@ -204,7 +204,7 @@ export default {
     Fishing,
     CardModal,
     CardFlip,
-    RoundModal
+    RoundModal,
   },
 
   setup() {
@@ -239,7 +239,7 @@ export default {
 
     // helper functions
     const getUserStatus = (gameStatus, userId) => {
-      return gameStatus.value.find(status => status.UserId === userId);
+      return gameStatus.value.find((status) => status.UserId === userId);
     };
 
     const getGameResources = (resourceMap, gameStatus) => {
@@ -254,7 +254,12 @@ export default {
       return computed(() => {
         return Object.entries(cardMap)
           .filter(([key]) => status.value[Cards].includes(key))
-          .map(([key, { name, name_kr, image }]) => ({name, name_kr, image, value: status.value[key]}));
+          .map(([key, { name, name_kr, image }]) => ({
+            name,
+            name_kr,
+            image,
+            value: status.value[key],
+          }));
       });
     };
 
@@ -354,12 +359,12 @@ export default {
     // 사용되지 않은 주요 설비 카드
     const notUsedMajorFacCard = computed(() => {
       const usedMajorFacCards = new Set([...myUsedMajorFacCard.value, ...oppoUsedMajorFacCard.value]);
-      return majorFacCards
+      return majorFacCards.value
         .filter(key => !usedMajorFacCards.has(key))
         .map(key => {
           const { name, name_kr, image } = majorFacCardMap[key];
           return { name, name_kr, image, value: majorFacCards[key] };
-        })
+        });
     });
     const notUsedMajorFacCardData = {
       imgSrc: require("@/assets/images/CardBack/MajorFacCardBack.png"),
@@ -393,18 +398,15 @@ export default {
     };
     const startRound = () => {
       socket.emit("startRound", gameStatus.value[0]);
-    }
+    };
     const skipGame = (round) => {
       const skipGameData = {
         roomId: roomId,
         skipRound: round,
-        userId: [
-          { userId: host.value },
-          { userId: guest.value }
-        ],
-      }
+        userId: [{ userId: host.value }, { userId: guest.value }],
+      };
       socket.emit("skipGame", skipGameData);
-    }
+    };
 
     const myFarm = ref(farmRef);
     const oppoFarm = ref(farmRef);
@@ -423,7 +425,6 @@ export default {
 
     // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
 
-
     // RoundModal
     const showRoundModal = ref(false);
     const showRound = () => {
@@ -432,6 +433,7 @@ export default {
         showRoundModal.value = false;
       }, 2000);
     };
+
 
     onMounted(() => {
       showRound();
