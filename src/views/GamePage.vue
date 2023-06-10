@@ -309,8 +309,6 @@ export default {
       },
     ];
 
-    console.log("나", user);
-
     // opponent(상대방) 정보
     const opponent = computed(() => playersInRoom.value.find(player => player !== user.value));
     const oppoGameStatus = computed(() => getUserStatus(gameStatus, opponent.value));
@@ -341,8 +339,6 @@ export default {
         cardType: "상대가 사용한 주요 설비",
       },
     ];
-
-    console.log("상대방", opponent);
 
     const host = ref(computed(() => store.state.host));
     // host가 user인 경우 guest는 opponent
