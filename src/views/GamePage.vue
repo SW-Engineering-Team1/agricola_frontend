@@ -466,13 +466,20 @@ export default {
 
       socket.on("useActionSpace",(data) => {
         for(let player of gameStatus.value){
-          if(player.UserId == data.UserId){
-            if(data.UserId === host.value){
-              gameStatus.value[0] = data;
-              console.log(user.value);
-          } else{
-              gameStatus.value[1] = data;
-              console.log(user.value);
+          if(player.UserId === data.UserId || player.UserId === data.updateResult?.UserId){
+            if(data.UserId === host.value || data.updateResult?.UserId === host.value){
+              if(data.UserId === host.value){
+                gameStatus.value[0] = data;
+                console.log(gameStatus.value[0]);
+              }else{
+                gameStatus.value[0] = data.updateResult;
+              }
+            }else{
+              if(data.UserId === guest.value){
+                gameStatus.value[1] = data;
+              }else{
+                gameStatus.value[1] = data.updateResult;
+              }
             }
           }
         }
