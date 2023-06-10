@@ -44,10 +44,10 @@
           <div class="flex justify-center">
             <div class="bg-green-700 grid grid-cols-5 gap-2 p-2 rotate-180">
               <img
-                v-for="farm in oppoFarm"
-                :key="farm.id"
-                :src="farm.imgSrc"
-                alt="oppoFarm"
+                v-for="farmBoard in oppoFarmBoard"
+                :key="farmBoard.id"
+                :src="farmBoard.imgSrc"
+                alt="oppoFarmBoard"
                 class="w-16 h-16"
               />
             </div>
@@ -123,11 +123,11 @@
           <div class="flex justify-center">
             <div class="bg-green-700 grid grid-cols-5 gap-2 p-2">
               <button
-                v-for="farm in myFarm"
-                :key="farm.id"
-                @click="farm.clickHandler"
+                v-for="farmBoard in myFarmBoard"
+                :key="farmBoard.id"
+                @click="farmBoard.clickHandler"
               >
-                <img :src="farm.imgSrc" alt="farm" class="w-16 h-16" />
+                <img :src="farmBoard.imgSrc" alt="farmBoard" class="w-16 h-16" />
               </button>
             </div>
           </div>
@@ -183,7 +183,7 @@ import Fishing from "@/components/BasicActions/Fishing.vue";
 import {computed, onMounted, ref} from "vue";
 import { io } from "socket.io-client";
 import {useStore} from 'vuex';
-import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmRef } from '@/constants';
+import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmBoardRef } from '@/constants';
 import CardModal from "@/components/CardModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
 import RoundModal from "@/components/RoundModal.vue";
@@ -408,22 +408,22 @@ export default {
       socket.emit("skipGame", skipGameData);
     };
 
-    const myFarm = ref(farmRef);
-    const oppoFarm = ref(farmRef);
-    // myFarm을 위한 함수들을 동적으로 생성
-    const myFarmFunctions = {};
+    const myFarmBoard = ref(farmBoardRef);
+    const oppoFarmBoard = ref(farmBoardRef);
+    // myFarmBoard을 위한 함수들을 동적으로 생성
+    const myFarmBoardFunctions = {};
     for (let i = 1; i <= 15; i++) {
-      const myFarmName = `openMyFarm${i}`;
-      myFarmFunctions[myFarmName] = () => {
-        console.log(myFarmName);
+      const myFarmBoardName = `openMyFarmBoard${i}`;
+      myFarmBoardFunctions[myFarmBoardName] = () => {
+        console.log(myFarmBoardName);
       };
-      // 해당 myFarm의 clickHandler를 등록
-      for (const farm of myFarm.value) {
-        farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
+      // 해당 myFarmBoard의 clickHandler를 등록
+      for (const farmBoard of myFarmBoard.value) {
+        farmBoard.clickHandler = myFarmBoardFunctions[`openMyFarmBoard${farmBoard.id}`];
       }
     }
 
-    // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
+    // TODO: myFarmBoard과 oppoFarmBoard에 Room이 있다면, Room에 가족 구성원 올려놓기
 
     // RoundModal
     const showRoundModal = ref(false);
@@ -466,8 +466,8 @@ export default {
       oppoGameResources,
       oppoCardData,
       notUsedMajorFacCardData,
-      myFarm,
-      oppoFarm,
+      myFarmBoard,
+      oppoFarmBoard,
       resetCurrentRound,
       startRound,
       skipGame,
