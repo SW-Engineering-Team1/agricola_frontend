@@ -1,24 +1,14 @@
 <template>
-  <div
-    class="flex justify-center items-center row-span-2 p-0 bg-transparent relative cursor-pointer"
-    :class="{ 'flip': isFlipped }"
-  >
-    <img
-      class="card-face back absolute w-full bg-cover bg-center"
-      :src="backImage"
-      alt="card-back"
-    />
-    <img
-      class="card-face front absolute w-full bg-cover bg-center"
-      :src="frontImage"
-      alt="card-front"
-    />
+  <div @click="clickCard" class="flex justify-center items-center row-span-2 p-0 bg-transparent relative cursor-pointer" :class="{ 'flip': isFlipped }">
+    <img class="card-face back absolute w-full bg-cover bg-center" :src="backImage" alt="card-back"/>
+    <img class="card-face front absolute w-full bg-cover bg-center" :src="frontImage" alt="card-front"/>
   </div>
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import {useStore} from 'vuex'
+import { io } from "socket.io-client";
 
 export default {
   props: {
@@ -29,6 +19,11 @@ export default {
   setup(props) {
     const isFlipped = ref(false);
     const store = useStore();
+    const socket = io("localhost:3000");
+
+    const user = ref(computed(() => store.state.user));
+    const gameStatus = ref(computed(() => store.state.gameStatus));
+    const roomId = gameStatus.value[0].roomId;
 
     // currentRound 값까지 카드를 모두 뒤집는다.
     if (store.state.currentRound >= props.round) {
@@ -42,8 +37,25 @@ export default {
         isFlipped.value = true;
       }
     });
+    // p2 1턴 채소종자 클릭 이벤트
+    const clickCard = () => {
+      if(props.round === 8){
+        socket.emit("useActionSpace",{
+          "actionName": "else",
+          "userId": user.value,
+          "roomId": roomId,
+          "goods" : [
+          { 
+            "name": "vegeOnStorage",
+            "num": 1,
+            "isAdd": true
+          }
+          ] 
+        });
+      }
+    }
 
-    return { isFlipped };
+    return { isFlipped,clickCard };
   }
 };
 </script>
