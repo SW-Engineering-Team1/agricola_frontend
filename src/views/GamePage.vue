@@ -1,250 +1,259 @@
 <template>
   <div>
-    <!--  주요 설비 모달  -->
-    <MajorFacModal v-if="isMajorFacModalOpen" @close-modal="closeMajorFacModal"/>
+    <RoundModal v-if="showRoundModal" :round="currentRound" />
     <button
-      class="rounded major-fac" @click="openMajorFacModal" :class="{ 'hidden': isMajorFacModalOpen }" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/MajorFacCardBack/MajorFacCardBack.png" width="80" />
+      class="flex justify-center fixed w-36 right-5 top-5 bg-red-400 text-white font-bold p-3 rounded"
+      @click="skipGame(8)"
+    >
+      8라운드 스킵
     </button>
-    <!--  플레이어 1 보조 설비 카드  -->
-    <P1AssiFacModal v-if="isP1AssiFacModalOpen" @close-modal="closeP1AssiFacModal" />
-    <button class="rounded p1-assi-fac" @click="openP1AssiFacModal" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/AssiFacCardBack/P1AssiFacCardBack.png" width="80" />
+    <button
+      class="flex justify-center fixed w-36 right-5 top-20 bg-red-400 text-white font-bold p-3 rounded"
+      @click="skipGame(14)"
+    >
+      14라운드 스킵
     </button>
-    <!--  플레이어 1 직업 카드  -->
-    <P1JobCardModal v-if="isP1JobCardModalOpen" @close-modal="closeP1JobCardModal" />
-    <button class="rounded p1-job-card" @click="openP1JobCardModal" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/JobCardBack/P1JobCardBack.png" width="80" />
+    <button
+      class="flex justify-center fixed w-36 right-5 top-36 bg-blue-400 text-white font-bold p-3 rounded"
+      @click="resetCurrentRound"
+    >
+      라운드 초기화
     </button>
-    <!--  플레이어 2 보조 설비 카드  -->
-    <P2AssiFacModal v-if="isP2AssiFacModalOpen" @close-modal="closeP2AssiFacModal" />
-    <button class="rounded p2-assi-fac" @click="openP2AssiFacModal" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/AssiFacCardBack/P2AssiFacCardBack.png" width="80" />
-    </button>
-    <!--  플레이어 2 직업 카드  -->
-    <P2JobCardModal v-if="isP2JobCardModalOpen" @close-modal="closeP2JobCardModal" />
-    <button class="rounded p2-job-card" @click="openP2JobCardModal" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/JobCardBack/P2JobCardBack.png" width="80" />
-    </button>
-
-    <!--  MainGameBoard Action  -->
-    <FarmExpand></FarmExpand>
-    <MeetingPlace></MeetingPlace>
-    <GrainSeed></GrainSeed>
-    <Farmland></Farmland>
-    <Instruction></Instruction>
-    <DayLabor></DayLabor>
-    <Forest></Forest>
-    <SoilMining></SoilMining>
-    <ReedField></ReedField>
-    <Fishing></Fishing>
-
-    <button class="rounded Round1" @click="openRound1" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/1Cycle1.png" width="112" />
-    </button>
-    <button class="rounded Round2" @click="openRound2" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/1Cycle2.png" width="112" />
-    </button>
-    <button class="rounded Round3" @click="openRound3" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/1Cycle3.png" width="112" />
-    </button>
-    <button class="rounded Round4" @click="openRound4" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/1Cycle4.png" width="112" />
-    </button>
-    <button class="rounded Round5" @click="openRound5" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/2Cycle1.png" width="112" />
-    </button>
-    <button class="rounded Round6" @click="openRound6" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/2Cycle2.png" width="112" />
-    </button>
-    <button class="rounded Round7" @click="openRound7" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/2Cycle3.png" width="112" />
-    </button>
-    <button class="rounded Round8" @click="openRound8" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/3Cycle1.png" width="112" />
-    </button>
-    <button class="rounded Round9" @click="openRound9" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/3Cycle2.png" width="112" />
-    </button>
-    <button class="rounded Round10" @click="openRound10" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/4Cycle1.png" width="112" />
-    </button>
-    <button class="rounded Round11" @click="openRound11" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/4Cycle2.png" width="112" />
-    </button>
-    <button class="rounded Round12" @click="openRound12" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/5Cycle1.png" width="112" />
-    </button>
-    <button class="rounded Round13" @click="openRound13" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/5Cycle2.png" width="112" />
-    </button>
-    <button class="rounded Round14" @click="openRound14" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/RoundCardBack/6Cycle.png" width="112" />
+    <button
+      class="flex justify-center fixed w-36 right-5 top-52 bg-yellow-400 text-white font-bold p-3 rounded"
+      @click="startRound"
+    >
+      라운드 시작
     </button>
 
-    <!-- P1 FarmBoard -->
-    <button class="P1Farm1" @click="openP1Farm1" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm1.jpg" width="60" />
-    </button>
-    <button class="P1Farm2" @click="openP1Farm2" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm2.jpg" width="60" />
-    </button>
-    <button class="P1Farm3" @click="openP1Farm3" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm3.jpg" width="60" />
-    </button>
-    <button class="P1Farm4" @click="openP1Farm4" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm4.jpg" width="60" />
-    </button>
-    <button class="P1Farm5" @click="openP1Farm5" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm5.jpg" width="60" />
-    </button>
-    <button class="P1Farm6" @click="openP1Farm6" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm6.jpg" width="60" />
-    </button>
-    <button class="P1Farm7" @click="openP1Farm7" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm7.jpg" width="60" />
-    </button>
-    <button class="P1Farm8" @click="openP1Farm8" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm8.jpg" width="60" />
-    </button>
-    <button class="P1Farm9" @click="openP1Farm9" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm9.jpg" width="60" />
-    </button>
-    <button class="P1Farm10" @click="openP1Farm10" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm10.jpg" width="60" />
-    </button>
-    <button class="P1Farm11" @click="openP1Farm11" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm11.jpg" width="60" />
-    </button>
-    <button class="P1Farm12" @click="openP1Farm12" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm12.jpg" width="60" />
-    </button>
-    <button class="P1Farm13" @click="openP1Farm13" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1Farm13.jpg" width="60" />
-    </button>
-    <button class="P1WoodRoom1" @click="openP1WoodRoom1" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1WoodRoom1.png" width="60" />
-    </button>
-    <button class="P1WoodRoom2" @click="openP1WoodRoom2" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P1FarmBoard/P1WoodRoom2.png" width="60" />
-    </button>
+    <div
+      class="flex justify-between w-full h-screen overflow-scroll bg-[#B3B85E]"
+    >
+      <!--  상대 자원 표시  -->
+      <div>
+        <div class="grid grid-rows-12 fixed left-0 top-1/4 bg-[#A2CF5F]">
+          <div class="flex">
+            <div class="p-3 border border-black w-full font-bold">
+              {{ opponent }}
+            </div>
+          </div>
+          <div
+            class="flex"
+            v-for="(item, index) in oppoGameResources"
+            :key="index"
+          >
+            <div class="p-3 border border-black w-1/2 flex justify-center">
+              <img :src="item.image" :alt="item.name" class="w-10 h-10" />
+            </div>
+            <div class="p-3 border border-black w-1/2 flex justify-center">
+              <p class="flex items-center text-2xl">{{ item.value }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <!-- P2 FarmBoard -->
-    <button class="P2Farm1" @click="openP1Farm1" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm1.jpg" width="60" />
-    </button>
-    <button class="P2Farm2" @click="openP1Farm2" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm2.jpg" width="60" />
-    </button>
-    <button class="P2Farm3" @click="openP1Farm3" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm3.jpg" width="60" />
-    </button>
-    <button class="P2Farm4" @click="openP1Farm4" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm4.jpg" width="60" />
-    </button>
-    <button class="P2Farm5" @click="openP1Farm5" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm5.jpg" width="60" />
-    </button>
-    <button class="P2Farm6" @click="openP1Farm6" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm6.jpg" width="60" />
-    </button>
-    <button class="P2Farm7" @click="openP1Farm7" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm7.jpg" width="60" />
-    </button>
-    <button class="P2Farm8" @click="openP1Farm8" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm8.jpg" width="60" />
-    </button>
-    <button class="P2Farm9" @click="openP1Farm9" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm9.jpg" width="60" />
-    </button>
-    <button class="P2Farm10" @click="openP1Farm10" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm10.jpg" width="60" />
-    </button>
-    <button class="P2Farm11" @click="openP1Farm11" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm11.jpg" width="60" />
-    </button>
-    <button class="P2Farm12" @click="openP1Farm12" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm12.jpg" width="60" />
-    </button>
-    <button class="P2Farm13" @click="openP1Farm13" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2Farm13.jpg" width="60" />
-    </button>
-    <button class="P2WoodRoom1" @click="openP1WoodRoom1" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2WoodRoom1.png" width="60" />
-    </button>
-    <button class="P2WoodRoom2" @click="openP1WoodRoom2" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/P2FarmBoard/P2WoodRoom2.png" width="60" />
-    </button>
-  
-  <!--  P1 Resource Table  -->
-  <div class="p1-table-container">
-    <table class="custom-table">
-      <tr><td class="custom-cell" colspan="2">Player1</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/1_Wood.png" width="50" /></td>
-        <td class="custom-cell">나무</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/2_Soil.png" width="50" /></td>
-        <td class="custom-cell">흙</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/3_Stone.png" width="50" /></td>
-        <td class="custom-cell">돌</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/4_Reed.png" width="50" /></td>
-        <td class="custom-cell">갈대</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/5_Grain.png" width="50" /></td>
-        <td class="custom-cell">곡식</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/6_Vegetable.png" width="50" /></td>
-        <td class="custom-cell">채소</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/7_Food.png" width="50" /></td>
-        <td class="custom-cell">음식</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/8_Sheep.png" width="50" /></td>
-        <td class="custom-cell">양</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/9_Pig.png" width="50" /></td>
-        <td class="custom-cell">돼지</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/10_Cow.png" width="50" /></td>
-        <td class="custom-cell">소</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Etc/BeggingToken.png" width="50" /></td>
-        <td class="custom-cell">구걸토큰</td></tr>
-    </table>
-  </div>
+      <!--  메인 게임 보드  -->
+      <div class="max-w-5xl mx-auto grid content-between">
+        <!--  상대  -->
+        <div class="flex gap-x-10">
+          <!--  상대 농장판  -->
+          <div class="flex justify-center">
+            <div class="bg-green-700 grid grid-cols-5 gap-2 p-2 rotate-180">
+              <img
+                v-for="farm in oppoFarm"
+                :key="farm.id"
+                :src="farm.imgSrc"
+                alt="oppoFarm"
+                class="w-16 h-16"
+              />
+            </div>
+          </div>
+          <!--  상대가 사용한 카드  -->
+          <div v-for="(card, index) in oppoCardData" :key="index">
+            <img
+              class="w-auto h-56 cursor-pointer rotate-180 transform transition duration-500 ease-in-out hover:scale-110"
+              :src="card.imgSrc"
+              @click="card.modal.toggleModal"
+              :alt="card.alt"
+            />
+            <CardModal
+              :show="card.modal.showModal.value"
+              :cards="card.cards.value"
+              @close="card.modal.toggleModal"
+              :cardType="card.cardType"
+            />
+          </div>
+        </div>
 
-  <!--  P2 Resource Table  -->
-  <div class="p2-table-container">
-    <table class="custom-table">
-      <tr><td class="custom-cell" colspan="2">Player2</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/1_Wood.png" width="50" /></td>
-        <td class="custom-cell">나무</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/2_Soil.png" width="50" /></td>
-        <td class="custom-cell">흙</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/3_Stone.png" width="50" /></td>
-        <td class="custom-cell">돌</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/4_Reed.png" width="50" /></td>
-        <td class="custom-cell">갈대</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/5_Grain.png" width="50" /></td>
-        <td class="custom-cell">곡식</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/6_Vegetable.png" width="50" /></td>
-        <td class="custom-cell">채소</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/7_Food.png" width="50" /></td>
-        <td class="custom-cell">음식</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/8_Sheep.png" width="50" /></td>
-        <td class="custom-cell">양</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/9_Pig.png" width="50" /></td>
-        <td class="custom-cell">돼지</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Resources/10_Cow.png" width="50" /></td>
-        <td class="custom-cell">소</td></tr>
-      <tr><td class="custom-cell"><img src="../assets/images/Etc/BeggingToken.png" width="50" /></td>
-        <td class="custom-cell">구걸토큰</td></tr>
-    </table>
-  </div>
+        <!--  게임 진행판  -->
+        <div
+          class="bg-gradient-to-r from-[#B2C95E] via-[#95AD4B] to-[#7C9432] p-2"
+        >
+          <div class="grid grid-cols-8 gap-2 p-2">
+            <FarmExpand class="flex justify-center items-center" />
+            <CardFlip
+              :round="1"
+              :frontImage="rounds[0].imgSrc"
+              :backImage="rounds[0].backImgSrc"
+            />
+            <CardFlip
+              :round="2"
+              :frontImage="rounds[1].imgSrc"
+              :backImage="rounds[1].backImgSrc"
+            />
+            <CardFlip
+              :round="5"
+              :frontImage="rounds[4].imgSrc"
+              :backImage="rounds[4].backImgSrc"
+            />
+            <CardFlip
+              :round="8"
+              :frontImage="rounds[7].imgSrc"
+              :backImage="rounds[7].backImgSrc"
+            />
+            <CardFlip
+              :round="10"
+              :frontImage="rounds[9].imgSrc"
+              :backImage="rounds[9].backImgSrc"
+            />
+            <CardFlip
+              :round="12"
+              :frontImage="rounds[11].imgSrc"
+              :backImage="rounds[11].backImgSrc"
+            />
+            <CardFlip
+              :round="14"
+              :frontImage="rounds[13].imgSrc"
+              :backImage="rounds[13].backImgSrc"
+            />
+            <MeetingPlace class="flex justify-center items-center" />
+            <GrainSeed class="flex justify-center items-center" />
+            <Forest class="flex justify-center items-center" />
+            <CardFlip
+              :round="3"
+              :frontImage="rounds[2].imgSrc"
+              :backImage="rounds[2].backImgSrc"
+            />
+            <CardFlip
+              :round="6"
+              :frontImage="rounds[5].imgSrc"
+              :backImage="rounds[5].backImgSrc"
+            />
+            <CardFlip
+              :round="9"
+              :frontImage="rounds[8].imgSrc"
+              :backImage="rounds[8].backImgSrc"
+            />
+            <CardFlip
+              :round="11"
+              :frontImage="rounds[10].imgSrc"
+              :backImage="rounds[10].backImgSrc"
+            />
+            <CardFlip
+              :round="13"
+              :frontImage="rounds[12].imgSrc"
+              :backImage="rounds[12].backImgSrc"
+            />
+            <div class="row-span-2" />
+            <Farmland class="flex justify-center items-center" />
+            <SoilMining class="flex justify-center items-center" />
+            <Instruction class="flex justify-center items-center" />
+            <ReedField class="flex justify-center items-center" />
+            <CardFlip
+              :round="4"
+              :frontImage="rounds[3].imgSrc"
+              :backImage="rounds[3].backImgSrc"
+            />
+            <CardFlip
+              :round="7"
+              :frontImage="rounds[6].imgSrc"
+              :backImage="rounds[6].backImgSrc"
+            />
+            <div class="row-span-2" />
+            <div class="row-span-2" />
+            <div class="row-span-2" />
+            <div class="flex justify-center items-center row-span-2">
+              <img
+                class="w-auto h-56 cursor-pointer transform transition duration-500 ease-in-out hover:scale-110"
+                :src="notUsedMajorFacCardData.imgSrc"
+                @click="notUsedMajorFacCardData.modal.toggleModal"
+                :alt="notUsedMajorFacCardData.alt"
+              />
+              <CardModal
+                :show="notUsedMajorFacCardData.modal.showModal.value"
+                :cards="notUsedMajorFacCardData.cards.value"
+                @close="notUsedMajorFacCardData.modal.toggleModal"
+                :cardType="notUsedMajorFacCardData.cardType"
+              />
+            </div>
+            <DayLabor class="flex justify-center items-center" />
+            <Fishing class="flex justify-center items-center" />
+          </div>
+        </div>
+
+        <!--  나  -->
+        <div class="flex flex-row-reverse gap-x-10">
+          <!--  내 농장판  -->
+          <div class="flex justify-center">
+            <div class="bg-green-700 grid grid-cols-5 gap-2 p-2">
+              <button
+                v-for="farm in myFarm"
+                :key="farm.id"
+                @click="farm.clickHandler"
+              >
+                <img :src="farm.imgSrc" alt="farm" class="w-16 h-16" />
+              </button>
+            </div>
+          </div>
+          <!--  내 카드  -->
+          <div
+            v-for="(card, index) in myCardData"
+            :key="index"
+            class="relative group"
+          >
+            <img
+              class="w-auto h-56 cursor-pointer transform transition duration-500 ease-in-out hover:scale-110"
+              :src="card.imgSrc"
+              @click="card.modal.toggleModal"
+              :alt="card.alt"
+            />
+            <CardModal
+              :show="card.modal.showModal.value"
+              :cards="card.cards.value"
+              @close="card.modal.toggleModal"
+              :cardType="card.cardType"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!--  내 자원 표시  -->
+      <div>
+        <div class="grid grid-rows-12 fixed right-0 top-1/4 bg-[#A2CF5F]">
+          <div class="flex">
+            <div class="p-3 border border-black w-full font-bold">
+              {{ user }} (나)
+            </div>
+          </div>
+          <div
+            class="flex"
+            v-for="(item, index) in myGameResources"
+            :key="index"
+          >
+            <div class="p-3 border border-black w-1/2 flex justify-center">
+              <p class="flex items-center text-2xl">{{ item.value }}</p>
+            </div>
+            <div class="p-3 border border-black w-1/2 flex justify-center">
+              <img :src="item.image" :alt="item.name" class="w-10 h-10" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
-import { io } from "socket.io-client";
-
-import MajorFacModal from "@/components/MajorFacModal.vue";
-import P1AssiFacModal from "@/components/P1AssiFacModal.vue";
-import P1JobCardModal from "@/components/P1JobCardModal.vue";
-import P2AssiFacModal from "@/components/P2AssiFacModal.vue";
-import P2JobCardModal from "@/components/P2JobCardModal.vue";
 import FarmExpand from "@/components/FarmExpand.vue";
 import MeetingPlace from "@/components/MeetingPlace.vue";
 import GrainSeed from "@/components/GrainSeed.vue";
@@ -256,13 +265,24 @@ import SoilMining from "@/components/SoilMining.vue";
 import ReedField from "@/components/ReedField.vue";
 import Fishing from "@/components/Fishing.vue";
 
+import { computed, onMounted, ref } from "vue";
+import { io } from "socket.io-client";
+import { useStore } from "vuex";
+import {
+  resourceMap,
+  assiFacCardMap,
+  majorFacCardMap,
+  jobCardMap,
+  roundsRef,
+  actionsRef,
+  farmRef,
+} from "@/constants";
+import CardModal from "@/components/CardModal.vue";
+import CardFlip from "@/components/CardFlip.vue";
+import RoundModal from "@/components/RoundModal.vue";
+
 export default {
   components: {
-    MajorFacModal,
-    P1AssiFacModal,
-    P1JobCardModal,
-    P2AssiFacModal,
-    P2JobCardModal,
     FarmExpand,
     MeetingPlace,
     GrainSeed,
@@ -272,130 +292,318 @@ export default {
     Forest,
     SoilMining,
     ReedField,
-    Fishing
+    Fishing,
+    CardModal,
+    CardFlip,
+    RoundModal,
   },
 
   setup() {
     const socket = io("localhost:3000");
+    const store = useStore();
+    const playersInRoom = ref(computed(() => store.state.playersInRoom));
+    const gameStatus = ref(computed(() => store.state.gameStatus));
+    const roomId = gameStatus.value[0].roomId;
 
-    const isMajorFacModalOpen = ref(false);
-    const isP1AssiFacModalOpen = ref(false);
-    const isP1JobCardModalOpen = ref(false);
-    const isP2AssiFacModalOpen = ref(false);
-    const isP2JobCardModalOpen = ref(false);
+    console.log(gameStatus);
 
-    const openMajorFacModal = () => isMajorFacModalOpen.value = true;
-    const closeMajorFacModal = () => isMajorFacModalOpen.value = false;
-    const openP1AssiFacModal = () => isP1AssiFacModalOpen.value = true;
-    const closeP1AssiFacModal = () => isP1AssiFacModalOpen.value = false;
-    const openP1JobCardModal = () => isP1JobCardModalOpen.value = true;
-    const closeP1JobCardModal = () => isP1JobCardModalOpen.value = false;
-    const openP2AssiFacModal = () => isP2AssiFacModalOpen.value = true;
-    const closeP2AssiFacModal = () => isP2AssiFacModalOpen.value = false;
-    const openP2JobCardModal = () => isP2JobCardModalOpen.value = true;
-    const closeP2JobCardModal = () => isP2JobCardModalOpen.value = false;
+    // 모달 창 관련 함수
+    const createModalState = () => {
+      const showModal = ref(false);
+      const toggleModal = () => {
+        showModal.value = !showModal.value;
+      };
+
+      return { showModal, toggleModal };
+    };
+
+    const notUsedAssiFacCardModal = createModalState();
+    const notUsedJobCardModal = createModalState();
+    const myUsedJobCardModal = createModalState();
+    const myUsedAssiFacCardModal = createModalState();
+    const myUsedMajorFacCardModal = createModalState();
+    const oppoUsedAssiFacCardModal = createModalState();
+    const oppoUsedJobCardModal = createModalState();
+    const oppoUsedMajorFacCardModal = createModalState();
+    const notUsedMajorFacCardModal = createModalState();
+
+    // helper functions
+    const getUserStatus = (gameStatus, userId) => {
+      return gameStatus.value.find((status) => status.UserId === userId);
+    };
+
+    const getGameResources = (resourceMap, gameStatus) => {
+      return Object.entries(resourceMap).map(([key, { name, image }]) => ({
+        name,
+        image,
+        value: gameStatus.value[key],
+      }));
+    };
+
+    const getCards = (cardMap, status, Cards) => {
+      return computed(() => {
+        return Object.entries(cardMap)
+          .filter(([key]) => status.value[Cards].includes(key))
+          .map(([key, { name, name_kr, image }]) => ({
+            name,
+            name_kr,
+            image,
+            value: status.value[key],
+          }));
+      });
+    };
+
+    // user 정보
+    const user = computed(() => store.state.user);
+    const myGameStatus = computed(() => getUserStatus(gameStatus, user.value));
+    const myGameResources = computed(() =>
+      getGameResources(resourceMap, myGameStatus)
+    );
+    const myUsedAssiFacCard = getCards(
+      assiFacCardMap,
+      myGameStatus,
+      "usedSubFacilityCard"
+    );
+    const myUsedJobCard = getCards(jobCardMap, myGameStatus, "usedJobCard");
+    const myUsedMajorFacCard = getCards(
+      majorFacCardMap,
+      myGameStatus,
+      "usedMainFacilityCard"
+    );
+    const notUsedAssiFacCard = getCards(
+      assiFacCardMap,
+      myGameStatus,
+      "remainedSubFacilityCard"
+    );
+    const notUsedJobCard = getCards(
+      jobCardMap,
+      myGameStatus,
+      "remainedJobCard"
+    );
+    const myCardData = [
+      {
+        imgSrc: require("@/assets/images/CardBack/JobCardBack.png"),
+        alt: "myUsedJobCard",
+        modal: myUsedJobCardModal,
+        cards: myUsedJobCard,
+        cardType: "사용한 직업",
+      },
+      {
+        imgSrc: require("@/assets/images/CardBack/AssiFacCardBack.png"),
+        alt: "myUsedAssiFacCard",
+        modal: myUsedAssiFacCardModal,
+        cards: myUsedAssiFacCard,
+        cardType: "사용한 보조 설비",
+      },
+      {
+        imgSrc: require("@/assets/images/CardBack/MajorFacCardBack.png"),
+        alt: "myUsedMajorFacCard",
+        modal: myUsedMajorFacCardModal,
+        cards: myUsedMajorFacCard,
+        cardType: "사용한 주요 설비",
+      },
+      {
+        imgSrc: require("@/assets/images/CardBack/NotUsedAssiFacCardBack.png"),
+        alt: "notUsedAssiFacCard",
+        modal: notUsedAssiFacCardModal,
+        cards: notUsedAssiFacCard,
+        cardType: "사용하지 않은 보조 설비",
+      },
+      {
+        imgSrc: require("@/assets/images/CardBack/NotUsedJobCardBack.png"),
+        alt: "notUsedJobCard",
+        modal: notUsedJobCardModal,
+        cards: notUsedJobCard,
+        cardType: "사용하지 않은 직업",
+      },
+    ];
+
+    console.log("나", user);
+
+    // opponent(상대방) 정보
+    const opponent = computed(() =>
+      playersInRoom.value.find((player) => player !== user.value)
+    );
+    const oppoGameStatus = computed(() =>
+      getUserStatus(gameStatus, opponent.value)
+    );
+    const oppoGameResources = computed(() =>
+      getGameResources(resourceMap, oppoGameStatus)
+    );
+    const oppoUsedAssiFacCard = getCards(
+      assiFacCardMap,
+      oppoGameStatus,
+      "usedSubFacilityCard"
+    );
+    const oppoUsedJobCard = getCards(jobCardMap, oppoGameStatus, "usedJobCard");
+    const oppoUsedMajorFacCard = getCards(
+      majorFacCardMap,
+      oppoGameStatus,
+      "usedMainFacilityCard"
+    );
+    const oppoCardData = [
+      {
+        imgSrc: require("@/assets/images/CardBack/JobCardBack.png"),
+        alt: "oppoUsedJobCard",
+        modal: oppoUsedJobCardModal,
+        cards: oppoUsedJobCard,
+        cardType: "상대가 사용한 직업",
+      },
+      {
+        imgSrc: require("@/assets/images/CardBack/AssiFacCardBack.png"),
+        alt: "oppoUsedAssiFacCard",
+        modal: oppoUsedAssiFacCardModal,
+        cards: oppoUsedAssiFacCard,
+        cardType: "상대가 사용한 보조 설비",
+      },
+      {
+        imgSrc: require("@/assets/images/CardBack/MajorFacCardBack.png"),
+        alt: "oppoUsedMajorFacCard",
+        modal: oppoUsedMajorFacCardModal,
+        cards: oppoUsedMajorFacCard,
+        cardType: "상대가 사용한 주요 설비",
+      },
+    ];
+
+    console.log("상대방", opponent);
+
+    const host = ref(computed(() => store.state.host));
+    // host가 user인 경우 guest는 opponent
+    const guest = computed(() => {
+      if (host.value === user.value) {
+        return opponent.value;
+      }
+      return user.value;
+    });
+
+    // 주요 설비 정보
+    store.state.majorFac = Object.keys(majorFacCardMap);
+    const majorFacCards = ref(computed(() => store.state.majorFac));
+    
+    // 사용되지 않은 주요 설비 카드
+    const notUsedMajorFacCard = computed(() => {
+      const usedMajorFacCards = new Set([
+        ...myUsedMajorFacCard.value,
+        ...oppoUsedMajorFacCard.value,
+      ]);
+      return majorFacCards.value
+        .filter((key) => !usedMajorFacCards.has(key))
+        .map((key) => {
+          const { name, name_kr, image } = majorFacCardMap[key];
+          return { name, name_kr, image, value: majorFacCards[key] };
+        });
+    });
+    const notUsedMajorFacCardData = {
+      imgSrc: require("@/assets/images/CardBack/MajorFacCardBack.png"),
+      alt: "notUsedMajorFacCard",
+      modal: notUsedMajorFacCardModal,
+      cards: notUsedMajorFacCard,
+      cardType: "사용되지 않는 주요 설비",
+    };
+
+    // 행동 칸 정보
+    const actions = ref(actionsRef);
+    // action을 위한 함수들을 동적으로 생성
+    const actionFunctions = {};
+    for (let i = 1; i <= 10; i++) {
+      const actionName = `openAction${i}`;
+      actionFunctions[actionName] = () => {
+        console.log(actionName);
+      };
+
+      // 해당 action의 clickHandler를 등록
+      for (const action of actions.value) {
+        action.clickHandler = actionFunctions[`openAction${action.id}`];
+      }
+    }
+
+    const rounds = ref(roundsRef);
+    const currentRound = ref(computed(() => store.state.currentRound));
+
+    const resetCurrentRound = () => {
+      store.commit("setCurrentRound", 1);
+    };
+    const startRound = () => {
+      socket.emit("startRound", gameStatus.value[0]);
+    };
+    const skipGame = (round) => {
+      const skipGameData = {
+        roomId: roomId,
+        skipRound: round,
+        userId: [{ userId: host.value }, { userId: guest.value }],
+      };
+      socket.emit("skipGame", skipGameData);
+    };
+
+    const myFarm = ref(farmRef);
+    const oppoFarm = ref(farmRef);
+    // myFarm을 위한 함수들을 동적으로 생성
+    const myFarmFunctions = {};
+    for (let i = 1; i <= 15; i++) {
+      const myFarmName = `openMyFarm${i}`;
+      myFarmFunctions[myFarmName] = () => {
+        console.log(myFarmName);
+      };
+      // 해당 myFarm의 clickHandler를 등록
+      for (const farm of myFarm.value) {
+        farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
+      }
+    }
+
+    // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
+
+    // RoundModal
+    const showRoundModal = ref(false);
+    const showRound = () => {
+      showRoundModal.value = true;
+      setTimeout(() => {
+        showRoundModal.value = false;
+      }, 2000);
+    };
+
 
     onMounted(() => {
-      socket.on("startGame", (gameStatus) => {
-        console.log(gameStatus);
+      showRound();
+
+      socket.once("startRound", () => {
+        store.commit("setCurrentRound", currentRound.value + 1);
+        showRound();
+      });
+
+      socket.on("skipGame", (data) => {
+        store.commit("setCurrentRound", data.skipRound);
+        const updatedStatus = data.updatedPlayer.map(
+          (player) => player.playerDetail
+        );
+        store.commit("setGameStatus", updatedStatus);
+        store.commit("setMajorFac",data.updatedPlayer[0].remainedMainFacilityCard);
+        console.log(majorFacCards)
+        showRound();
       });
     });
+
     return {
-      isMajorFacModalOpen,
-      isP1AssiFacModalOpen,
-      isP1JobCardModalOpen,
-      isP2AssiFacModalOpen,
-      isP2JobCardModalOpen,
-      openMajorFacModal,
-      closeMajorFacModal,
-      openP1AssiFacModal,
-      closeP1AssiFacModal,
-      openP1JobCardModal,
-      closeP1JobCardModal,
-      openP2AssiFacModal,
-      closeP2AssiFacModal,
-      openP2JobCardModal,
-      closeP2JobCardModal,
+      actions,
+      ...actionFunctions,
+      rounds,
+      gameStatus,
+      user,
+      myGameStatus,
+      myGameResources,
+      myCardData,
+      opponent,
+      oppoGameStatus,
+      oppoGameResources,
+      oppoCardData,
+      notUsedMajorFacCardData,
+      myFarm,
+      oppoFarm,
+      resetCurrentRound,
+      startRound,
+      skipGame,
+      currentRound,
+      showRoundModal,
     };
   },
 };
 </script>
-
-<style>
-/* Card */
-.major-fac { position: absolute; top: 50vh; right: 25vw;}
-.p1-assi-fac { position: absolute; bottom: 3vh; left: 40vw; }
-.p1-job-card { position: absolute; bottom: 3vh; left: 45vw; }
-.p2-assi-fac { position: absolute; top: 3vh; right: 45vw; }
-.p2-job-card { position: absolute; top: 3vh; right: 50vw; }
-
-/* MainGameBoard */
-.Action1 { position: absolute; top: 26vh; right: 70vw; }
-.Action2 { position: absolute; top: 41vh; right: 70vw; }
-.Action3 { position: absolute; top: 49vh; right: 70vw; }
-.Action4 { position: absolute; top: 56vh; right: 70vw; }
-.Action5 { position: absolute; top: 64.5vh; right: 70vw; }
-.Action6 { position: absolute; top: 74vh; right: 70vw; }
-.Action7 { position: absolute; top: 46vh; right: 64vw; }
-.Action8 { position: absolute; top: 55vh; right: 64vw; }
-.Action9 { position: absolute; top: 64vh; right: 64vw; }
-.Action10 { position: absolute; top: 73vh; right: 64vw; }
-.Round1 { position: absolute; top: 26vh; right: 64vw; }
-.Round2 { position: absolute; top: 26vh; right: 58vw; }
-.Round3 { position: absolute; top: 44.5vh; right: 58vw; }
-.Round4 { position: absolute; top: 63vh; right: 58vw; }
-.Round5 { position: absolute; top: 26vh; right: 52vw; }
-.Round6 { position: absolute; top: 44.5vh; right: 52vw; }
-.Round7 { position: absolute; top: 63vh; right: 52vw; }
-.Round8 { position: absolute; top: 26vh; right: 46vw; }
-.Round9 { position: absolute; top: 44.5vh; right: 46vw; }
-.Round10 { position: absolute; top: 26vh; right: 40vw; }
-.Round11 { position: absolute; top: 44.5vh; right: 40vw; }
-.Round12 { position: absolute; top: 26vh; right: 34vw; }
-.Round13 { position: absolute; top: 44.5vh; right: 34vw; }
-.Round14 { position: absolute; top: 26vh; right: 28vw; }
-
-/* P1 FarmBoard */
-.P1Farm1 { position: absolute; bottom: 18vh; right: 46vw; }
-.P1Farm2 { position: absolute; bottom: 18vh; right: 42vw; }
-.P1Farm3 { position: absolute; bottom: 18vh; right: 38vw; }
-.P1Farm4 { position: absolute; bottom: 18vh; right: 34vw; }
-.P1Farm5 { position: absolute; bottom: 10vh; right: 46vw; }
-.P1Farm6 { position: absolute; bottom: 10vh; right: 42vw; }
-.P1Farm7 { position: absolute; bottom: 10vh; right: 38vw; }
-.P1Farm8 { position: absolute; bottom: 10vh; right: 34vw; }
-.P1Farm9 { position: absolute; bottom: 2vh; right: 46vw; }
-.P1Farm10 { position: absolute; bottom: 2vh; right: 42vw; }
-.P1Farm11 { position: absolute; bottom: 2vh; right: 38vw; }
-.P1Farm12 { position: absolute; bottom: 2vh; right: 34vw; }
-.P1Farm13 { position: absolute; bottom: 2vh; right: 30vw; }
-.P1WoodRoom1 { position: absolute; bottom: 18vh; right: 30vw; }
-.P1WoodRoom2 { position: absolute; bottom: 10vh; right: 30vw; }
-
-/* P2 FarmBoard */
-.P2Farm1 { position: absolute; top: 2vh; right: 72vw; }
-.P2Farm2 { position: absolute; top: 2vh; right: 68vw; }
-.P2Farm3 { position: absolute; top: 2vh; right: 64vw; }
-.P2Farm4 { position: absolute; top: 2vh; right: 60vw; }
-.P2Farm5 { position: absolute; top: 2vh; right: 56vw; }
-.P2Farm6 { position: absolute; top: 10vh; right: 68vw; }
-.P2Farm7 { position: absolute; top: 10vh; right: 64vw; }
-.P2Farm8 { position: absolute; top: 10vh; right: 60vw; }
-.P2Farm9 { position: absolute; top: 10vh; right: 56vw; }
-.P2Farm10 { position: absolute; top: 18vh; right: 68vw; }
-.P2Farm11 { position: absolute; top: 18vh; right: 64vw; }
-.P2Farm12 { position: absolute; top: 18vh; right: 60vw; }
-.P2Farm13 { position: absolute; top: 18vh; right: 56vw; }
-.P2WoodRoom1 { position: absolute; top: 10vh; right: 72vw; }
-.P2WoodRoom2 { position: absolute; top: 18vh; right: 72vw; }
-
-/* Resource Table */
-.p1-table-container { position: absolute; top: 10vh; right: 3vw; }
-.p2-table-container { position: absolute; top: 10vh; left: 3vw; }
-.custom-table { width: 150px; height: 300px; border-collapse: collapse; }
-.custom-cell { border: 1px solid black; padding: 8px; width: 30vh; height: 60px; }
-
-.hidden {
-  display: none;
-}
-</style>

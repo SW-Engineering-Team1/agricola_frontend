@@ -68,6 +68,7 @@ export default {
     const handleCreateRoom = (room) => {
       room.hostId = user.value;
       createRoom(room);
+      store.commit("setHost", user.value);
       showModal.value = false;
     }
 

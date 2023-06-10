@@ -1,7 +1,8 @@
+<!--  Round5 곡식종자 행동칸  -->
 <template>
   <div>
-    <button class="rounded Action3" @click="useGrainSeed" style="background: transparent; border: none; padding: 0">
-      <img src="../assets/images/Action/3_GrainSeed.jpg" width="108" />
+    <button class="w-full" @click="useGrainSeed">
+      <img src="../assets/images/Action/3_GrainSeed.jpg" alt="grainSeed" />
     </button>
   </div>
 </template>
@@ -23,11 +24,11 @@ export default {
     const useGrainSeed = () => {
       socket.emit("useActionSpace", {
         actionName: "addGrainSeed",
-        userId: "vincent_test1",
-        roomId: 1,
+        userId: user.value,
+        roomId: roomId.value,
         goods: [
           {
-            name: "grain",
+            name: "grainOnStorage",
             num: 1,
             isAdd: true,
           },

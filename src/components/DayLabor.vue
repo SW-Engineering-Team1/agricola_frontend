@@ -1,8 +1,7 @@
 <template>
   <div>
-    <button
-      class="rounded Action6" @click="useDayLabor" style="background: transparent; border: none; padding: 0">
-        <img src="../assets/images/Action/6_DayLabor.jpg" width="108" />
+    <button class="w-full" @click="useDayLabor">
+      <img src="../assets/images/Action/6_DayLabor.jpg" alt="dayLabor" />
     </button>
   </div>
 </template>
