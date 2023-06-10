@@ -1,16 +1,20 @@
 <template>
   <div>
     <RoundModal v-if="showRoundModal" :round="currentRound" />
-    <button class="flex justify-center fixed w-36 right-5 top-5 bg-red-400 text-white font-bold p-3 rounded" @click="skipGame(8)">
+    <ScoreTableModal :show="scoreTableModal.showModal.value" @close="scoreTableModal.toggleModal"/>
+    <button class="flex justify-center fixed w-36 left-5 top-5 bg-cyan-400 text-white font-bold p-3 rounded hover:bg-cyan-600" @click="scoreTableModal.toggleModal">
+      점수표
+    </button>
+    <button class="flex justify-center fixed w-36 right-5 top-5 bg-red-400 text-white font-bold p-3 rounded hover:bg-red-600" @click="skipGame(8)">
       8라운드 스킵
     </button>
-    <button class="flex justify-center fixed w-36 right-5 top-20 bg-red-400 text-white font-bold p-3 rounded" @click="skipGame(14)">
+    <button class="flex justify-center fixed w-36 right-5 top-20 bg-red-400 text-white font-bold p-3 rounded hover:bg-red-600" @click="skipGame(14)">
       14라운드 스킵
     </button>
-    <button class="flex justify-center fixed w-36 right-5 top-36 bg-blue-400 text-white font-bold p-3 rounded" @click="resetCurrentRound">
+    <button class="flex justify-center fixed w-36 right-5 top-36 bg-blue-400 text-white font-bold p-3 rounded hover:bg-blue-600" @click="resetCurrentRound">
       라운드 초기화
     </button>
-    <button class="flex justify-center fixed w-36 right-5 top-52 bg-yellow-400 text-white font-bold p-3 rounded" @click="startRound">
+    <button class="flex justify-center fixed w-36 right-5 top-52 bg-yellow-400 text-white font-bold p-3 rounded hover:bg-yellow-600" @click="startRound">
       라운드 시작
     </button>
 
@@ -183,9 +187,11 @@ import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, ac
 import CardModal from "@/components/CardModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
 import RoundModal from '@/components/RoundModal.vue'
+import ScoreTableModal from '@/components/ScoreTableModal.vue'
 
 export default {
   components: {
+    ScoreTableModal,
     FarmExpand,
     MeetingPlace,
     GrainSeed,
@@ -229,6 +235,7 @@ export default {
     const oppoUsedJobCardModal = createModalState();
     const oppoUsedMajorFacCardModal = createModalState();
     const notUsedMajorFacCardModal = createModalState();
+    const scoreTableModal = createModalState();
 
     // helper functions
     const getUserStatus = (gameStatus, userId) => {
@@ -464,6 +471,7 @@ export default {
       skipGame,
       currentRound,
       showRoundModal,
+      scoreTableModal
     };
   },
 };
