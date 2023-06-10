@@ -1,3 +1,4 @@
+<!--  Round5 곡식종자 행동칸  -->
 <template>
   <div>
     <button class="w-full" @click="useGrainSeed">
@@ -27,7 +28,7 @@ export default {
         roomId: roomId.value,
         goods: [
           {
-            name: "grain",
+            name: "grainOnStorage",
             num: 1,
             isAdd: true,
           },
