@@ -1,7 +1,7 @@
 <template>
   <transition>
     <div v-if="show" class="fixed inset-0 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg px-10 py-5 m-4 w-3/4 h-auto">
+      <div class="bg-white rounded-lg px-10 py-5 m-4 w-2/3 h-auto">
         <h2 class="text-2xl font-bold mb-5 text-center">{{ cardType }} 카드</h2>
 
         <div class="grid grid-cols-5 grid-rows-2 gap-2">
