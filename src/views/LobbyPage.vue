@@ -32,7 +32,6 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { io } from "socket.io-client";
-import axios from 'axios'
 import CreateRoomButton from '@/components/CreateRoomButton.vue'
 import CreateRoomModal from '@/components/CreateRoomModal.vue'
 import RoomList from '@/components/RoomList.vue'
@@ -77,16 +76,7 @@ export default {
     }
 
     onMounted(() => {
-      // 로비 방문 시 자동으로 GET 요청 후 방 목록 불러오기
-      axios.get('http://localhost:3000/room')
-        .then((res) => {
-          rooms.value = res.data.result;
-        })
-        .catch((err) => {
-          console.log(err);
-        }
-      );
-
+      socket.emit("getRooms");
       socket.on("updatedRooms", (data) => {
         rooms.value = data.result;
       });
