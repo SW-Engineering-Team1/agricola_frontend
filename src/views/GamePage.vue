@@ -465,8 +465,6 @@ export default {
       });
 
       socket.on("useActionSpace",(data) => {
-        console.log(data);
-        console.log("소켓 이벤트전 유저 상태 : ",gameStatus.value);
         for(let player of gameStatus.value){
           if(player.UserId == data.UserId){
             if(data.UserId === host.value){
@@ -479,7 +477,6 @@ export default {
           }
         }
         store.commit("setGameStatus",gameStatus);
-        console.log("소켓 이벤트후 수정된 유저 상태 : ",gameStatus.value);
       });
     });
 
