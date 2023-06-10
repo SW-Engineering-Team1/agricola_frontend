@@ -477,14 +477,16 @@ export default {
     });
 
     // 주요 설비 정보
-    const majorFacCards = Object.keys(majorFacCardMap);
+    store.state.majorFac = Object.keys(majorFacCardMap);
+    const majorFacCards = ref(computed(() => store.state.majorFac));
+    
     // 사용되지 않은 주요 설비 카드
     const notUsedMajorFacCard = computed(() => {
       const usedMajorFacCards = new Set([
         ...myUsedMajorFacCard.value,
         ...oppoUsedMajorFacCard.value,
       ]);
-      return majorFacCards
+      return majorFacCards.value
         .filter((key) => !usedMajorFacCards.has(key))
         .map((key) => {
           const { name, name_kr, image } = majorFacCardMap[key];
@@ -559,57 +561,6 @@ export default {
       }, 2000);
     };
 
-    //8라운드 시나리오를 위한 스킵 버튼
-    const goRoundEight = () => {
-      console.log(roomId.value);
-      socket.emit("skipGame", {
-        roomId: roomId.value,
-        skipRound: 8,
-        userId: [
-          {
-            userId: user.value,
-          },
-          {
-            userId: opponent.value,
-          },
-        ],
-      });
-      socket.on("");
-      socket.emit("accumulateGoods", {
-        roomId: roomId.value,
-        accList: [
-          "woodAccumulated",
-          "sandAccumulated",
-          "reedAccumulated",
-          "foodAccumulated",
-          "sheepAccumulated",
-          "stoneAccumulatedWest",
-        ],
-      });
-      socket.emit("startRound", {
-        roomId: roomId.value,
-      });
-    };
-
-    //turnEnd 이벤트 emit
-    const TurnEnd = () => {
-      if (isWoodFunction.value === false) {
-        socket.emit("accumulateGoods", {
-          roomId: roomId.value,
-          accList: ["woodAccumulated"],
-        });
-      }
-      store.commit("setIsWoodFunctionExecuted", false);
-      socket.emit("endTurn", {
-        userId: user.value,
-        roomId: roomId.value,
-      });
-      console.log(isWoodFunction.value);
-      // socket.emit("accumulateGoods", {
-      //   roomId: roomId.value,
-      //   accList: ["woodAccumulated"],
-      // });
-    };
 
     onMounted(() => {
       showRound();
@@ -625,10 +576,8 @@ export default {
           (player) => player.playerDetail
         );
         store.commit("setGameStatus", updatedStatus);
-        store.commit(
-          "setMajorFac",
-          data.updatedPlayer[0].reaminedMainFacilityCard
-        );
+        store.commit("setMajorFac",data.updatedPlayer[0].remainedMainFacilityCard);
+        console.log(majorFacCards)
         showRound();
       });
     });
