@@ -170,17 +170,17 @@
 </template>
 
 <script>
-import FarmExpand from "@/components/Actions/FarmExpand.vue";
-import MeetingPlace from "@/components/Actions/MeetingPlace.vue";
-import GrainSeed from "@/components/Actions/GrainSeed.vue";
+import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
+import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
+import GrainSeed from "@/components/BasicActions/GrainSeed.vue";
+import Farmland from "@/components/BasicActions/Farmland.vue";
+import Instruction from "@/components/BasicActions/Instruction.vue";
+import DayLabor from "@/components/BasicActions/DayLabor.vue";
+import Forest from "@/components/BasicActions/Forest.vue";
+import SoilMining from "@/components/BasicActions/SoilMining.vue";
+import ReedField from "@/components/BasicActions/ReedField.vue";
+import Fishing from "@/components/BasicActions/Fishing.vue";
 import {computed, onMounted, ref} from "vue";
-import Farmland from "@/components/Actions/Farmland.vue";
-import Instruction from "@/components/Actions/Instruction.vue";
-import DayLabor from "@/components/Actions/DayLabor.vue";
-import Forest from "@/components/Actions/Forest.vue";
-import SoilMining from "@/components/Actions/SoilMining.vue";
-import ReedField from "@/components/Actions/ReedField.vue";
-import Fishing from "@/components/Actions/Fishing.vue";
 import { io } from "socket.io-client";
 import {useStore} from 'vuex';
 import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmRef } from '@/constants';

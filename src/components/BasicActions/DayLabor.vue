@@ -1,3 +1,4 @@
+<!--   BasicAction6 날품팔이 행동칸  -->
 <template>
   <div>
     <button class="w-full" @click="useDayLabor">
@@ -23,8 +24,8 @@ export default {
     const useDayLabor = () => {
       socket.emit("useActionSpace", {
         actionName: "GetFood",
-        userId: "vincent_test1",
-        roomId: 1,
+        userId: user.value,
+        roomId: roomId.value,
         goods: [
           {
             name: "food",
