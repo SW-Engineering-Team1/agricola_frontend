@@ -89,20 +89,20 @@ export const roundsRef = [
   { id: 14, class: "Round14", imgSrc: require("@/assets/images/RoundCard/14R.png"), backImgSrc: require("@/assets/images/RoundCardBack/6Cycle.png") }
 ]
 
-export const farmRef = [
-  { id: 1, class: "Farm1", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
-  { id: 2, class: "Farm2", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
-  { id: 3, class: "Farm3", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
-  { id: 4, class: "Farm4", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
-  { id: 5, class: "Room1", imgSrc: require("@/assets/images/Farm/WoodRoom.png") },
-  { id: 6, class: "Farm6", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
-  { id: 7, class: "Farm7", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
-  { id: 8, class: "Farm8", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
-  { id: 9, class: "Farm9", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
-  { id: 10, class: "Room2", imgSrc: require("@/assets/images/Farm/WoodRoom.png") },
-  { id: 11, class: "Farm11", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
-  { id: 12, class: "Farm12", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
-  { id: 13, class: "Farm13", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
-  { id: 14, class: "Farm14", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
-  { id: 15, class: "Farm15", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+export const farmBoardRef = [
+  { id: 1, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+  { id: 2, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+  { id: 3, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+  { id: 4, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+  { id: 5, type: "room", imgSrc: require("@/assets/images/Farm/WoodRoom.png") },
+  { id: 6, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+  { id: 7, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+  { id: 8, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+  { id: 9, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+  { id: 10, type: "room", imgSrc: require("@/assets/images/Farm/WoodRoom.png") },
+  { id: 11, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+  { id: 12, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+  { id: 13, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+  { id: 14, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
+  { id: 15, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
 ]
