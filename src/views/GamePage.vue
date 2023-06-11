@@ -50,6 +50,9 @@
           <div v-if="showR8StartFarmBoard">
             <R8StartOppoFarmBoard :OppoFarm="oppoFarm" />
           </div>
+          <div v-else-if="showR14StartFarmBoard">
+            <R14StartOppoFarmBoard :OppoFarm="oppoFarm" />
+          </div>
           <div v-else>
             <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
           </div>
@@ -183,6 +186,7 @@ import InitialMyFarmBoard from '@/components/FarmBoard/InitialMyFarmBoard.vue';
 import R8StartMyFarmBoard from "@/components/FarmBoard/R8StartMyFarmBoard.vue";
 import R8StartOppoFarmBoard from "@/components/FarmBoard/R8StartOppoFarmBoard.vue";
 import R14StartMyFarmBoard from "@/components/FarmBoard/R14StartMyFarmBoard.vue";
+import R14StartOppoFarmBoard from "@/components/FarmBoard/R14StartOppoFarmBoard.vue";
 //* Basic Actions */
 import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
 import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
@@ -218,6 +222,7 @@ export default {
     R8StartMyFarmBoard,
     R8StartOppoFarmBoard,
     R14StartMyFarmBoard,
+    R14StartOppoFarmBoard,
     //* Basic Actions */
     ScoreTableModal,
     FarmExpand,
