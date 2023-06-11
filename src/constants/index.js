@@ -89,7 +89,7 @@ export const roundsRef = [
   { id: 14, class: "Round14", imgSrc: require("@/assets/images/RoundCard/14R.png"), backImgSrc: require("@/assets/images/RoundCardBack/6Cycle.png") }
 ]
 
-export const farmBoardRef = [
+export const farmRef = [
   { id: 1, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
   { id: 2, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
   { id: 3, type: "farm", imgSrc: require("@/assets/images/Farm/Farm.jpg") },
