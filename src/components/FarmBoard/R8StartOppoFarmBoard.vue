@@ -9,10 +9,10 @@
         alt="oppoFarm"
         :class="[
           'w-16 h-16',
-          { 'border-blue-600 border-l-8': farm.isBlueBorderLeft },
-          { 'border-blue-600 border-r-8': farm.isBlueBorderRight },
           { 'border-blue-600 border-t-8': farm.isBlueBorderTop },
-          { 'border-blue-600 border-b-8': farm.isBlueBorderBottom }
+          { 'border-blue-600 border-b-8': farm.isBlueBorderBottom },
+          { 'border-blue-600 border-l-8': farm.isBlueBorderLeft },
+          { 'border-blue-600 border-r-8': farm.isBlueBorderRight }
         ]"
       />
     </div>
