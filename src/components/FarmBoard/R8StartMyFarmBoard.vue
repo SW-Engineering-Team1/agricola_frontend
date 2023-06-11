@@ -6,7 +6,7 @@
         v-for="farm in MyFarm"
         :key="farm.id"
         :src="farm.imgSrc"
-        alt="oppoFarm"
+        alt="myFarm"
         :class="[
           'w-16 h-16',
           { 'border-red-700 border-l-8': farm.isRedBorderLeft },

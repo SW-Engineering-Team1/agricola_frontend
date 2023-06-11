@@ -40,8 +40,13 @@
       <div class="max-w-5xl mx-auto grid content-between">
         <!--  상대  -->
         <div class="flex gap-x-10">
-          <!--  게임 시작 시 상대 농장판  -->
-          <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
+          <!--  상대 농장판  -->
+          <div v-if="showR8StartFarmBoard">
+            <R8StartOppoFarmBoard :OppoFarm="oppoFarm" />
+          </div>
+          <div v-else>
+            <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
+          </div>
           <!--  상대가 사용한 카드  -->
           <div v-for="(card, index) in oppoCardData" :key="index">
             <img
@@ -110,7 +115,7 @@
         <!--  본인  -->
         <div class="flex flex-row-reverse gap-x-10">
           <!--  본인 농장판  -->
-          <div v-if="showR8StartMyFarmBoard">
+          <div v-if="showR8StartFarmBoard">
             <R8StartMyFarmBoard :MyFarm="myFarm" />
           </div>
           <div v-else>
@@ -167,6 +172,7 @@ import ScoreTableModal from '@/components/ScoreTableModal.vue';
 import InitialOppoFarmBoard from '@/components/FarmBoard/InitialOppoFarmBoard.vue';
 import InitialMyFarmBoard from '@/components/FarmBoard/InitialMyFarmBoard.vue';
 import R8StartMyFarmBoard from "@/components/FarmBoard/R8StartMyFarmBoard.vue";
+import R8StartOppoFarmBoard from "@/components/FarmBoard/R8StartOppoFarmBoard.vue";
 //* Basic Actions */
 import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
 import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
@@ -184,6 +190,11 @@ import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
 import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
 
 export default {
+  data() {
+    return {
+      isR8StartOppoFarmBoard: false,
+    };
+  },
   components: {
     CardModal,
     RoundModal,
@@ -192,6 +203,7 @@ export default {
     InitialMyFarmBoard,
     InitialOppoFarmBoard,
     R8StartMyFarmBoard,
+    R8StartOppoFarmBoard,
     //* Basic Actions */
     ScoreTableModal,
     FarmExpand,
@@ -211,7 +223,7 @@ export default {
   },
 
   setup() {
-    const showR8StartMyFarmBoard = ref(false);
+    const showR8StartFarmBoard = ref(false);
     const socket = io("localhost:3000");
     const store = useStore();
     const playersInRoom = ref(computed(() => store.state.playersInRoom));
@@ -423,7 +435,7 @@ export default {
             ]
         });
       });
-      showR8StartMyFarmBoard.value = true;
+      showR8StartFarmBoard.value = true;
     };
 
     // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
@@ -496,7 +508,7 @@ export default {
       currentRound,
       showRoundModal,
       scoreTableModal,
-      showR8StartMyFarmBoard
+      showR8StartFarmBoard,
     };
   },
 };
