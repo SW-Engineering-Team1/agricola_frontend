@@ -1,6 +1,7 @@
 <template>
   <div>
     <RoundModal v-if="showRoundModal" :round="currentRound" />
+    <TurnModal v-if="isMyTurn && !showRoundModal" />
     <ScoreTableModal :show="scoreTableModal.showModal.value" @close="scoreTableModal.toggleModal"/>
     <button class="flex justify-center fixed w-36 left-5 top-5 bg-cyan-400 text-white font-bold p-3 rounded hover:bg-cyan-600" @click="scoreTableModal.toggleModal">
       점수표
@@ -16,6 +17,11 @@
     </button>
     <button class="flex justify-center fixed w-36 right-5 top-52 bg-yellow-400 text-white font-bold p-3 rounded hover:bg-yellow-600" @click="startRound">
       라운드 시작
+    </button>
+    <button
+      v-if="isMyTurn"
+      class="flex justify-center fixed w-36 right-5 bottom-5 bg-yellow-400 text-white font-bold p-3 rounded hover:bg-yellow-600" @click="endTurn">
+      턴 종료
     </button>
 
     <div class="flex justify-between w-full h-screen overflow-scroll bg-[#B3B85E]">
@@ -40,8 +46,13 @@
       <div class="max-w-5xl mx-auto grid content-between">
         <!--  상대  -->
         <div class="flex gap-x-10">
-          <!--  게임 시작 시 상대 농장판  -->
-          <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
+          <!--  상대 농장판  -->
+          <div v-if="showR8StartFarmBoard">
+            <R8StartOppoFarmBoard :OppoFarm="oppoFarm" />
+          </div>
+          <div v-else>
+            <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
+          </div>
           <!--  상대가 사용한 카드  -->
           <div v-for="(card, index) in oppoCardData" :key="index">
             <img
@@ -111,7 +122,15 @@
         <!--  본인  -->
         <div class="flex flex-row-reverse gap-x-10">
           <!--  본인 농장판  -->
-          <InitialMyFarmBoard :myFarm="myFarm" />
+          <div v-if="showR8StartFarmBoard">
+            <R8StartMyFarmBoard :MyFarm="myFarm" />
+          </div>
+          <div v-else-if="showR14StartFarmBoard">
+            <R14StartMyFarmBoard :MyFarm="myFarm" />
+          </div>
+          <div v-else>
+            <InitialMyFarmBoard :myFarm="myFarm" />
+          </div>
           <!--  본인 카드  -->
           <div v-for="(card, index) in myCardData" :key="index" class="relative group">
             <img
@@ -162,6 +181,9 @@ import ScoreTableModal from '@/components/ScoreTableModal.vue';
 //* FarmBoard */
 import InitialOppoFarmBoard from '@/components/FarmBoard/InitialOppoFarmBoard.vue';
 import InitialMyFarmBoard from '@/components/FarmBoard/InitialMyFarmBoard.vue';
+import R8StartMyFarmBoard from "@/components/FarmBoard/R8StartMyFarmBoard.vue";
+import R8StartOppoFarmBoard from "@/components/FarmBoard/R8StartOppoFarmBoard.vue";
+import R14StartMyFarmBoard from "@/components/FarmBoard/R14StartMyFarmBoard.vue";
 //* Basic Actions */
 import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
 import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
@@ -177,15 +199,26 @@ import Fishing from "@/components/BasicActions/Fishing.vue";
 import VegetableSeed from "@/components/RoundCardActions/VegetableSeed.vue";
 import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
 import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
+import TurnModal from '@/components/TurnModal.vue'
 
 export default {
+  data() {
+    return {
+      isR8StartFarmBoard: false,
+      isR14StartFarmBoard: false,
+    };
+  },
   components: {
+    TurnModal,
     CardModal,
     RoundModal,
     CardFlip,
     //* FarmBoard */
-    InitialOppoFarmBoard,
     InitialMyFarmBoard,
+    InitialOppoFarmBoard,
+    R8StartMyFarmBoard,
+    R8StartOppoFarmBoard,
+    R14StartMyFarmBoard,
     //* Basic Actions */
     ScoreTableModal,
     FarmExpand,
@@ -205,6 +238,8 @@ export default {
   },
 
   setup() {
+    const showR8StartFarmBoard = ref(false);
+    const showR14StartFarmBoard = ref(false);
     const socket = io("localhost:3000");
     const store = useStore();
     const playersInRoom = ref(computed(() => store.state.playersInRoom));
@@ -306,6 +341,9 @@ export default {
         cardType: "사용하지 않은 직업",
       },
     ];
+    const isMyTurn = ref(computed(() => {
+      return myGameStatus.value.isMyTurn;
+    }))
 
     console.log("나", user);
 
@@ -353,7 +391,7 @@ export default {
     
     // 주요 설비 정보
     const majorFacCardsList = Object.keys(majorFacCardMap);
-    const majorFacCards = ref(computed(() => store.state.majorFac)); 
+    const majorFacCards = ref(computed(() => store.state.remainedMajorFac));
     // 사용되지 않은 주요 설비 카드
     const notUsedMajorFacCard = computed(() => {
       const usedMajorFacCards = new Set([...myUsedMajorFacCard.value, ...oppoUsedMajorFacCard.value]);
@@ -418,11 +456,19 @@ export default {
         });
         socket.emit("startRound",{roomId});
       });
+      if (round === 8) {
+        showR8StartFarmBoard.value = true;
+        showR14StartFarmBoard.value = false;
+      }
+      else if (round === 14) {
+        showR8StartFarmBoard.value = false;
+        showR14StartFarmBoard.value = true;
+      }
     };
 
     // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
 
-    // RoundModal
+    // 현재 라운드 모달
     const showRoundModal = ref(false);
     const showRound = () => {
       showRoundModal.value = true;
@@ -431,11 +477,20 @@ export default {
       }, 2000);
     };
 
+    // 턴 종료
+    const endTurn = () => {
+      socket.emit("endTurn", {
+        roomId: roomId,
+        userId: user.value,
+      });
+    };
 
     onMounted(() => {
       showRound();
-      store.commit("setMajorFac",majorFacCardsList);
-      socket.once("startRound", () => {
+
+      store.commit("setRemainedMajorFac", majorFacCardsList);
+
+      socket.on("startRound", () => {
         store.commit("setCurrentRound", currentRound.value + 1);
         showRound();
       });
@@ -444,30 +499,33 @@ export default {
         store.commit("setCurrentRound", data.skipRound);
         const updatedStatus = data.updatedPlayer.map(player => player.playerDetail);
         store.commit("setGameStatus", updatedStatus);
-        store.commit("setMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);
+        store.commit("setRemainedMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);
         showRound();
       });
 
-      socket.on("useActionSpace",(data) => {
-        for(let player of gameStatus.value){
-          if(player.UserId === data.UserId || player.UserId === data.updateResult?.UserId){
-            if(data.UserId === host.value || data.updateResult?.UserId === host.value){
-              if(data.UserId === host.value){
-                gameStatus.value[0] = data;
-                console.log(gameStatus.value[0]);
-              }else{
-                gameStatus.value[0] = data.updateResult;
-              }
-            }else{
-              if(data.UserId === guest.value){
-                gameStatus.value[1] = data;
-              }else{
-                gameStatus.value[1] = data.updateResult;
-              }
-            }
-          }
+      socket.on("useActionSpace", (data) => {
+        const handleData = (data) => {
+          const { remainedMainFacilityCard, ...rest } = data;
+          // gameStatus 내에 data.UserId와 일치하는 player의 정보를 data로 업데이트
+          const updatedStatus = gameStatus.value.map(status => {
+            if (status.UserId === rest.UserId) return rest;
+            else return status;
+          });
+          // gameStatus 업데이트
+          store.commit("setGameStatus", updatedStatus);
+          // remainedMajorFacilityCard 업데이트
+          store.commit("setRemainedMajorFac", remainedMainFacilityCard);
+        };
+
+        if ('updateResult' in data) { // data에 'updateResult'가 있는 경우 (ex. 숲)
+          handleData(data.updateResult);
+        } else { // data에 'updateResult'가 없고 바로 result만 있는 경우 (ex. 채소종자)
+          handleData(data);
         }
-        store.commit("setGameStatus",gameStatus);
+      });
+
+      socket.on("endTurn", (data) => {
+        store.commit("setGameStatus", data.result);
       });
     });
 
@@ -491,7 +549,14 @@ export default {
       currentRound,
       showRoundModal,
       scoreTableModal,
+<<<<<<< HEAD
       grainUseModal
+=======
+      endTurn,
+      isMyTurn,
+      showR8StartFarmBoard,
+      showR14StartFarmBoard,
+>>>>>>> main
     };
   },
 };
