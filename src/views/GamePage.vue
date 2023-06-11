@@ -40,18 +40,8 @@
       <div class="max-w-5xl mx-auto grid content-between">
         <!--  상대  -->
         <div class="flex gap-x-10">
-          <!--  상대 농장판  -->
-          <div class="flex justify-center">
-            <div class="bg-green-700 grid grid-cols-5 gap-2 p-2 rotate-180">
-              <img
-                v-for="farmBoard in oppoFarmBoard"
-                :key="farmBoard.id"
-                :src="farmBoard.imgSrc"
-                alt="oppoFarmBoard"
-                class="w-16 h-16"
-              />
-            </div>
-          </div>
+          <!--  게임 시작 시 상대 농장판  -->
+          <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
           <!--  상대가 사용한 카드  -->
           <div v-for="(card, index) in oppoCardData" :key="index">
             <img
@@ -76,8 +66,8 @@
             <CardFlip :round="1" :frontImage="rounds[0].imgSrc" :backImage="rounds[0].backImgSrc" />
             <CardFlip :round="2" :frontImage="rounds[1].imgSrc" :backImage="rounds[1].backImgSrc" />
             <CardFlip :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" />
-            <CardFlip :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
-            <CardFlip :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
+            <VegetableSeed :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
+            <CowMarket :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
             <CardFlip :round="12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
             <CardFlip :round="14" :frontImage="rounds[13].imgSrc" :backImage="rounds[13].backImgSrc" />
             <MeetingPlace class="flex justify-center items-center"/>
@@ -85,7 +75,7 @@
             <Forest class="flex justify-center items-center"/>
             <CardFlip :round="3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
             <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" />
-            <CardFlip :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" />
+            <PigMarket :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" />
             <CardFlip :round="11" :frontImage="rounds[10].imgSrc" :backImage="rounds[10].backImgSrc" />
             <CardFlip :round="13" :frontImage="rounds[12].imgSrc" :backImage="rounds[12].backImgSrc" />
             <div class="row-span-2" />
@@ -120,17 +110,7 @@
         <!--  나  -->
         <div class="flex flex-row-reverse gap-x-10">
           <!--  내 농장판  -->
-          <div class="flex justify-center">
-            <div class="bg-green-700 grid grid-cols-5 gap-2 p-2">
-              <button
-                v-for="farmBoard in myFarmBoard"
-                :key="farmBoard.id"
-                @click="farmBoard.clickHandler"
-              >
-                <img :src="farmBoard.imgSrc" alt="farmBoard" class="w-16 h-16" />
-              </button>
-            </div>
-          </div>
+          <InitialMyFarmBoard :myFarm="myFarm" />
           <!--  내 카드  -->
           <div v-for="(card, index) in myCardData" :key="index" class="relative group">
             <img
@@ -170,6 +150,18 @@
 </template>
 
 <script>
+import {computed, onMounted, ref} from "vue";
+import { io } from "socket.io-client";
+import {useStore} from 'vuex';
+import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmRef } from '@/constants';
+import CardModal from "@/components/CardModal.vue";
+import RoundModal from "@/components/RoundModal.vue";
+import CardFlip from "@/components/CardFlip.vue";
+import ScoreTableModal from '@/components/ScoreTableModal.vue';
+//* FarmBoard */
+import InitialOppoFarmBoard from '@/components/FarmBoard/InitialOppoFarmBoard.vue';
+import InitialMyFarmBoard from '@/components/FarmBoard/InitialMyFarmBoard.vue';
+//* Basic Actions */
 import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
 import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
 import GrainSeed from "@/components/BasicActions/GrainSeed.vue";
@@ -180,17 +172,20 @@ import Forest from "@/components/BasicActions/Forest.vue";
 import SoilMining from "@/components/BasicActions/SoilMining.vue";
 import ReedField from "@/components/BasicActions/ReedField.vue";
 import Fishing from "@/components/BasicActions/Fishing.vue";
-import {computed, onMounted, ref} from "vue";
-import { io } from "socket.io-client";
-import {useStore} from 'vuex';
-import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmBoardRef } from '@/constants';
-import CardModal from "@/components/CardModal.vue";
-import CardFlip from "@/components/CardFlip.vue";
-import RoundModal from "@/components/RoundModal.vue";
-import ScoreTableModal from '@/components/ScoreTableModal.vue';
+//* RoundCard Actions */
+import VegetableSeed from "@/components/RoundCardActions/VegetableSeed.vue";
+import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
+import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
 
 export default {
   components: {
+    CardModal,
+    RoundModal,
+    CardFlip,
+    //* FarmBoard */
+    InitialOppoFarmBoard,
+    InitialMyFarmBoard,
+    //* Basic Actions */
     ScoreTableModal,
     FarmExpand,
     MeetingPlace,
@@ -202,9 +197,10 @@ export default {
     SoilMining,
     ReedField,
     Fishing,
-    CardModal,
-    CardFlip,
-    RoundModal,
+    //* RoundCard Actions */
+    VegetableSeed,
+    PigMarket,
+    CowMarket,
   },
 
   setup() {
@@ -309,6 +305,8 @@ export default {
       },
     ];
 
+    console.log("나", user);
+
     // opponent(상대방) 정보
     const opponent = computed(() => playersInRoom.value.find(player => player !== user.value));
     const oppoGameStatus = computed(() => getUserStatus(gameStatus, opponent.value));
@@ -339,6 +337,8 @@ export default {
         cardType: "상대가 사용한 주요 설비",
       },
     ];
+
+    console.log("상대방", opponent);
 
     const host = ref(computed(() => store.state.host));
     // host가 user인 경우 guest는 opponent
@@ -417,22 +417,22 @@ export default {
       });
     };
 
-    const myFarmBoard = ref(farmBoardRef);
-    const oppoFarmBoard = ref(farmBoardRef);
-    // myFarmBoard을 위한 함수들을 동적으로 생성
-    const myFarmBoardFunctions = {};
+    const myFarm = ref(farmRef);
+    const oppoFarm = ref(farmRef);
+    // myFarm을 위한 함수들을 동적으로 생성
+    const myFarmFunctions = {};
     for (let i = 1; i <= 15; i++) {
-      const myFarmBoardName = `openMyFarmBoard${i}`;
-      myFarmBoardFunctions[myFarmBoardName] = () => {
-        console.log(myFarmBoardName);
+      const myFarmName = `openMyFarm${i}`;
+      myFarmFunctions[myFarmName] = () => {
+        console.log(myFarmName);
       };
-      // 해당 myFarmBoard의 clickHandler를 등록
-      for (const farmBoard of myFarmBoard.value) {
-        farmBoard.clickHandler = myFarmBoardFunctions[`openMyFarmBoard${farmBoard.id}`];
+      // 해당 myFarm의 clickHandler를 등록
+      for (const farm of myFarm.value) {
+        farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
       }
     }
 
-    // TODO: myFarmBoard과 oppoFarmBoard에 Room이 있다면, Room에 가족 구성원 올려놓기
+    // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
 
     // RoundModal
     const showRoundModal = ref(false);
@@ -462,6 +462,23 @@ export default {
         showRound();
       });
 
+      socket.on("useActionSpace",(data) => {
+        for(let player of gameStatus.value){
+          if(player.UserId === data.UserId || player.UserId === data.updateResult?.UserId){
+            if(data.UserId === host.value || data.updateResult?.UserId === host.value){
+              if(data.UserId === host.value){
+                gameStatus.value[0] = data;
+                console.log(gameStatus.value[0]);
+              }else{
+                gameStatus.value[0] = data.updateResult;
+              }
+            }else{
+              if(data.UserId === guest.value){
+                gameStatus.value[1] = data;
+              }else{
+                gameStatus.value[1] = data.updateResult;
+              }
+            }
       socket.on("useActionSpace", (data) => {
         const { remainedMainFacilityCard, ...rest } = data;
         for (let player of gameStatus.value) {
@@ -489,8 +506,8 @@ export default {
       oppoGameResources,
       oppoCardData,
       notUsedMajorFacCardData,
-      myFarmBoard,
-      oppoFarmBoard,
+      myFarm,
+      oppoFarm,
       resetCurrentRound,
       startRound,
       skipGame,
