@@ -124,6 +124,9 @@
           <div v-if="showR8StartFarmBoard">
             <R8StartMyFarmBoard :MyFarm="myFarm" />
           </div>
+          <div v-else-if="showR14StartFarmBoard">
+            <R14StartMyFarmBoard :MyFarm="myFarm" />
+          </div>
           <div v-else>
             <InitialMyFarmBoard :myFarm="myFarm" />
           </div>
@@ -179,6 +182,7 @@ import InitialOppoFarmBoard from '@/components/FarmBoard/InitialOppoFarmBoard.vu
 import InitialMyFarmBoard from '@/components/FarmBoard/InitialMyFarmBoard.vue';
 import R8StartMyFarmBoard from "@/components/FarmBoard/R8StartMyFarmBoard.vue";
 import R8StartOppoFarmBoard from "@/components/FarmBoard/R8StartOppoFarmBoard.vue";
+import R14StartMyFarmBoard from "@/components/FarmBoard/R14StartMyFarmBoard.vue";
 //* Basic Actions */
 import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
 import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
@@ -199,7 +203,8 @@ import TurnModal from '@/components/TurnModal.vue'
 export default {
   data() {
     return {
-      isR8StartOppoFarmBoard: false,
+      isR8StartFarmBoard: false,
+      isR14StartFarmBoard: false,
     };
   },
   components: {
@@ -212,6 +217,7 @@ export default {
     InitialOppoFarmBoard,
     R8StartMyFarmBoard,
     R8StartOppoFarmBoard,
+    R14StartMyFarmBoard,
     //* Basic Actions */
     ScoreTableModal,
     FarmExpand,
@@ -232,6 +238,7 @@ export default {
 
   setup() {
     const showR8StartFarmBoard = ref(false);
+    const showR14StartFarmBoard = ref(false);
     const socket = io("localhost:3000");
     const store = useStore();
     const playersInRoom = ref(computed(() => store.state.playersInRoom));
@@ -446,7 +453,14 @@ export default {
             ]
         });
       });
-      showR8StartFarmBoard.value = true;
+      if (round === 8) {
+        showR8StartFarmBoard.value = true;
+        showR14StartFarmBoard.value = false;
+      }
+      else if (round === 14) {
+        showR8StartFarmBoard.value = false;
+        showR14StartFarmBoard.value = true;
+      }
     };
 
     // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
@@ -535,6 +549,7 @@ export default {
       endTurn,
       isMyTurn,
       showR8StartFarmBoard,
+      showR14StartFarmBoard,
     };
   },
 };
