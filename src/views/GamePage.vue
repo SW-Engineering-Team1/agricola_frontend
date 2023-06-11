@@ -40,18 +40,8 @@
       <div class="max-w-5xl mx-auto grid content-between">
         <!--  상대  -->
         <div class="flex gap-x-10">
-          <!--  상대 농장판  -->
-          <div class="flex justify-center">
-            <div class="bg-green-700 grid grid-cols-5 gap-2 p-2 rotate-180">
-              <img
-                v-for="farm in oppoFarm"
-                :key="farm.id"
-                :src="farm.imgSrc"
-                alt="oppoFarm"
-                class="w-16 h-16"
-              />
-            </div>
-          </div>
+          <!--  게임 시작 시 상대 농장판  -->
+          <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
           <!--  상대가 사용한 카드  -->
           <div v-for="(card, index) in oppoCardData" :key="index">
             <img
@@ -77,8 +67,8 @@
             <IsGrainUtil :show="grainUseModal.showModal.value" @close="grainUseModal.toggleModal" />
             <CardFlip :onclick="grainUseModal.toggleModal" :round="2" :frontImage="rounds[1].imgSrc" :backImage="rounds[1].backImgSrc" />
             <CardFlip :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" />
-            <CardFlip :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
-            <CardFlip :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
+            <VegetableSeed :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
+            <CowMarket :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
             <CardFlip :round="12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
             <CardFlip :round="14" :frontImage="rounds[13].imgSrc" :backImage="rounds[13].backImgSrc" />
             <MeetingPlace class="flex justify-center items-center"/>
@@ -86,7 +76,7 @@
             <Forest class="flex justify-center items-center"/>
             <CardFlip :round="3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
             <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" />
-            <CardFlip :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" />
+            <PigMarket :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" />
             <CardFlip :round="11" :frontImage="rounds[10].imgSrc" :backImage="rounds[10].backImgSrc" />
             <CardFlip :round="13" :frontImage="rounds[12].imgSrc" :backImage="rounds[12].backImgSrc" />
             <div class="row-span-2" />
@@ -118,21 +108,11 @@
           </div>
         </div>
 
-        <!--  나  -->
+        <!--  본인  -->
         <div class="flex flex-row-reverse gap-x-10">
-          <!--  내 농장판  -->
-          <div class="flex justify-center">
-            <div class="bg-green-700 grid grid-cols-5 gap-2 p-2">
-              <button
-                v-for="farm in myFarm"
-                :key="farm.id"
-                @click="farm.clickHandler"
-              >
-                <img :src="farm.imgSrc" alt="farm" class="w-16 h-16" />
-              </button>
-            </div>
-          </div>
-          <!--  내 카드  -->
+          <!--  본인 농장판  -->
+          <InitialMyFarmBoard :myFarm="myFarm" />
+          <!--  본인 카드  -->
           <div v-for="(card, index) in myCardData" :key="index" class="relative group">
             <img
               class="w-auto h-56 cursor-pointer transform transition duration-500 ease-in-out hover:scale-110"
@@ -150,7 +130,7 @@
         </div>
       </div>
 
-      <!--  내 자원 표시  -->
+      <!--  본인 자원 표시  -->
       <div>
         <div class="grid grid-rows-12 fixed right-0 top-1/4 bg-[#A2CF5F]">
           <div class="flex">
@@ -171,6 +151,18 @@
 </template>
 
 <script>
+import {computed, onMounted, ref} from "vue";
+import { io } from "socket.io-client";
+import {useStore} from 'vuex';
+import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef } from '@/constants';
+import CardModal from "@/components/CardModal.vue";
+import RoundModal from "@/components/RoundModal.vue";
+import CardFlip from "@/components/CardFlip.vue";
+import ScoreTableModal from '@/components/ScoreTableModal.vue';
+//* FarmBoard */
+import InitialOppoFarmBoard from '@/components/FarmBoard/InitialOppoFarmBoard.vue';
+import InitialMyFarmBoard from '@/components/FarmBoard/InitialMyFarmBoard.vue';
+//* Basic Actions */
 import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
 import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
 import GrainSeed from "@/components/BasicActions/GrainSeed.vue";
@@ -181,18 +173,20 @@ import Forest from "@/components/BasicActions/Forest.vue";
 import SoilMining from "@/components/BasicActions/SoilMining.vue";
 import ReedField from "@/components/BasicActions/ReedField.vue";
 import Fishing from "@/components/BasicActions/Fishing.vue";
-import {computed, onMounted, ref} from "vue";
-import { io } from "socket.io-client";
-import {useStore} from 'vuex';
-import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmRef } from '@/constants';
-import CardModal from "@/components/CardModal.vue";
-import CardFlip from "@/components/CardFlip.vue";
-import RoundModal from "@/components/RoundModal.vue";
-import ScoreTableModal from '@/components/ScoreTableModal.vue';
-import IsGrainUtil from '@/components/IsGrainUtil.vue'
+//* RoundCard Actions */
+import VegetableSeed from "@/components/RoundCardActions/VegetableSeed.vue";
+import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
+import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
 
 export default {
   components: {
+    CardModal,
+    RoundModal,
+    CardFlip,
+    //* FarmBoard */
+    InitialOppoFarmBoard,
+    InitialMyFarmBoard,
+    //* Basic Actions */
     ScoreTableModal,
     FarmExpand,
     MeetingPlace,
@@ -204,10 +198,10 @@ export default {
     SoilMining,
     ReedField,
     Fishing,
-    CardModal,
-    CardFlip,
-    RoundModal,
-    IsGrainUtil
+    //* RoundCard Actions */
+    VegetableSeed,
+    PigMarket,
+    CowMarket,
   },
 
   setup() {
@@ -426,42 +420,6 @@ export default {
       });
     };
 
-    const myFarm = ref(farmRef);
-    const oppoFarm = ref(farmRef);
-    // myFarm을 위한 함수들을 동적으로 생성
-    const myFarmFunctions = {};
-    for (let i = 1; i <= 15; i++) {
-      const myFarmName = `openMyFarm${i}`;
-      if(i === 15){
-        myFarmFunctions[myFarmName] = () => {
-          socket.emit("useActionSpace",{
-            "actionName":"Grain Utilization",
-            "userId": user.value,
-            "roomId": roomId,
-            "goods": [
-              {
-                "name":"vege",
-                "num":1,
-                "isAdd":false
-              },
-              {
-                "id":15,
-                "kind":"vege"
-              }
-            ]
-          })
-        }
-      }else{
-        myFarmFunctions[myFarmName] = () => {
-          console.log(myFarmName);
-        };
-      }
-      // 해당 myFarm의 clickHandler를 등록
-      for (const farm of myFarm.value) {
-        farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
-      }
-    }
-
     // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
 
     // RoundModal
@@ -527,8 +485,6 @@ export default {
       oppoGameResources,
       oppoCardData,
       notUsedMajorFacCardData,
-      myFarm,
-      oppoFarm,
       resetCurrentRound,
       startRound,
       skipGame,

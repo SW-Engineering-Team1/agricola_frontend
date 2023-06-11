@@ -2,7 +2,7 @@
 <template>
   <div>
     <button class="w-full" @click="useDayLabor">
-      <img src="../../assets/images/Action/6_DayLabor.jpg" alt="dayLabor" />
+      <img src="@/assets/images/Action/6_DayLabor.jpg" alt="dayLabor" />
     </button>
   </div>
 </template>
