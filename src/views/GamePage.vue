@@ -75,8 +75,9 @@
           <div class="grid grid-cols-8 gap-2 p-2">
             <FarmExpand class="flex justify-center items-center"/>
             <CardFlip :round="1" :frontImage="rounds[0].imgSrc" :backImage="rounds[0].backImgSrc" />
-            <IsGrainUtil :show="grainUseModal.showModal.value" @close="grainUseModal.toggleModal" />
             <CardFlip :onclick="grainUseModal.toggleModal" :round="2" :frontImage="rounds[1].imgSrc" :backImage="rounds[1].backImgSrc" />
+            <IsGrainUtil :onclick="isBakeModal.toggleModal" :show="grainUseModal.showModal.value" @close="grainUseModal.toggleModal" />
+            <IsBaked :show="isBakeModal.showModal.value" @close="isBakeModal.toggleModal" />
             <CardFlip :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" />
             <VegetableSeed :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
             <CowMarket :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
@@ -200,6 +201,9 @@ import VegetableSeed from "@/components/RoundCardActions/VegetableSeed.vue";
 import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
 import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
 import TurnModal from '@/components/TurnModal.vue'
+//* ServeModal */
+import IsGrainUtil from "@/components/ServeModal/IsGrainUtil.vue"
+import IsBaked from "@/components/ServeModal/IsBaked.vue"
 
 export default {
   data() {
@@ -235,6 +239,9 @@ export default {
     VegetableSeed,
     PigMarket,
     CowMarket,
+    //* ServeModal */
+    IsGrainUtil,
+    IsBaked
   },
 
   setup() {
@@ -268,7 +275,7 @@ export default {
     const notUsedMajorFacCardModal = createModalState();
     const scoreTableModal = createModalState();
     const grainUseModal = createModalState();
-
+    const isBakeModal = createModalState();
     // helper functions
     const getUserStatus = (gameStatus, userId) => {
       return gameStatus.value.find((status) => status.UserId === userId);
@@ -454,7 +461,6 @@ export default {
             "stoneAccumulatedWest"
             ]
         });
-        socket.emit("startRound",{roomId});
       });
       if (round === 8) {
         showR8StartFarmBoard.value = true;
@@ -549,14 +555,12 @@ export default {
       currentRound,
       showRoundModal,
       scoreTableModal,
-<<<<<<< HEAD
-      grainUseModal
-=======
+      grainUseModal,
       endTurn,
       isMyTurn,
       showR8StartFarmBoard,
       showR14StartFarmBoard,
->>>>>>> main
+      isBakeModal
     };
   },
 };

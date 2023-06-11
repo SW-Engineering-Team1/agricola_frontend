@@ -7,8 +7,7 @@
         :key="farm.id"
         :src="farm.imgSrc"
         alt="myFarm"
-        :class="[ 'w-16 h-16' ]"
-      />
+        :class="[ 'w-16 h-16' ]"/>
     </div>
   </div>
 </template>
@@ -21,7 +20,7 @@ export default {
     const myFarm = ref(farmRef);
     // myFarm을 위한 함수들을 동적으로 생성
     const myFarmFunctions = {};
-    for (let i = 1; i <= 15; i++) {
+     for (let i = 1; i <= 15; i++) {
       const myFarmName = `openMyFarm${i}`;
       myFarmFunctions[myFarmName] = () => {
         console.log(myFarmName);
@@ -32,7 +31,7 @@ export default {
       }
     }
     return {
-        myFarm
+        myFarm,  
     };
   },
   
