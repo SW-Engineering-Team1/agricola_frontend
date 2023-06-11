@@ -480,33 +480,25 @@ export default {
         showRound();
       });
 
-      socket.on("useActionSpace",(data) => {
-        for(let player of gameStatus.value){
-          if(player.UserId === data.UserId || player.UserId === data.updateResult?.UserId){
-            if(data.UserId === host.value || data.updateResult?.UserId === host.value){
-              if(data.UserId === host.value){
-                gameStatus.value[0] = data;
-                console.log(gameStatus.value[0]);
-              }else{
-                gameStatus.value[0] = data.updateResult;
-              }
-            }else{
-              if(data.UserId === guest.value){
-                gameStatus.value[1] = data;
-              }else{
-                gameStatus.value[1] = data.updateResult;
-              }
-            }
       socket.on("useActionSpace", (data) => {
-        const { remainedMainFacilityCard, ...rest } = data;
-        for (let player of gameStatus.value) {
-          if (player.UserId === data.UserId) {
-            if (data.UserId === host.value) gameStatus.value[0] = rest;
-            else gameStatus.value[1] = rest;
-          }
+        const handleData = (data) => {
+          const { remainedMainFacilityCard, ...rest } = data;
+          // gameStatus 내에 data.UserId와 일치하는 player의 정보를 data로 업데이트
+          const updatedStatus = gameStatus.value.map(status => {
+            if (status.UserId === rest.UserId) return rest;
+            else return status;
+          });
+          // gameStatus 업데이트
+          store.commit("setGameStatus", updatedStatus);
+          // remainedMajorFacilityCard 업데이트
+          store.commit("setRemainedMajorFac", remainedMainFacilityCard);
+        };
+
+        if ('updateResult' in data) { // data에 'updateResult'가 있는 경우 (ex. 숲)
+          handleData(data.updateResult);
+        } else { // data에 'updateResult'가 없고 바로 result만 있는 경우 (ex. 채소종자)
+          handleData(data);
         }
-        store.commit("setGameStatus", gameStatus);
-        store.commit("setRemainedMajorFac", remainedMainFacilityCard);
       });
 
       socket.on("endTurn", (data) => {
