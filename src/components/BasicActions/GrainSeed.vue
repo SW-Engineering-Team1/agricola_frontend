@@ -1,7 +1,11 @@
+<<<<<<< Updated upstream:src/components/GrainSeed.vue
+=======
+<!--  BasicAction3 곡식종자 행동칸  -->
+>>>>>>> Stashed changes:src/components/BasicActions/GrainSeed.vue
 <template>
   <div>
-    <button class="w-full" @click="useDayLabor">
-      <img src="../assets/images/Action/6_DayLabor.jpg" alt="dayLabor" />
+    <button class="w-full" @click="useGrainSeed">
+      <img src="../assets/images/Action/3_GrainSeed.jpg" alt="grainSeed" />
     </button>
   </div>
 </template>
@@ -20,15 +24,15 @@ export default {
     const roomId = ref("");
     const user = computed(() => store.state.user);
 
-    const useDayLabor = () => {
+    const useGrainSeed = () => {
       socket.emit("useActionSpace", {
-        actionName: "GetFood",
-        userId: "vincent_test1",
-        roomId: 1,
+        actionName: "addGrainSeed",
+        userId: user.value,
+        roomId: roomId.value,
         goods: [
           {
-            name: "food",
-            num: 2,
+            name: "grain",
+            num: 1,
             isAdd: true,
           },
         ],
@@ -40,7 +44,7 @@ export default {
     });
     onUnmounted();
     return {
-      useDayLabor,
+      useGrainSeed,
       roomId,
       user,
     };

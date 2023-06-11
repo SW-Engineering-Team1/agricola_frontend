@@ -1,47 +1,31 @@
 <template>
   <div>
     <RoundModal v-if="showRoundModal" :round="currentRound" />
-    <button
-      class="flex justify-center fixed w-36 right-5 top-5 bg-red-400 text-white font-bold p-3 rounded"
-      @click="skipGame(8)"
-    >
+    <ScoreTableModal :show="scoreTableModal.showModal.value" @close="scoreTableModal.toggleModal"/>
+    <button class="flex justify-center fixed w-36 left-5 top-5 bg-cyan-400 text-white font-bold p-3 rounded hover:bg-cyan-600" @click="scoreTableModal.toggleModal">
+      점수표
+    </button>
+    <button class="flex justify-center fixed w-36 right-5 top-5 bg-red-400 text-white font-bold p-3 rounded hover:bg-red-600" @click="skipGame(8)">
       8라운드 스킵
     </button>
-    <button
-      class="flex justify-center fixed w-36 right-5 top-20 bg-red-400 text-white font-bold p-3 rounded"
-      @click="skipGame(14)"
-    >
+    <button class="flex justify-center fixed w-36 right-5 top-20 bg-red-400 text-white font-bold p-3 rounded hover:bg-red-600" @click="skipGame(14)">
       14라운드 스킵
     </button>
-    <button
-      class="flex justify-center fixed w-36 right-5 top-36 bg-blue-400 text-white font-bold p-3 rounded"
-      @click="resetCurrentRound"
-    >
+    <button class="flex justify-center fixed w-36 right-5 top-36 bg-blue-400 text-white font-bold p-3 rounded hover:bg-blue-600" @click="resetCurrentRound">
       라운드 초기화
     </button>
-    <button
-      class="flex justify-center fixed w-36 right-5 top-52 bg-yellow-400 text-white font-bold p-3 rounded"
-      @click="startRound"
-    >
+    <button class="flex justify-center fixed w-36 right-5 top-52 bg-yellow-400 text-white font-bold p-3 rounded hover:bg-yellow-600" @click="startRound">
       라운드 시작
     </button>
 
-    <div
-      class="flex justify-between w-full h-screen overflow-scroll bg-[#B3B85E]"
-    >
+    <div class="flex justify-between w-full h-screen overflow-scroll bg-[#B3B85E]">
       <!--  상대 자원 표시  -->
       <div>
         <div class="grid grid-rows-12 fixed left-0 top-1/4 bg-[#A2CF5F]">
           <div class="flex">
-            <div class="p-3 border border-black w-full font-bold">
-              {{ opponent }}
-            </div>
+            <div class="p-3 border border-black w-full font-bold">{{ opponent }}</div>
           </div>
-          <div
-            class="flex"
-            v-for="(item, index) in oppoGameResources"
-            :key="index"
-          >
+          <div class="flex" v-for="(item, index) in oppoGameResources" :key="index">
             <div class="p-3 border border-black w-1/2 flex justify-center">
               <img :src="item.image" :alt="item.name" class="w-10 h-10" />
             </div>
@@ -86,89 +70,31 @@
         </div>
 
         <!--  게임 진행판  -->
-        <div
-          class="bg-gradient-to-r from-[#B2C95E] via-[#95AD4B] to-[#7C9432] p-2"
-        >
+        <div class="bg-gradient-to-r from-[#B2C95E] via-[#95AD4B] to-[#7C9432] p-2">
           <div class="grid grid-cols-8 gap-2 p-2">
-            <FarmExpand class="flex justify-center items-center" />
-            <CardFlip
-              :round="1"
-              :frontImage="rounds[0].imgSrc"
-              :backImage="rounds[0].backImgSrc"
-            />
-            <CardFlip
-              :round="2"
-              :frontImage="rounds[1].imgSrc"
-              :backImage="rounds[1].backImgSrc"
-            />
-            <CardFlip
-              :round="5"
-              :frontImage="rounds[4].imgSrc"
-              :backImage="rounds[4].backImgSrc"
-            />
-            <CardFlip
-              :round="8"
-              :frontImage="rounds[7].imgSrc"
-              :backImage="rounds[7].backImgSrc"
-            />
-            <CardFlip
-              :round="10"
-              :frontImage="rounds[9].imgSrc"
-              :backImage="rounds[9].backImgSrc"
-            />
-            <CardFlip
-              :round="12"
-              :frontImage="rounds[11].imgSrc"
-              :backImage="rounds[11].backImgSrc"
-            />
-            <CardFlip
-              :round="14"
-              :frontImage="rounds[13].imgSrc"
-              :backImage="rounds[13].backImgSrc"
-            />
-            <MeetingPlace class="flex justify-center items-center" />
-            <GrainSeed class="flex justify-center items-center" />
-            <Forest class="flex justify-center items-center" />
-            <CardFlip
-              :round="3"
-              :frontImage="rounds[2].imgSrc"
-              :backImage="rounds[2].backImgSrc"
-            />
-            <CardFlip
-              :round="6"
-              :frontImage="rounds[5].imgSrc"
-              :backImage="rounds[5].backImgSrc"
-            />
-            <CardFlip
-              :round="9"
-              :frontImage="rounds[8].imgSrc"
-              :backImage="rounds[8].backImgSrc"
-            />
-            <CardFlip
-              :round="11"
-              :frontImage="rounds[10].imgSrc"
-              :backImage="rounds[10].backImgSrc"
-            />
-            <CardFlip
-              :round="13"
-              :frontImage="rounds[12].imgSrc"
-              :backImage="rounds[12].backImgSrc"
-            />
+            <FarmExpand class="flex justify-center items-center"/>
+            <CardFlip :round="1" :frontImage="rounds[0].imgSrc" :backImage="rounds[0].backImgSrc" />
+            <CardFlip :round="2" :frontImage="rounds[1].imgSrc" :backImage="rounds[1].backImgSrc" />
+            <CardFlip :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" />
+            <VegetableSeed :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
+            <CardFlip :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
+            <CardFlip :round="12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
+            <CardFlip :round="14" :frontImage="rounds[13].imgSrc" :backImage="rounds[13].backImgSrc" />
+            <MeetingPlace class="flex justify-center items-center"/>
+            <GrainSeed class="flex justify-center items-center"/>
+            <Forest class="flex justify-center items-center"/>
+            <CardFlip :round="3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
+            <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" />
+            <PigMarket :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" />
+            <CardFlip :round="11" :frontImage="rounds[10].imgSrc" :backImage="rounds[10].backImgSrc" />
+            <CardFlip :round="13" :frontImage="rounds[12].imgSrc" :backImage="rounds[12].backImgSrc" />
             <div class="row-span-2" />
-            <Farmland class="flex justify-center items-center" />
-            <SoilMining class="flex justify-center items-center" />
-            <Instruction class="flex justify-center items-center" />
-            <ReedField class="flex justify-center items-center" />
-            <CardFlip
-              :round="4"
-              :frontImage="rounds[3].imgSrc"
-              :backImage="rounds[3].backImgSrc"
-            />
-            <CardFlip
-              :round="7"
-              :frontImage="rounds[6].imgSrc"
-              :backImage="rounds[6].backImgSrc"
-            />
+            <Farmland class="flex justify-center items-center"/>
+            <SoilMining class="flex justify-center items-center"/>
+            <Instruction class="flex justify-center items-center"/>
+            <ReedField class="flex justify-center items-center"/>
+            <CardFlip :round="4" :frontImage="rounds[3].imgSrc" :backImage="rounds[3].backImgSrc" />
+            <CardFlip :round="7" :frontImage="rounds[6].imgSrc" :backImage="rounds[6].backImgSrc" />
             <div class="row-span-2" />
             <div class="row-span-2" />
             <div class="row-span-2" />
@@ -206,11 +132,7 @@
             </div>
           </div>
           <!--  내 카드  -->
-          <div
-            v-for="(card, index) in myCardData"
-            :key="index"
-            class="relative group"
-          >
+          <div v-for="(card, index) in myCardData" :key="index" class="relative group">
             <img
               class="w-auto h-56 cursor-pointer transform transition duration-500 ease-in-out hover:scale-110"
               :src="card.imgSrc"
@@ -231,15 +153,9 @@
       <div>
         <div class="grid grid-rows-12 fixed right-0 top-1/4 bg-[#A2CF5F]">
           <div class="flex">
-            <div class="p-3 border border-black w-full font-bold">
-              {{ user }} (나)
-            </div>
+            <div class="p-3 border border-black w-full font-bold">{{ user }} (나)</div>
           </div>
-          <div
-            class="flex"
-            v-for="(item, index) in myGameResources"
-            :key="index"
-          >
+          <div class="flex" v-for="(item, index) in myGameResources" :key="index">
             <div class="p-3 border border-black w-1/2 flex justify-center">
               <p class="flex items-center text-2xl">{{ item.value }}</p>
             </div>
@@ -254,35 +170,35 @@
 </template>
 
 <script>
-import FarmExpand from "@/components/FarmExpand.vue";
-import MeetingPlace from "@/components/MeetingPlace.vue";
-import GrainSeed from "@/components/GrainSeed.vue";
-import Farmland from "@/components/Farmland.vue";
-import Instruction from "@/components/Instruction.vue";
-import DayLabor from "@/components/DayLabor.vue";
-import Forest from "@/components/Forest.vue";
-import SoilMining from "@/components/SoilMining.vue";
-import ReedField from "@/components/ReedField.vue";
-import Fishing from "@/components/Fishing.vue";
-
-import { computed, onMounted, ref } from "vue";
+import {computed, onMounted, ref} from "vue";
 import { io } from "socket.io-client";
-import { useStore } from "vuex";
-import {
-  resourceMap,
-  assiFacCardMap,
-  majorFacCardMap,
-  jobCardMap,
-  roundsRef,
-  actionsRef,
-  farmRef,
-} from "@/constants";
+import {useStore} from 'vuex';
+import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmRef } from '@/constants';
 import CardModal from "@/components/CardModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
 import RoundModal from "@/components/RoundModal.vue";
+import ScoreTableModal from '@/components/ScoreTableModal.vue';
+/** BasicActions */
+import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
+import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
+import GrainSeed from "@/components/BasicActions/GrainSeed.vue";
+import Farmland from "@/components/BasicActions/Farmland.vue";
+import Instruction from "@/components/BasicActions/Instruction.vue";
+import DayLabor from "@/components/BasicActions/DayLabor.vue";
+import Forest from "@/components/BasicActions/Forest.vue";
+import SoilMining from "@/components/BasicActions/SoilMining.vue";
+import ReedField from "@/components/BasicActions/ReedField.vue";
+import Fishing from "@/components/BasicActions/Fishing.vue";
+/** RoundCardActions */
+import VegetableSeed from "@/components/RoundCardActions/VegetableSeed.vue";
 
 export default {
   components: {
+    ScoreTableModal,
+    CardModal,
+    CardFlip,
+    RoundModal,
+    /** BasicActions */
     FarmExpand,
     MeetingPlace,
     GrainSeed,
@@ -293,9 +209,8 @@ export default {
     SoilMining,
     ReedField,
     Fishing,
-    CardModal,
-    CardFlip,
-    RoundModal,
+    /** RoundCardActions */
+    VegetableSeed,
   },
 
   setup() {
@@ -304,7 +219,6 @@ export default {
     const playersInRoom = ref(computed(() => store.state.playersInRoom));
     const gameStatus = ref(computed(() => store.state.gameStatus));
     const roomId = gameStatus.value[0].roomId;
-
     console.log(gameStatus);
 
     // 모달 창 관련 함수
@@ -326,6 +240,7 @@ export default {
     const oppoUsedJobCardModal = createModalState();
     const oppoUsedMajorFacCardModal = createModalState();
     const notUsedMajorFacCardModal = createModalState();
+    const scoreTableModal = createModalState();
 
     // helper functions
     const getUserStatus = (gameStatus, userId) => {
@@ -356,30 +271,12 @@ export default {
     // user 정보
     const user = computed(() => store.state.user);
     const myGameStatus = computed(() => getUserStatus(gameStatus, user.value));
-    const myGameResources = computed(() =>
-      getGameResources(resourceMap, myGameStatus)
-    );
-    const myUsedAssiFacCard = getCards(
-      assiFacCardMap,
-      myGameStatus,
-      "usedSubFacilityCard"
-    );
-    const myUsedJobCard = getCards(jobCardMap, myGameStatus, "usedJobCard");
-    const myUsedMajorFacCard = getCards(
-      majorFacCardMap,
-      myGameStatus,
-      "usedMainFacilityCard"
-    );
-    const notUsedAssiFacCard = getCards(
-      assiFacCardMap,
-      myGameStatus,
-      "remainedSubFacilityCard"
-    );
-    const notUsedJobCard = getCards(
-      jobCardMap,
-      myGameStatus,
-      "remainedJobCard"
-    );
+    const myGameResources = computed(() => getGameResources(resourceMap, myGameStatus));
+    const myUsedAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'usedSubFacilityCard');
+    const myUsedJobCard = getCards(jobCardMap, myGameStatus, 'usedJobCard');
+    const myUsedMajorFacCard = getCards(majorFacCardMap, myGameStatus, 'usedMainFacilityCard');
+    const notUsedAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'remainedSubFacilityCard');
+    const notUsedJobCard = getCards(jobCardMap, myGameStatus,'remainedJobCard');
     const myCardData = [
       {
         imgSrc: require("@/assets/images/CardBack/JobCardBack.png"),
@@ -421,26 +318,12 @@ export default {
     console.log("나", user);
 
     // opponent(상대방) 정보
-    const opponent = computed(() =>
-      playersInRoom.value.find((player) => player !== user.value)
-    );
-    const oppoGameStatus = computed(() =>
-      getUserStatus(gameStatus, opponent.value)
-    );
-    const oppoGameResources = computed(() =>
-      getGameResources(resourceMap, oppoGameStatus)
-    );
-    const oppoUsedAssiFacCard = getCards(
-      assiFacCardMap,
-      oppoGameStatus,
-      "usedSubFacilityCard"
-    );
-    const oppoUsedJobCard = getCards(jobCardMap, oppoGameStatus, "usedJobCard");
-    const oppoUsedMajorFacCard = getCards(
-      majorFacCardMap,
-      oppoGameStatus,
-      "usedMainFacilityCard"
-    );
+    const opponent = computed(() => playersInRoom.value.find(player => player !== user.value));
+    const oppoGameStatus = computed(() => getUserStatus(gameStatus, opponent.value));
+    const oppoGameResources = computed(() => getGameResources(resourceMap, oppoGameStatus));
+    const oppoUsedAssiFacCard = getCards(assiFacCardMap, oppoGameStatus, 'usedSubFacilityCard');
+    const oppoUsedJobCard = getCards(jobCardMap, oppoGameStatus, 'usedJobCard');
+    const oppoUsedMajorFacCard = getCards(majorFacCardMap, oppoGameStatus, 'usedMainFacilityCard');
     const oppoCardData = [
       {
         imgSrc: require("@/assets/images/CardBack/JobCardBack.png"),
@@ -475,20 +358,16 @@ export default {
       }
       return user.value;
     });
-
-    // 주요 설비 정보
-    store.state.majorFac = Object.keys(majorFacCardMap);
-    const majorFacCards = ref(computed(() => store.state.majorFac));
     
+    // 주요 설비 정보
+    const majorFacCardsList = Object.keys(majorFacCardMap);
+    const majorFacCards = ref(computed(() => store.state.majorFac)); 
     // 사용되지 않은 주요 설비 카드
     const notUsedMajorFacCard = computed(() => {
-      const usedMajorFacCards = new Set([
-        ...myUsedMajorFacCard.value,
-        ...oppoUsedMajorFacCard.value,
-      ]);
+      const usedMajorFacCards = new Set([...myUsedMajorFacCard.value, ...oppoUsedMajorFacCard.value]);
       return majorFacCards.value
-        .filter((key) => !usedMajorFacCards.has(key))
-        .map((key) => {
+        .filter(key => !usedMajorFacCards.has(key))
+        .map(key => {
           const { name, name_kr, image } = majorFacCardMap[key];
           return { name, name_kr, image, value: majorFacCards[key] };
         });
@@ -533,6 +412,19 @@ export default {
         userId: [{ userId: host.value }, { userId: guest.value }],
       };
       socket.emit("skipGame", skipGameData);
+      socket.once("skipGame",() => {
+        socket.emit("accumulateGoods",{
+          roomId: roomId,
+          accList: [
+            "woodAccumulated", 
+            "sandAccumulated", 
+            "reedAccumulated", 
+            "foodAccumulated",
+            "sheepAccumulated", 
+            "stoneAccumulatedWest"
+            ]
+        });
+      });
     };
 
     const myFarm = ref(farmRef);
@@ -564,7 +456,7 @@ export default {
 
     onMounted(() => {
       showRound();
-
+      store.commit("setMajorFac",majorFacCardsList);
       socket.once("startRound", () => {
         store.commit("setCurrentRound", currentRound.value + 1);
         showRound();
@@ -572,13 +464,25 @@ export default {
 
       socket.on("skipGame", (data) => {
         store.commit("setCurrentRound", data.skipRound);
-        const updatedStatus = data.updatedPlayer.map(
-          (player) => player.playerDetail
-        );
+        const updatedStatus = data.updatedPlayer.map(player => player.playerDetail);
         store.commit("setGameStatus", updatedStatus);
-        store.commit("setMajorFac",data.updatedPlayer[0].remainedMainFacilityCard);
-        console.log(majorFacCards)
+        store.commit("setMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);
         showRound();
+      });
+
+      socket.on("useActionSpace",(data) => {
+        for(let player of gameStatus.value){
+          if(player.UserId == data.UserId){
+            if(data.UserId === host.value){
+              gameStatus.value[0] = data;
+              console.log(user.value);
+          } else{
+              gameStatus.value[1] = data;
+              console.log(user.value);
+            }
+          }
+        }
+        store.commit("setGameStatus",gameStatus);
       });
     });
 
@@ -603,6 +507,7 @@ export default {
       skipGame,
       currentRound,
       showRoundModal,
+      scoreTableModal
     };
   },
 };

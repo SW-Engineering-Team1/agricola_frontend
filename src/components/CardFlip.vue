@@ -1,18 +1,7 @@
 <template>
-  <div
-    class="flex justify-center items-center row-span-2 p-0 bg-transparent relative cursor-pointer"
-    :class="{ 'flip': isFlipped }"
-  >
-    <img
-      class="card-face back absolute w-full bg-cover bg-center"
-      :src="backImage"
-      alt="card-back"
-    />
-    <img
-      class="card-face front absolute w-full bg-cover bg-center"
-      :src="frontImage"
-      alt="card-front"
-    />
+  <div class="flex justify-center items-center row-span-2 p-0 bg-transparent relative cursor-pointer" :class="{ 'flip': isFlipped }">
+    <img class="card-face back absolute w-full bg-cover bg-center" :src="backImage" alt="card-back"/>
+    <img class="card-face front absolute w-full bg-cover bg-center" :src="frontImage" alt="card-front"/>
   </div>
 </template>
 
@@ -42,27 +31,15 @@ export default {
         isFlipped.value = true;
       }
     });
-
     return { isFlipped };
   }
 };
 </script>
 
 <style scoped>
-.card-face {
-  backface-visibility: hidden;
-  transition: transform 0.6s;
-}
-.back {
-  transform: rotateY(0deg);
-}
-.front {
-  transform: rotateY(180deg);
-}
-.flip .back {
-  transform: rotateY(-180deg);
-}
-.flip .front {
-  transform: rotateY(0deg);
-}
+.card-face { backface-visibility: hidden; transition: transform 0.6s; }
+.back { transform: rotateY(0deg); }
+.front { transform: rotateY(180deg); }
+.flip .back { transform: rotateY(-180deg); }
+.flip .front { transform: rotateY(0deg); }
 </style>

@@ -1,7 +1,8 @@
+<!-- BaiscAction7 숲 행동칸 -->
 <template>
   <div>
-    <button class="w-full" @click="useGrainSeed">
-      <img src="../assets/images/Action/3_GrainSeed.jpg" alt="grainSeed" />
+    <button class="w-full" @click="useDayLabor">
+      <img src="../assets/images/Action/6_DayLabor.jpg" alt="dayLabor" />
     </button>
   </div>
 </template>
@@ -20,15 +21,15 @@ export default {
     const roomId = ref("");
     const user = computed(() => store.state.user);
 
-    const useGrainSeed = () => {
+    const useDayLabor = () => {
       socket.emit("useActionSpace", {
-        actionName: "addGrainSeed",
-        userId: user.value,
-        roomId: roomId.value,
+        actionName: "GetFood",
+        userId: "vincent_test1",
+        roomId: 1,
         goods: [
           {
-            name: "grain",
-            num: 1,
+            name: "food",
+            num: 2,
             isAdd: true,
           },
         ],
@@ -40,7 +41,7 @@ export default {
     });
     onUnmounted();
     return {
-      useGrainSeed,
+      useDayLabor,
       roomId,
       user,
     };
