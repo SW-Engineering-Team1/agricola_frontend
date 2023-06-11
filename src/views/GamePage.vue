@@ -46,8 +46,13 @@
       <div class="max-w-5xl mx-auto grid content-between">
         <!--  상대  -->
         <div class="flex gap-x-10">
-          <!--  게임 시작 시 상대 농장판  -->
-          <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
+          <!--  상대 농장판  -->
+          <div v-if="showR8StartFarmBoard">
+            <R8StartOppoFarmBoard :OppoFarm="oppoFarm" />
+          </div>
+          <div v-else>
+            <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
+          </div>
           <!--  상대가 사용한 카드  -->
           <div v-for="(card, index) in oppoCardData" :key="index">
             <img
@@ -113,11 +118,16 @@
           </div>
         </div>
 
-        <!--  나  -->
+        <!--  본인  -->
         <div class="flex flex-row-reverse gap-x-10">
-          <!--  내 농장판  -->
-          <InitialMyFarmBoard :myFarm="myFarm" />
-          <!--  내 카드  -->
+          <!--  본인 농장판  -->
+          <div v-if="showR8StartFarmBoard">
+            <R8StartMyFarmBoard :MyFarm="myFarm" />
+          </div>
+          <div v-else>
+            <InitialMyFarmBoard :myFarm="myFarm" />
+          </div>
+          <!--  본인 카드  -->
           <div v-for="(card, index) in myCardData" :key="index" class="relative group">
             <img
               class="w-auto h-56 cursor-pointer transform transition duration-500 ease-in-out hover:scale-110"
@@ -135,7 +145,7 @@
         </div>
       </div>
 
-      <!--  내 자원 표시  -->
+      <!--  본인 자원 표시  -->
       <div>
         <div class="grid grid-rows-12 fixed right-0 top-1/4 bg-[#A2CF5F]">
           <div class="flex">
@@ -159,7 +169,7 @@
 import {computed, onMounted, ref} from "vue";
 import { io } from "socket.io-client";
 import {useStore} from 'vuex';
-import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmRef } from '@/constants';
+import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef } from '@/constants';
 import CardModal from "@/components/CardModal.vue";
 import RoundModal from "@/components/RoundModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
@@ -167,6 +177,8 @@ import ScoreTableModal from '@/components/ScoreTableModal.vue';
 //* FarmBoard */
 import InitialOppoFarmBoard from '@/components/FarmBoard/InitialOppoFarmBoard.vue';
 import InitialMyFarmBoard from '@/components/FarmBoard/InitialMyFarmBoard.vue';
+import R8StartMyFarmBoard from "@/components/FarmBoard/R8StartMyFarmBoard.vue";
+import R8StartOppoFarmBoard from "@/components/FarmBoard/R8StartOppoFarmBoard.vue";
 //* Basic Actions */
 import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
 import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
@@ -185,14 +197,21 @@ import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
 import TurnModal from '@/components/TurnModal.vue'
 
 export default {
+  data() {
+    return {
+      isR8StartOppoFarmBoard: false,
+    };
+  },
   components: {
     TurnModal,
     CardModal,
     RoundModal,
     CardFlip,
     //* FarmBoard */
-    InitialOppoFarmBoard,
     InitialMyFarmBoard,
+    InitialOppoFarmBoard,
+    R8StartMyFarmBoard,
+    R8StartOppoFarmBoard,
     //* Basic Actions */
     ScoreTableModal,
     FarmExpand,
@@ -212,6 +231,7 @@ export default {
   },
 
   setup() {
+    const showR8StartFarmBoard = ref(false);
     const socket = io("localhost:3000");
     const store = useStore();
     const playersInRoom = ref(computed(() => store.state.playersInRoom));
@@ -426,22 +446,8 @@ export default {
             ]
         });
       });
+      showR8StartFarmBoard.value = true;
     };
-
-    const myFarm = ref(farmRef);
-    const oppoFarm = ref(farmRef);
-    // myFarm을 위한 함수들을 동적으로 생성
-    const myFarmFunctions = {};
-    for (let i = 1; i <= 15; i++) {
-      const myFarmName = `openMyFarm${i}`;
-      myFarmFunctions[myFarmName] = () => {
-        console.log(myFarmName);
-      };
-      // 해당 myFarm의 clickHandler를 등록
-      for (const farm of myFarm.value) {
-        farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
-      }
-    }
 
     // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
 
@@ -520,8 +526,6 @@ export default {
       oppoGameResources,
       oppoCardData,
       notUsedMajorFacCardData,
-      myFarm,
-      oppoFarm,
       resetCurrentRound,
       startRound,
       skipGame,
@@ -529,7 +533,8 @@ export default {
       showRoundModal,
       scoreTableModal,
       endTurn,
-      isMyTurn
+      isMyTurn,
+      showR8StartFarmBoard,
     };
   },
 };
