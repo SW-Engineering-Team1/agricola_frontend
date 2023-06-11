@@ -22,18 +22,22 @@ export default {
       required: true,
     },
   },
-  methods: {
-    closeModal() {
-      this.$emit('close');
-    },
-  },
-  setup(){
+  // methods: {
+  //   closeModal() {
+  //     this.$emit('close');
+  //   },
+  // },
+  setup(props,context){
     const socket = io("localhost:3000");
     const store = useStore();
     const route = useRoute();
 
     const roomId = ref("");
     const user = computed(() => store.state.user);
+
+    const closeModal = () => {
+      context.emit("close");
+    }
     const bakeBread = () => {
       socket.emit("useActionSpace",{
         "actionName":"Bake Bread",
@@ -47,6 +51,7 @@ export default {
           }
         ]
       });
+      closeModal();
     }
     onMounted(async () => {
       roomId.value = route.params.room;

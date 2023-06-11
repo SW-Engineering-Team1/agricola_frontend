@@ -3,7 +3,7 @@
   <div class="flex justify-center">
     <div class="bg-green-700 grid grid-cols-5 gap-2 p-2">
       <img
-        v-for="farm in MyFarm"
+        v-for="farm in myFarm"
         :key="farm.id"
         @click="farm.clickHandler"
         :src="farm.imgSrc"
@@ -25,53 +25,54 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import { io } from "socket.io-client";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { farmRef } from '@/constants';
+// import { farmRef } from '@/constants';
 export default {
-  setup() {
+  setup(props) {
     const socket = io("localhost:3000");
     const store = useStore();
     const route = useRoute();
 
     const roomId = ref("");
     const user = computed(() => store.state.user);
-    const myFarm = ref(farmRef);
+    const myFarm = ref(props.MyFarm);
     // myFarm을 위한 함수들을 동적으로 생성
     const myFarmFunctions = {};
-    for (let i = 1; i <= 15; i++) {
-      const myFarmName = `openMyFarm${i}`;
-      if(i === 15) {
-        myFarmFunctions[myFarmName] = () => {
-          socket.emit("useActionSpace",{
-            "actionName":"Grain Utilization",
-            "userId": user.value,
-            "roomId": roomId.value,
-            "goods":[
-              {
-                "name":"vege",
-                "num":1,
-                "isAdd":false
-              },
-              {
-                "id":15,
-                "kind":"vege"
-              }
-            ]
-          })
-        };
-      } else {
-        myFarmFunctions[myFarmName] = () => {
-          console.log(myFarmName);
-        };
-      }
+    // console.log(props.MyFarm)
+    
+    onMounted(async () => {
+      roomId.value = route.params.room;
+      for (let i = 1; i <= 15; i++) {
+        const myFarmName = `openMyFarm${i}`;
+        if(i === 15) {
+          myFarmFunctions[myFarmName] = () => {
+            socket.emit("useActionSpace",{
+              "actionName":"Grain Utilization",
+              "userId": user.value,
+              "roomId": roomId.value,
+              "goods":[
+                {
+                  "name":"vege",
+                  "num":1,
+                  "isAdd":false
+                },
+                {
+                  "id":15,
+                  "kind":"vege"
+                }
+              ]
+            })
+          };
+        } else {
+          myFarmFunctions[myFarmName] = () => {
+            console.log(myFarmName);
+          };
+        }
       // 해당 myFarm의 clickHandler를 등록
       for (const farm of myFarm.value) {
         farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
       }
     }
-    onMounted(async () => {
-      roomId.value = route.params.room;
     });
-
     onUnmounted(() => {
       socket.off("useActionSpace");
     });
@@ -88,21 +89,21 @@ export default {
       type: Array,
       required: true,
       default: () => [
-        { id: 1, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
-        { id: 2, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
-        { id: 3, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
-        { id: 4, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
-        { id: 5, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
-        { id: 6, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true, isRedBorderLeft: true },
-        { id: 7, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true },
-        { id: 8, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true },
-        { id: 9, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true, isRedBorderRight: true },
-        { id: 10, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
-        { id: 11, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true, isRedBorderLeft: true },
-        { id: 12, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true },
-        { id: 13, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true },
-        { id: 14, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true, isRedBorderRight: true },
-        { id: 15, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 1, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 2, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 3, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 4, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 5, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 6, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true, isRedBorderLeft: true },
+        { id: 7, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true },
+        { id: 8, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true },
+        { id: 9, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true, isRedBorderRight: true },
+        { id: 10, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 11, type: "farm" , mgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true, isRedBorderLeft: true },
+        { id: 12, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true },
+        { id: 13, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true },
+        { id: 14, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true, isRedBorderRight: true },
+        { id: 15, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg') },
       ]
     }
   },
