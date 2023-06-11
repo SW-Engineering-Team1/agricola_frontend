@@ -76,8 +76,8 @@
             <CardFlip :round="1" :frontImage="rounds[0].imgSrc" :backImage="rounds[0].backImgSrc" />
             <CardFlip :round="2" :frontImage="rounds[1].imgSrc" :backImage="rounds[1].backImgSrc" />
             <CardFlip :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" />
-            <CardFlip :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
-            <CardFlip :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
+            <VegetableSeed :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
+            <CowMarket :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
             <CardFlip :round="12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
             <CardFlip :round="14" :frontImage="rounds[13].imgSrc" :backImage="rounds[13].backImgSrc" />
             <MeetingPlace class="flex justify-center items-center"/>
@@ -85,7 +85,7 @@
             <Forest class="flex justify-center items-center"/>
             <CardFlip :round="3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
             <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" />
-            <CardFlip :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" />
+            <PigMarket :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" />
             <CardFlip :round="11" :frontImage="rounds[10].imgSrc" :backImage="rounds[10].backImgSrc" />
             <CardFlip :round="13" :frontImage="rounds[12].imgSrc" :backImage="rounds[12].backImgSrc" />
             <div class="row-span-2" />
@@ -170,6 +170,15 @@
 </template>
 
 <script>
+import {computed, onMounted, ref} from "vue";
+import { io } from "socket.io-client";
+import {useStore} from 'vuex';
+import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmRef } from '@/constants';
+import CardModal from "@/components/CardModal.vue";
+import RoundModal from "@/components/RoundModal.vue";
+import CardFlip from "@/components/CardFlip.vue";
+import ScoreTableModal from '@/components/ScoreTableModal.vue';
+//* Basic Actions */
 import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
 import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
 import GrainSeed from "@/components/BasicActions/GrainSeed.vue";
@@ -180,17 +189,17 @@ import Forest from "@/components/BasicActions/Forest.vue";
 import SoilMining from "@/components/BasicActions/SoilMining.vue";
 import ReedField from "@/components/BasicActions/ReedField.vue";
 import Fishing from "@/components/BasicActions/Fishing.vue";
-import {computed, onMounted, ref} from "vue";
-import { io } from "socket.io-client";
-import {useStore} from 'vuex';
-import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmRef } from '@/constants';
-import CardModal from "@/components/CardModal.vue";
-import CardFlip from "@/components/CardFlip.vue";
-import RoundModal from "@/components/RoundModal.vue";
-import ScoreTableModal from '@/components/ScoreTableModal.vue';
+//* RoundCard Actions */
+import VegetableSeed from "@/components/RoundCardActions/VegetableSeed.vue";
+import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
+import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
 
 export default {
   components: {
+    CardModal,
+    RoundModal,
+    CardFlip,
+    //* Basic Actions */
     ScoreTableModal,
     FarmExpand,
     MeetingPlace,
@@ -202,9 +211,10 @@ export default {
     SoilMining,
     ReedField,
     Fishing,
-    CardModal,
-    CardFlip,
-    RoundModal,
+    //* RoundCard Actions */
+    VegetableSeed,
+    PigMarket,
+    CowMarket,
   },
 
   setup() {
