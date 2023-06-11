@@ -1,30 +1,39 @@
 <!--  RoundCardAction8 채소 종자  -->
 <template>
-  <div @click="useVegetableSeed" class="flex justify-center items-center row-span-2 p-0 bg-transparent relative cursor-pointer" :class="{ 'flip': isFlipped }">
+  <div
+    @click="handleClick(isMyTurn)"
+    class="flex justify-center items-center row-span-2 p-0 bg-transparent relative cursor-pointer"
+    :class="{ 'flip': isFlipped, 'w-full cursor-pointer transform transition duration-500 ease-in-out hover:scale-110': true, 'pointer-events-none': !isMyTurn }"
+  >
     <img class="card-face back absolute w-full bg-cover bg-center" :src="backImage" alt="card-back"/>
     <img class="card-face front absolute w-full bg-cover bg-center" :src="frontImage" alt="card-front"/>
   </div>
 </template>
 
 <script>
-import { computed, ref, watch } from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {useStore} from 'vuex'
 import { io } from "socket.io-client";
+import {useRoute} from 'vue-router'
 
 export default {
   props: {
     frontImage: String,
     backImage: String,
-    round: Number
+    round: Number,
+    isMyTurn: {
+      type: Boolean,
+      required: true,
+    },
   },
   setup(props) {
     const isFlipped = ref(false);
     const store = useStore();
     const socket = io("localhost:3000");
+    const route = useRoute();
+    const roomId = ref("");
 
     const user = ref(computed(() => store.state.user));
-    const gameStatus = ref(computed(() => store.state.gameStatus));
-    const roomId = gameStatus.value[0].roomId;
 
     if (store.state.currentRound >= props.round) {
       isFlipped.value = true;
@@ -38,21 +47,32 @@ export default {
 
     const useVegetableSeed = () => {
       if (props.round === 8) {
-        socket.emit("useActionSpace",{
-          "actionName": "else",
-          "userId": user.value,
-          "roomId": roomId,
-          "goods" : [
+        socket.emit("useActionSpace", {
+          actionName: "addVegetableSeed",
+          userId: user.value,
+          roomId: roomId.value,
+          goods : [
             { 
-              "name": "vegeOnStorage",
-              "num": 1,
-              "isAdd": true
+              name: "vegeOnStorage",
+              num: 1,
+              isAdd: true
             }
           ] 
         });
       }
     }
-    return { isFlipped, useVegetableSeed };
+
+    const handleClick = (isMyTurn) => {
+      if (isMyTurn) {
+        useVegetableSeed();
+      }
+    }
+
+    onMounted(async () => {
+      roomId.value = route.params.room;
+    });
+
+    return { isFlipped, handleClick };
   }
 };
 </script>

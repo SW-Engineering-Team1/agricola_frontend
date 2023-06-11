@@ -1,18 +1,27 @@
 <!-- Action7 숲 행동칸 -->
 <template>
   <div>
-    <button @click="useForest">
-      <img src="@/assets/images/Action/7_Forest.jpg" class="w-full" alt="forest" />
-    </button>
+    <img
+      src="@/assets/images/Action/7_Forest.jpg"
+      @click="handleClick(isMyTurn)"
+      :class="{'w-full cursor-pointer transform transition duration-500 ease-in-out hover:scale-110': true, 'pointer-events-none': !isMyTurn}"
+      alt="forest"
+    />
   </div>
 </template>
 <script>
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { io } from "socket.io-client";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
 export default {
+  props: {
+    isMyTurn: {
+      type: Boolean,
+      required: true,
+    },
+  },
   setup() {
     const socket = io("localhost:3000");
     const store = useStore();
@@ -20,10 +29,9 @@ export default {
 
     const roomId = ref("");
     const user = computed(() => store.state.user);
-    const woodAccumulated = ref("");
+    const woodAccumulated = ref(computed(() => store.state.accumulatedResources.woodAccumulated));
 
     const useForest = () => {
-      //if(turn 종료 후 )
       socket.emit("useActionSpace", {
         actionName: "Use Accumulated Goods",
         userId: user.value,
@@ -40,20 +48,16 @@ export default {
 
     onMounted(async () => {
       roomId.value = route.params.room;
-      socket.on("accumulateGoods", (data) => {
-        woodAccumulated.value = data.result.woodAccumulated;
-      });
     });
 
-    onUnmounted(() => {
-      socket.off("useActionSpace");
-    });
+    const handleClick = (isMyTurn) => {
+      if (isMyTurn) {
+        useForest();
+      }
+    }
 
     return {
-      useForest,
-      roomId,
-      user,
-      woodAccumulated,
+      handleClick,
     };
   },
 };

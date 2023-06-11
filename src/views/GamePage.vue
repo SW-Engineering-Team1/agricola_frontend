@@ -76,27 +76,27 @@
         <!--  게임 진행판  -->
         <div class="bg-gradient-to-r from-[#B2C95E] via-[#95AD4B] to-[#7C9432] p-2">
           <div class="grid grid-cols-8 gap-2 p-2">
-            <FarmExpand class="flex justify-center items-center"/>
+            <FarmExpand class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <CardFlip :round="1" :frontImage="rounds[0].imgSrc" :backImage="rounds[0].backImgSrc" />
             <CardFlip :round="2" :frontImage="rounds[1].imgSrc" :backImage="rounds[1].backImgSrc" />
             <CardFlip :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" />
-            <VegetableSeed :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
-            <CowMarket :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
+            <VegetableSeed :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" :isMyTurn="isMyTurn" />
+            <CowMarket :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" :isMyTurn="isMyTurn" />
             <CardFlip :round="12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
             <CardFlip :round="14" :frontImage="rounds[13].imgSrc" :backImage="rounds[13].backImgSrc" />
-            <MeetingPlace class="flex justify-center items-center"/>
-            <GrainSeed class="flex justify-center items-center" :isMyTurn="isMyTurn"/>
-            <Forest class="flex justify-center items-center"/>
+            <MeetingPlace class="flex justify-center items-center" :isMyTurn="isMyTurn"/>
+            <GrainSeed class="flex justify-center items-center" :isMyTurn="isMyTurn" />
+            <Forest class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <CardFlip :round="3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
             <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" />
-            <PigMarket :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" />
+            <PigMarket :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" :isMyTurn="isMyTurn" />
             <CardFlip :round="11" :frontImage="rounds[10].imgSrc" :backImage="rounds[10].backImgSrc" />
             <CardFlip :round="13" :frontImage="rounds[12].imgSrc" :backImage="rounds[12].backImgSrc" />
             <div class="row-span-2" />
-            <Farmland class="flex justify-center items-center"/>
-            <SoilMining class="flex justify-center items-center"/>
-            <Instruction class="flex justify-center items-center"/>
-            <ReedField class="flex justify-center items-center"/>
+            <Farmland class="flex justify-center items-center" :isMyTurn="isMyTurn" />
+            <SoilMining class="flex justify-center items-center" :isMyTurn="isMyTurn" />
+            <Instruction class="flex justify-center items-center" :isMyTurn="isMyTurn" />
+            <ReedField class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <CardFlip :round="4" :frontImage="rounds[3].imgSrc" :backImage="rounds[3].backImgSrc" />
             <CardFlip :round="7" :frontImage="rounds[6].imgSrc" :backImage="rounds[6].backImgSrc" />
             <div class="row-span-2" />
@@ -117,7 +117,7 @@
               />
             </div>
             <DayLabor class="flex justify-center items-center" :isMyTurn="isMyTurn" />
-            <Fishing class="flex justify-center items-center" />
+            <Fishing class="flex justify-center items-center" :isMyTurn="isMyTurn" />
           </div>
         </div>
 
@@ -427,19 +427,7 @@ export default {
         userId: [{ userId: host.value }, { userId: guest.value }],
       };
       socket.emit("skipGame", skipGameData);
-      socket.once("skipGame",() => {
-        socket.emit("accumulateGoods",{
-          roomId: roomId,
-          accList: [
-            "woodAccumulated", 
-            "sandAccumulated", 
-            "reedAccumulated", 
-            "foodAccumulated",
-            "sheepAccumulated", 
-            "stoneAccumulatedWest"
-            ]
-        });
-      });
+
       if (round === 8) {
         showR8StartFarmBoard.value = true;
         showR14StartFarmBoard.value = false;
@@ -481,10 +469,29 @@ export default {
 
       socket.on("skipGame", (data) => {
         store.commit("setCurrentRound", data.skipRound);
+        socket.emit("accumulateGoods", {
+          roomId: roomId,
+          accList: [
+            "foodAccumulated",
+            "woodAccumulated",
+            "sandAccumulated",
+            "reedAccumulated",
+            "stoneAccumulatedEast",
+            "stoneAccumulatedWest",
+            "sheepAccumulated",
+            "cowAccumulated",
+            "pigAccumulated",
+          ]
+        });
+
         const updatedStatus = data.updatedPlayer.map(player => player.playerDetail);
         store.commit("setGameStatus", updatedStatus);
         store.commit("setRemainedMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);
         showRound();
+      });
+
+      socket.on("accumulateGoods", (data) => {
+        store.commit("setAccumulatedResources", data.result);
       });
 
       socket.on("useActionSpace", (data) => {
@@ -504,6 +511,7 @@ export default {
 
         if ('updateResult' in data) { // data에 'updateResult'가 있는 경우 (ex. 숲)
           handleData(data.updateResult);
+          store.commit("setAccumulatedResources", data.accResult);
         } else { // data에 'updateResult'가 없고 바로 result만 있는 경우 (ex. 채소종자)
           handleData(data);
         }

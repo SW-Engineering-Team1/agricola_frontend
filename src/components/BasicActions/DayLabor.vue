@@ -3,7 +3,7 @@
   <div>
     <img
       src="@/assets/images/Action/6_DayLabor.jpg"
-      @click="isMyTurn ? useDayLabor : null"
+      @click="handleClick(isMyTurn)"
       :class="{'w-full cursor-pointer transform transition duration-500 ease-in-out hover:scale-110': true, 'pointer-events-none': !isMyTurn}"
       alt="dayLabor"
     />
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { io } from "socket.io-client";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -31,7 +31,6 @@ export default {
     const user = computed(() => store.state.user);
 
     const useDayLabor = () => {
-      console.log("click dayLabor");
       socket.emit("useActionSpace", {
         actionName: "GetFood",
         userId: user.value,
@@ -46,14 +45,18 @@ export default {
       });
     };
 
+    const handleClick = (isMyTurn) => {
+      if (isMyTurn) {
+        useDayLabor();
+      }
+    }
+
     onMounted(async () => {
       roomId.value = route.params.room;
     });
-    onUnmounted();
+
     return {
-      useDayLabor,
-      roomId,
-      user,
+      handleClick,
     };
   },
 };
