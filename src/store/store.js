@@ -9,7 +9,7 @@ const getDefaultState = () => {
     host: null,
     playersInRoom: [],
     gameStatus: [],
-    majorFac: [],
+    remainedMajorFac: [],
     currentRound: 1,
   }
 }
@@ -35,8 +35,8 @@ export default createStore({
     setGameStatus(state, gameStatus) {
       state.gameStatus = gameStatus;
     },
-    setMajorFac(state, majorFac) {
-      state.majorFac = majorFac;
+    setRemainedMajorFac(state, remainedMajorFac) {
+      state.remainedMajorFac = remainedMajorFac;
     },
     setCurrentRound(state, currentRound) {
       state.currentRound = currentRound;

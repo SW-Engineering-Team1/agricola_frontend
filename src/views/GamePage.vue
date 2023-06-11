@@ -351,7 +351,7 @@ export default {
     
     // 주요 설비 정보
     const majorFacCardsList = Object.keys(majorFacCardMap);
-    const majorFacCards = ref(computed(() => store.state.majorFac)); 
+    const majorFacCards = ref(computed(() => store.state.remainedMajorFac));
     // 사용되지 않은 주요 설비 카드
     const notUsedMajorFacCard = computed(() => {
       const usedMajorFacCards = new Set([...myUsedMajorFacCard.value, ...oppoUsedMajorFacCard.value]);
@@ -446,8 +446,10 @@ export default {
 
     onMounted(() => {
       showRound();
-      store.commit("setMajorFac",majorFacCardsList);
-      socket.once("startRound", () => {
+
+      store.commit("setRemainedMajorFac", majorFacCardsList);
+
+      socket.on("startRound", () => {
         store.commit("setCurrentRound", currentRound.value + 1);
         showRound();
       });
@@ -456,23 +458,20 @@ export default {
         store.commit("setCurrentRound", data.skipRound);
         const updatedStatus = data.updatedPlayer.map(player => player.playerDetail);
         store.commit("setGameStatus", updatedStatus);
-        store.commit("setMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);
+        store.commit("setRemainedMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);
         showRound();
       });
 
-      socket.on("useActionSpace",(data) => {
-        for(let player of gameStatus.value){
-          if(player.UserId == data.UserId){
-            if(data.UserId === host.value){
-              gameStatus.value[0] = data;
-              console.log(user.value);
-          } else{
-              gameStatus.value[1] = data;
-              console.log(user.value);
-            }
+      socket.on("useActionSpace", (data) => {
+        const { remainedMainFacilityCard, ...rest } = data;
+        for (let player of gameStatus.value) {
+          if (player.UserId === data.UserId) {
+            if (data.UserId === host.value) gameStatus.value[0] = rest;
+            else gameStatus.value[1] = rest;
           }
         }
-        store.commit("setGameStatus",gameStatus);
+        store.commit("setGameStatus", gameStatus);
+        store.commit("setRemainedMajorFac", remainedMainFacilityCard);
       });
     });
 

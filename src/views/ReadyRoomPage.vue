@@ -116,7 +116,7 @@ export default {
 
         socket.on("startGame", (gameStatus) => {
           store.commit('setGameStatus', gameStatus.result.gameStatusList);
-          store.commit('setMajorFac', gameStatus.result.mainFacilityList);
+          store.commit('setRemainedMajorFac', gameStatus.result.mainFacilityList);
           router.push(`/room/${roomId.value}/game`);
         });
 
