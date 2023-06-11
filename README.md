@@ -130,11 +130,11 @@ Test
 
 ## Contributor
 
-|     | name          | main               | github address                    | contact             |
-| --- | ------------- | ------------------ | --------------------------------- | ------------------- |
-|     | Seoungho Kim  | Frontend Developer | https://github.com/BaeGayeon      | gying09@gmail.com   |
-|     | Yohan An      | Frontend Developer | https://github.com/Minjae-vincent | alswo9853@gmail.com |
-|     | Jeongbin Parm | Frontend Developer | asdf                              | adsf                |
+|     | name          | main               | github address                        | contact             |
+| --- | ------------- | ------------------ | ------------------------------------- | ------------------- |
+|     | Jeongbin Park | Frontend Developer| https://github.com/dev-jjjjjeong-bin  | 0226pjb@naver.com   |
+|     | Seoungho Kim  | Frontend Developer | https://github.com/Minjae-vincent     | alswo9853@gmail.com |
+|     | Yohan An      | Frontend Developer | asdf                                  | adsf                |
 
 ## How to contribute
 
