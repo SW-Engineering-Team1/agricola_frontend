@@ -2,7 +2,7 @@
 <template>
   <div>
     <button @click="useSoilMining" >
-      <img src="../assets/images/Action/8_SoilMining.jpg" class="w-full" alt="seedMining"/>
+      <img src="../../assets/images/Action/8_SoilMining.jpg" class="w-full" alt="seedMining"/>
     </button>
   </div>
 </template>

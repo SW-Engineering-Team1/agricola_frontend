@@ -1,11 +1,9 @@
-<<<<<<< Updated upstream:src/components/GrainSeed.vue
-=======
 <!--  BasicAction3 곡식종자 행동칸  -->
 >>>>>>> Stashed changes:src/components/BasicActions/GrainSeed.vue
 <template>
   <div>
     <button class="w-full" @click="useGrainSeed">
-      <img src="../assets/images/Action/3_GrainSeed.jpg" alt="grainSeed" />
+        <img src="@/assets/images/Action/3_GrainSeed.jpg" alt="grainSeed" />
     </button>
   </div>
 </template>
@@ -15,6 +13,7 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import { io } from "socket.io-client";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+
 export default {
   setup() {
     const socket = io("localhost:3000");
@@ -31,7 +30,7 @@ export default {
         roomId: roomId.value,
         goods: [
           {
-            name: "grain",
+            name: "grainonStorage",
             num: 1,
             isAdd: true,
           },

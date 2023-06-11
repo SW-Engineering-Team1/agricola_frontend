@@ -3,7 +3,7 @@
 <template>
   <div>
     <button @click="useFarmExpand" >
-      <img src="../assets/images/Action/1_FarmExpand.jpg" class="w-full" alt="farmExpand"/>
+      <img src="../../assets/images/Action/1_FarmExpand.jpg" class="w-full" alt="farmExpand"/>
     </button>
   </div>
 </template>

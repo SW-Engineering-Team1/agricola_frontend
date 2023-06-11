@@ -1,6 +1,7 @@
 <template>
   <div>
     <RoundModal v-if="showRoundModal" :round="currentRound" />
+    <TurnModal v-if="isMyTurn && !showRoundModal" />
     <ScoreTableModal :show="scoreTableModal.showModal.value" @close="scoreTableModal.toggleModal"/>
     <button class="flex justify-center fixed w-36 left-5 top-5 bg-cyan-400 text-white font-bold p-3 rounded hover:bg-cyan-600" @click="scoreTableModal.toggleModal">
       점수표
@@ -16,6 +17,11 @@
     </button>
     <button class="flex justify-center fixed w-36 right-5 top-52 bg-yellow-400 text-white font-bold p-3 rounded hover:bg-yellow-600" @click="startRound">
       라운드 시작
+    </button>
+    <button
+      v-if="isMyTurn"
+      class="flex justify-center fixed w-36 right-5 bottom-5 bg-yellow-400 text-white font-bold p-3 rounded hover:bg-yellow-600" @click="endTurn">
+      턴 종료
     </button>
 
     <div class="flex justify-between w-full h-screen overflow-scroll bg-[#B3B85E]">
@@ -41,16 +47,14 @@
         <!--  상대  -->
         <div class="flex gap-x-10">
           <!--  상대 농장판  -->
-          <div class="flex justify-center">
-            <div class="bg-green-700 grid grid-cols-5 gap-2 p-2 rotate-180">
-              <img
-                v-for="farm in oppoFarm"
-                :key="farm.id"
-                :src="farm.imgSrc"
-                alt="oppoFarm"
-                class="w-16 h-16"
-              />
-            </div>
+          <div v-if="showR8StartFarmBoard">
+            <R8StartOppoFarmBoard :OppoFarm="oppoFarm" />
+          </div>
+          <div v-else-if="showR14StartFarmBoard">
+            <R14StartOppoFarmBoard :OppoFarm="oppoFarm" />
+          </div>
+          <div v-else>
+            <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
           </div>
           <!--  상대가 사용한 카드  -->
           <div v-for="(card, index) in oppoCardData" :key="index">
@@ -78,6 +82,7 @@
             <CardFlip :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" />
             <VegetableSeed :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
             <CardFlip :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
+            <CowMarket :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
             <CardFlip :round="12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
             <CardFlip :round="14" :frontImage="rounds[13].imgSrc" :backImage="rounds[13].backImgSrc" />
             <MeetingPlace class="flex justify-center items-center"/>
@@ -117,21 +122,19 @@
           </div>
         </div>
 
-        <!--  나  -->
+        <!--  본인  -->
         <div class="flex flex-row-reverse gap-x-10">
-          <!--  내 농장판  -->
-          <div class="flex justify-center">
-            <div class="bg-green-700 grid grid-cols-5 gap-2 p-2">
-              <button
-                v-for="farm in myFarm"
-                :key="farm.id"
-                @click="farm.clickHandler"
-              >
-                <img :src="farm.imgSrc" alt="farm" class="w-16 h-16" />
-              </button>
-            </div>
+          <!--  본인 농장판  -->
+          <div v-if="showR8StartFarmBoard">
+            <R8StartMyFarmBoard :MyFarm="myFarm" />
           </div>
-          <!--  내 카드  -->
+          <div v-else-if="showR14StartFarmBoard">
+            <R14StartMyFarmBoard :MyFarm="myFarm" />
+          </div>
+          <div v-else>
+            <InitialMyFarmBoard :myFarm="myFarm" />
+          </div>
+          <!--  본인 카드  -->
           <div v-for="(card, index) in myCardData" :key="index" class="relative group">
             <img
               class="w-auto h-56 cursor-pointer transform transition duration-500 ease-in-out hover:scale-110"
@@ -149,7 +152,7 @@
         </div>
       </div>
 
-      <!--  내 자원 표시  -->
+      <!--  본인 자원 표시  -->
       <div>
         <div class="grid grid-rows-12 fixed right-0 top-1/4 bg-[#A2CF5F]">
           <div class="flex">
@@ -173,12 +176,19 @@
 import {computed, onMounted, ref} from "vue";
 import { io } from "socket.io-client";
 import {useStore} from 'vuex';
-import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmRef } from '@/constants';
+import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef } from '@/constants';
 import CardModal from "@/components/CardModal.vue";
-import CardFlip from "@/components/CardFlip.vue";
 import RoundModal from "@/components/RoundModal.vue";
+import CardFlip from "@/components/CardFlip.vue";
 import ScoreTableModal from '@/components/ScoreTableModal.vue';
-/** BasicActions */
+//* FarmBoard */
+import InitialOppoFarmBoard from '@/components/FarmBoard/InitialOppoFarmBoard.vue';
+import InitialMyFarmBoard from '@/components/FarmBoard/InitialMyFarmBoard.vue';
+import R8StartMyFarmBoard from "@/components/FarmBoard/R8StartMyFarmBoard.vue";
+import R8StartOppoFarmBoard from "@/components/FarmBoard/R8StartOppoFarmBoard.vue";
+import R14StartMyFarmBoard from "@/components/FarmBoard/R14StartMyFarmBoard.vue";
+import R14StartOppoFarmBoard from "@/components/FarmBoard/R14StartOppoFarmBoard.vue";
+//* Basic Actions */
 import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
 import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
 import GrainSeed from "@/components/BasicActions/GrainSeed.vue";
@@ -189,16 +199,33 @@ import Forest from "@/components/BasicActions/Forest.vue";
 import SoilMining from "@/components/BasicActions/SoilMining.vue";
 import ReedField from "@/components/BasicActions/ReedField.vue";
 import Fishing from "@/components/BasicActions/Fishing.vue";
-/** RoundCardActions */
+//* RoundCard Actions */
 import VegetableSeed from "@/components/RoundCardActions/VegetableSeed.vue";
+import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
+import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
+import TurnModal from '@/components/TurnModal.vue'
 
 export default {
+  data() {
+    return {
+      isR8StartFarmBoard: false,
+      isR14StartFarmBoard: false,
+    };
+  },
   components: {
-    ScoreTableModal,
+    TurnModal,
     CardModal,
-    CardFlip,
     RoundModal,
-    /** BasicActions */
+    CardFlip,
+    //* FarmBoard */
+    InitialMyFarmBoard,
+    InitialOppoFarmBoard,
+    R8StartMyFarmBoard,
+    R8StartOppoFarmBoard,
+    R14StartMyFarmBoard,
+    R14StartOppoFarmBoard,
+    //* Basic Actions */
+    ScoreTableModal,
     FarmExpand,
     MeetingPlace,
     GrainSeed,
@@ -209,11 +236,15 @@ export default {
     SoilMining,
     ReedField,
     Fishing,
-    /** RoundCardActions */
+    //* RoundCard Actions */
     VegetableSeed,
+    PigMarket,
+    CowMarket,
   },
 
   setup() {
+    const showR8StartFarmBoard = ref(false);
+    const showR14StartFarmBoard = ref(false);
     const socket = io("localhost:3000");
     const store = useStore();
     const playersInRoom = ref(computed(() => store.state.playersInRoom));
@@ -231,8 +262,6 @@ export default {
       return { showModal, toggleModal };
     };
 
-    const notUsedAssiFacCardModal = createModalState();
-    const notUsedJobCardModal = createModalState();
     const myUsedJobCardModal = createModalState();
     const myUsedAssiFacCardModal = createModalState();
     const myUsedMajorFacCardModal = createModalState();
@@ -275,22 +304,20 @@ export default {
     const myUsedAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'usedSubFacilityCard');
     const myUsedJobCard = getCards(jobCardMap, myGameStatus, 'usedJobCard');
     const myUsedMajorFacCard = getCards(majorFacCardMap, myGameStatus, 'usedMainFacilityCard');
-    const notUsedAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'remainedSubFacilityCard');
-    const notUsedJobCard = getCards(jobCardMap, myGameStatus,'remainedJobCard');
     const myCardData = [
       {
         imgSrc: require("@/assets/images/CardBack/JobCardBack.png"),
         alt: "myUsedJobCard",
         modal: myUsedJobCardModal,
         cards: myUsedJobCard,
-        cardType: "사용한 직업",
+        cardType: "직업",
       },
       {
         imgSrc: require("@/assets/images/CardBack/AssiFacCardBack.png"),
         alt: "myUsedAssiFacCard",
         modal: myUsedAssiFacCardModal,
         cards: myUsedAssiFacCard,
-        cardType: "사용한 보조 설비",
+        cardType: "보조 설비",
       },
       {
         imgSrc: require("@/assets/images/CardBack/MajorFacCardBack.png"),
@@ -299,21 +326,10 @@ export default {
         cards: myUsedMajorFacCard,
         cardType: "사용한 주요 설비",
       },
-      {
-        imgSrc: require("@/assets/images/CardBack/NotUsedAssiFacCardBack.png"),
-        alt: "notUsedAssiFacCard",
-        modal: notUsedAssiFacCardModal,
-        cards: notUsedAssiFacCard,
-        cardType: "사용하지 않은 보조 설비",
-      },
-      {
-        imgSrc: require("@/assets/images/CardBack/NotUsedJobCardBack.png"),
-        alt: "notUsedJobCard",
-        modal: notUsedJobCardModal,
-        cards: notUsedJobCard,
-        cardType: "사용하지 않은 직업",
-      },
     ];
+    const isMyTurn = ref(computed(() => {
+      return myGameStatus.value.isMyTurn;
+    }))
 
     console.log("나", user);
 
@@ -330,14 +346,14 @@ export default {
         alt: "oppoUsedJobCard",
         modal: oppoUsedJobCardModal,
         cards: oppoUsedJobCard,
-        cardType: "상대가 사용한 직업",
+        cardType: "상대 직업",
       },
       {
         imgSrc: require("@/assets/images/CardBack/AssiFacCardBack.png"),
         alt: "oppoUsedAssiFacCard",
         modal: oppoUsedAssiFacCardModal,
         cards: oppoUsedAssiFacCard,
-        cardType: "상대가 사용한 보조 설비",
+        cardType: "상대 보조 설비",
       },
       {
         imgSrc: require("@/assets/images/CardBack/MajorFacCardBack.png"),
@@ -361,7 +377,7 @@ export default {
     
     // 주요 설비 정보
     const majorFacCardsList = Object.keys(majorFacCardMap);
-    const majorFacCards = ref(computed(() => store.state.majorFac)); 
+    const majorFacCards = ref(computed(() => store.state.remainedMajorFac));
     // 사용되지 않은 주요 설비 카드
     const notUsedMajorFacCard = computed(() => {
       const usedMajorFacCards = new Set([...myUsedMajorFacCard.value, ...oppoUsedMajorFacCard.value]);
@@ -425,26 +441,20 @@ export default {
             ]
         });
       });
-    };
 
-    const myFarm = ref(farmRef);
-    const oppoFarm = ref(farmRef);
-    // myFarm을 위한 함수들을 동적으로 생성
-    const myFarmFunctions = {};
-    for (let i = 1; i <= 15; i++) {
-      const myFarmName = `openMyFarm${i}`;
-      myFarmFunctions[myFarmName] = () => {
-        console.log(myFarmName);
-      };
-      // 해당 myFarm의 clickHandler를 등록
-      for (const farm of myFarm.value) {
-        farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
+      if (round === 8) {
+        showR8StartFarmBoard.value = true;
+        showR14StartFarmBoard.value = false;
       }
-    }
+      else if (round === 14) {
+        showR8StartFarmBoard.value = false;
+        showR14StartFarmBoard.value = true;
+      }
+    };
 
     // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
 
-    // RoundModal
+    // 현재 라운드 모달
     const showRoundModal = ref(false);
     const showRound = () => {
       showRoundModal.value = true;
@@ -453,11 +463,20 @@ export default {
       }, 2000);
     };
 
+    // 턴 종료
+    const endTurn = () => {
+      socket.emit("endTurn", {
+        roomId: roomId,
+        userId: user.value,
+      });
+    };
 
     onMounted(() => {
       showRound();
-      store.commit("setMajorFac",majorFacCardsList);
-      socket.once("startRound", () => {
+
+      store.commit("setRemainedMajorFac", majorFacCardsList);
+
+      socket.on("startRound", () => {
         store.commit("setCurrentRound", currentRound.value + 1);
         showRound();
       });
@@ -466,23 +485,33 @@ export default {
         store.commit("setCurrentRound", data.skipRound);
         const updatedStatus = data.updatedPlayer.map(player => player.playerDetail);
         store.commit("setGameStatus", updatedStatus);
-        store.commit("setMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);
+        store.commit("setRemainedMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);
         showRound();
       });
 
-      socket.on("useActionSpace",(data) => {
-        for(let player of gameStatus.value){
-          if(player.UserId == data.UserId){
-            if(data.UserId === host.value){
-              gameStatus.value[0] = data;
-              console.log(user.value);
-          } else{
-              gameStatus.value[1] = data;
-              console.log(user.value);
-            }
-          }
+      socket.on("useActionSpace", (data) => {
+        const handleData = (data) => {
+          const { remainedMainFacilityCard, ...rest } = data;
+          // gameStatus 내에 data.UserId와 일치하는 player의 정보를 data로 업데이트
+          const updatedStatus = gameStatus.value.map(status => {
+            if (status.UserId === rest.UserId) return rest;
+            else return status;
+          });
+          // gameStatus 업데이트
+          store.commit("setGameStatus", updatedStatus);
+          // remainedMajorFacilityCard 업데이트
+          store.commit("setRemainedMajorFac", remainedMainFacilityCard);
+        };
+
+        if ('updateResult' in data) { // data에 'updateResult'가 있는 경우 (ex. 숲)
+          handleData(data.updateResult);
+        } else { // data에 'updateResult'가 없고 바로 result만 있는 경우 (ex. 채소종자)
+          handleData(data);
         }
-        store.commit("setGameStatus",gameStatus);
+      });
+
+      socket.on("endTurn", (data) => {
+        store.commit("setGameStatus", data.result);
       });
     });
 
@@ -500,14 +529,16 @@ export default {
       oppoGameResources,
       oppoCardData,
       notUsedMajorFacCardData,
-      myFarm,
-      oppoFarm,
       resetCurrentRound,
       startRound,
       skipGame,
       currentRound,
       showRoundModal,
-      scoreTableModal
+      scoreTableModal,
+      endTurn,
+      isMyTurn,
+      showR8StartFarmBoard,
+      showR14StartFarmBoard,
     };
   },
 };

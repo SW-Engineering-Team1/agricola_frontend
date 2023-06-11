@@ -1,5 +1,5 @@
-import { createStore } from "vuex";
-import createPersistedState from "vuex-persistedstate";
+import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 // 초기 state 객체를 반환하는 함수
 const getDefaultState = () => {
@@ -9,10 +9,10 @@ const getDefaultState = () => {
     host: null,
     playersInRoom: [],
     gameStatus: [],
-    majorFac: [],
+    remainedMajorFac: [],
     currentRound: 1,
-  };
-};
+  }
+}
 
 export default createStore({
   state: getDefaultState(),
@@ -35,27 +35,26 @@ export default createStore({
     setGameStatus(state, gameStatus) {
       state.gameStatus = gameStatus;
     },
-    setMajorFac(state, majorFac) {
-      state.majorFac = majorFac;
+    setRemainedMajorFac(state, remainedMajorFac) {
+      state.remainedMajorFac = remainedMajorFac;
     },
     setCurrentRound(state, currentRound) {
       state.currentRound = currentRound;
     },
     resetStore(state) {
       Object.assign(state, getDefaultState());
-    },
+    }
   },
   actions: {
     login({ commit }, payload) {
-      commit("setUser", payload.user);
-      commit("setToken", payload.token);
+      commit('setUser', payload.user);
+      commit('setToken', payload.token);
     },
   },
   getters: {
     user: (state) => state.user,
     token: (state) => state.token,
     isAuthenticated: (state) => !!state.token,
-    isWoodFunctionExecuted: (state) => state.isWoodFunctionExecuted,
   },
   plugins: [createPersistedState()],
 });

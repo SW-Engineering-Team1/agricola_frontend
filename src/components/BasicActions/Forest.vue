@@ -1,11 +1,17 @@
+<!-- Action7 숲 행동칸 -->
 <template>
-  <div @click="getWood" class="bg-gray-100 p-4 w-1/4 h-1/4">나무 + 3</div>
+  <div>
+    <button @click="useForest">
+      <img src="@/assets/images/Action/7_Forest.jpg" class="w-full" alt="forest" />
+    </button>
+  </div>
 </template>
 <script>
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { io } from "socket.io-client";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+
 export default {
   setup() {
     const socket = io("localhost:3000");
@@ -14,16 +20,18 @@ export default {
 
     const roomId = ref("");
     const user = computed(() => store.state.user);
-    const wood = ref("");
-    const getWood = () => {
+    const woodAccumulated = ref("");
+
+    const useForest = () => {
+      //if(turn 종료 후 )
       socket.emit("useActionSpace", {
-        actionName: "getWood",
+        actionName: "Use Accumulated Goods",
         userId: user.value,
-        roomId: 1,
+        roomId: roomId.value,
         goods: [
           {
-            name: "wood",
-            num: 3,
+            name: "woodAccumulated",
+            num: woodAccumulated.value,
             isAdd: true,
           },
         ],
@@ -32,13 +40,20 @@ export default {
 
     onMounted(async () => {
       roomId.value = route.params.room;
-      socket.on();
+      socket.on("accumulateGoods", (data) => {
+        woodAccumulated.value = data.result.woodAccumulated;
+      });
     });
-    onUnmounted();
+
+    onUnmounted(() => {
+      socket.off("useActionSpace");
+    });
+
     return {
-      getWood,
+      useForest,
       roomId,
       user,
+      woodAccumulated,
     };
   },
 };
