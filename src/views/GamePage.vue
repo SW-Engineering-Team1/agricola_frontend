@@ -1,6 +1,7 @@
 <template>
   <div>
     <RoundModal v-if="showRoundModal" :round="currentRound" />
+    <TurnModal v-if="isMyTurn && !showRoundModal" />
     <ScoreTableModal :show="scoreTableModal.showModal.value" @close="scoreTableModal.toggleModal"/>
     <button class="flex justify-center fixed w-36 left-5 top-5 bg-cyan-400 text-white font-bold p-3 rounded hover:bg-cyan-600" @click="scoreTableModal.toggleModal">
       점수표
@@ -16,6 +17,11 @@
     </button>
     <button class="flex justify-center fixed w-36 right-5 top-52 bg-yellow-400 text-white font-bold p-3 rounded hover:bg-yellow-600" @click="startRound">
       라운드 시작
+    </button>
+    <button
+      v-if="isMyTurn"
+      class="flex justify-center fixed w-36 right-5 bottom-5 bg-yellow-400 text-white font-bold p-3 rounded hover:bg-yellow-600" @click="endTurn">
+      턴 종료
     </button>
 
     <div class="flex justify-between w-full h-screen overflow-scroll bg-[#B3B85E]">
@@ -176,9 +182,11 @@ import Fishing from "@/components/BasicActions/Fishing.vue";
 import VegetableSeed from "@/components/RoundCardActions/VegetableSeed.vue";
 import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
 import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
+import TurnModal from '@/components/TurnModal.vue'
 
 export default {
   components: {
+    TurnModal,
     CardModal,
     RoundModal,
     CardFlip,
@@ -304,6 +312,9 @@ export default {
         cardType: "사용하지 않은 직업",
       },
     ];
+    const isMyTurn = ref(computed(() => {
+      return myGameStatus.value.isMyTurn;
+    }))
 
     console.log("나", user);
 
@@ -434,7 +445,7 @@ export default {
 
     // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
 
-    // RoundModal
+    // 현재 라운드 모달
     const showRoundModal = ref(false);
     const showRound = () => {
       showRoundModal.value = true;
@@ -443,6 +454,13 @@ export default {
       }, 2000);
     };
 
+    // 턴 종료
+    const endTurn = () => {
+      socket.emit("endTurn", {
+        roomId: roomId,
+        userId: user.value,
+      });
+    };
 
     onMounted(() => {
       showRound();
@@ -490,6 +508,10 @@ export default {
         store.commit("setGameStatus", gameStatus);
         store.commit("setRemainedMajorFac", remainedMainFacilityCard);
       });
+
+      socket.on("endTurn", (data) => {
+        store.commit("setGameStatus", data.result);
+      });
     });
 
     return {
@@ -513,7 +535,9 @@ export default {
       skipGame,
       currentRound,
       showRoundModal,
-      scoreTableModal
+      scoreTableModal,
+      endTurn,
+      isMyTurn
     };
   },
 };
