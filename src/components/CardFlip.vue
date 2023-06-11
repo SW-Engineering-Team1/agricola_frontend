@@ -9,7 +9,6 @@
 import { computed, ref, watch } from "vue";
 import {useStore} from 'vuex'
 import { io } from "socket.io-client";
-
 export default {
   props: {
     frontImage: String,
@@ -24,6 +23,7 @@ export default {
     const user = ref(computed(() => store.state.user));
     const gameStatus = ref(computed(() => store.state.gameStatus));
     const roomId = gameStatus.value[0].roomId;
+    const showIsGrainUtilModal = ref(false);
 
     // currentRound 값까지 카드를 모두 뒤집는다.
     if (store.state.currentRound >= props.round) {
@@ -55,7 +55,7 @@ export default {
       }
     }
 
-    return { isFlipped,clickCard };
+    return { isFlipped,clickCard,showIsGrainUtilModal};
   }
 };
 </script>

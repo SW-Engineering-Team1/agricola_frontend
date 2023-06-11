@@ -74,7 +74,8 @@
           <div class="grid grid-cols-8 gap-2 p-2">
             <FarmExpand class="flex justify-center items-center"/>
             <CardFlip :round="1" :frontImage="rounds[0].imgSrc" :backImage="rounds[0].backImgSrc" />
-            <CardFlip :round="2" :frontImage="rounds[1].imgSrc" :backImage="rounds[1].backImgSrc" />
+            <IsGrainUtil :show="grainUseModal.showModal.value" @close="grainUseModal.toggleModal" />
+            <CardFlip :onclick="grainUseModal.toggleModal" :round="2" :frontImage="rounds[1].imgSrc" :backImage="rounds[1].backImgSrc" />
             <CardFlip :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" />
             <CardFlip :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
             <CardFlip :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
@@ -188,6 +189,7 @@ import CardModal from "@/components/CardModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
 import RoundModal from "@/components/RoundModal.vue";
 import ScoreTableModal from '@/components/ScoreTableModal.vue';
+import IsGrainUtil from '@/components/IsGrainUtil.vue'
 
 export default {
   components: {
@@ -205,6 +207,7 @@ export default {
     CardModal,
     CardFlip,
     RoundModal,
+    IsGrainUtil
   },
 
   setup() {
@@ -235,6 +238,7 @@ export default {
     const oppoUsedMajorFacCardModal = createModalState();
     const notUsedMajorFacCardModal = createModalState();
     const scoreTableModal = createModalState();
+    const grainUseModal = createModalState();
 
     // helper functions
     const getUserStatus = (gameStatus, userId) => {
@@ -418,6 +422,7 @@ export default {
             "stoneAccumulatedWest"
             ]
         });
+        socket.emit("startRound",{roomId});
       });
     };
 
@@ -427,9 +432,30 @@ export default {
     const myFarmFunctions = {};
     for (let i = 1; i <= 15; i++) {
       const myFarmName = `openMyFarm${i}`;
-      myFarmFunctions[myFarmName] = () => {
-        console.log(myFarmName);
-      };
+      if(i === 15){
+        myFarmFunctions[myFarmName] = () => {
+          socket.emit("useActionSpace",{
+            "actionName":"Grain Utilization",
+            "userId": user.value,
+            "roomId": roomId,
+            "goods": [
+              {
+                "name":"vege",
+                "num":1,
+                "isAdd":false
+              },
+              {
+                "id":15,
+                "kind":"vege"
+              }
+            ]
+          })
+        }
+      }else{
+        myFarmFunctions[myFarmName] = () => {
+          console.log(myFarmName);
+        };
+      }
       // 해당 myFarm의 clickHandler를 등록
       for (const farm of myFarm.value) {
         farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
@@ -508,7 +534,8 @@ export default {
       skipGame,
       currentRound,
       showRoundModal,
-      scoreTableModal
+      scoreTableModal,
+      grainUseModal
     };
   },
 };
