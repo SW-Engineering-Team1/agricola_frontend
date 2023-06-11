@@ -40,18 +40,8 @@
       <div class="max-w-5xl mx-auto grid content-between">
         <!--  상대  -->
         <div class="flex gap-x-10">
-          <!--  상대 농장판  -->
-          <div class="flex justify-center">
-            <div class="bg-green-700 grid grid-cols-5 gap-2 p-2 rotate-180">
-              <img
-                v-for="farm in oppoFarm"
-                :key="farm.id"
-                :src="farm.imgSrc"
-                alt="oppoFarm"
-                class="w-16 h-16"
-              />
-            </div>
-          </div>
+          <!--  게임 시작 시 상대 농장판  -->
+          <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
           <!--  상대가 사용한 카드  -->
           <div v-for="(card, index) in oppoCardData" :key="index">
             <img
@@ -120,17 +110,7 @@
         <!--  나  -->
         <div class="flex flex-row-reverse gap-x-10">
           <!--  내 농장판  -->
-          <div class="flex justify-center">
-            <div class="bg-green-700 grid grid-cols-5 gap-2 p-2">
-              <button
-                v-for="farm in myFarm"
-                :key="farm.id"
-                @click="farm.clickHandler"
-              >
-                <img :src="farm.imgSrc" alt="farm" class="w-16 h-16" />
-              </button>
-            </div>
-          </div>
+          <InitialMyFarmBoard :myFarm="myFarm" />
           <!--  내 카드  -->
           <div v-for="(card, index) in myCardData" :key="index" class="relative group">
             <img
@@ -178,6 +158,9 @@ import CardModal from "@/components/CardModal.vue";
 import RoundModal from "@/components/RoundModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
 import ScoreTableModal from '@/components/ScoreTableModal.vue';
+//* FarmBoard */
+import InitialOppoFarmBoard from '@/components/FarmBoard/InitialOppoFarmBoard.vue';
+import InitialMyFarmBoard from '@/components/FarmBoard/InitialMyFarmBoard.vue';
 //* Basic Actions */
 import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
 import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
@@ -199,6 +182,9 @@ export default {
     CardModal,
     RoundModal,
     CardFlip,
+    //* FarmBoard */
+    InitialOppoFarmBoard,
+    InitialMyFarmBoard,
     //* Basic Actions */
     ScoreTableModal,
     FarmExpand,
