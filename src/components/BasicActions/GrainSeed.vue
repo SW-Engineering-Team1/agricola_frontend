@@ -1,9 +1,12 @@
 <!--  BasicAction3 곡식종자 행동칸  -->
 <template>
   <div>
-    <button class="w-full" @click="useGrainSeed">
-        <img src="@/assets/images/Action/3_GrainSeed.jpg" alt="grainSeed" />
-    </button>
+    <img
+        src="@/assets/images/Action/3_GrainSeed.jpg"
+        @click="isMyTurn ? useGrainSeed : null"
+        :class="{'w-full cursor-pointer transform transition duration-500 ease-in-out hover:scale-110': true, 'pointer-events-none': !isMyTurn}"
+        alt="grainSeed"
+    />
   </div>
 </template>
 
@@ -14,6 +17,12 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
 export default {
+  props: {
+    isMyTurn: {
+      type: Boolean,
+      required: true,
+    },
+  },
   setup() {
     const socket = io("localhost:3000");
     const store = useStore();
@@ -29,7 +38,7 @@ export default {
         roomId: roomId.value,
         goods: [
           {
-            name: "grainonStorage",
+            name: "grainOnStorage",
             num: 1,
             isAdd: true,
           },
@@ -49,3 +58,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.pointer-events-none {
+  pointer-events: none;
+}
+</style>

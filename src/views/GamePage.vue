@@ -85,7 +85,7 @@
             <CardFlip :round="12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
             <CardFlip :round="14" :frontImage="rounds[13].imgSrc" :backImage="rounds[13].backImgSrc" />
             <MeetingPlace class="flex justify-center items-center"/>
-            <GrainSeed class="flex justify-center items-center"/>
+            <GrainSeed class="flex justify-center items-center" :isMyTurn="isMyTurn"/>
             <Forest class="flex justify-center items-center"/>
             <CardFlip :round="3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
             <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" />
@@ -116,7 +116,7 @@
                 :cardType="notUsedMajorFacCardData.cardType"
               />
             </div>
-            <DayLabor class="flex justify-center items-center" />
+            <DayLabor class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <Fishing class="flex justify-center items-center" />
           </div>
         </div>
@@ -488,6 +488,7 @@ export default {
       });
 
       socket.on("useActionSpace", (data) => {
+        console.log("useActionSpace", data);
         const handleData = (data) => {
           const { remainedMainFacilityCard, ...rest } = data;
           // gameStatus 내에 data.UserId와 일치하는 player의 정보를 data로 업데이트
