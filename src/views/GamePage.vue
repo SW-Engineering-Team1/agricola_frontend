@@ -261,8 +261,6 @@ export default {
       return { showModal, toggleModal };
     };
 
-    const notUsedAssiFacCardModal = createModalState();
-    const notUsedJobCardModal = createModalState();
     const myUsedJobCardModal = createModalState();
     const myUsedAssiFacCardModal = createModalState();
     const myUsedMajorFacCardModal = createModalState();
@@ -305,22 +303,20 @@ export default {
     const myUsedAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'usedSubFacilityCard');
     const myUsedJobCard = getCards(jobCardMap, myGameStatus, 'usedJobCard');
     const myUsedMajorFacCard = getCards(majorFacCardMap, myGameStatus, 'usedMainFacilityCard');
-    const notUsedAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'remainedSubFacilityCard');
-    const notUsedJobCard = getCards(jobCardMap, myGameStatus,'remainedJobCard');
     const myCardData = [
       {
         imgSrc: require("@/assets/images/CardBack/JobCardBack.png"),
         alt: "myUsedJobCard",
         modal: myUsedJobCardModal,
         cards: myUsedJobCard,
-        cardType: "사용한 직업",
+        cardType: "직업",
       },
       {
         imgSrc: require("@/assets/images/CardBack/AssiFacCardBack.png"),
         alt: "myUsedAssiFacCard",
         modal: myUsedAssiFacCardModal,
         cards: myUsedAssiFacCard,
-        cardType: "사용한 보조 설비",
+        cardType: "보조 설비",
       },
       {
         imgSrc: require("@/assets/images/CardBack/MajorFacCardBack.png"),
@@ -328,20 +324,6 @@ export default {
         modal: myUsedMajorFacCardModal,
         cards: myUsedMajorFacCard,
         cardType: "사용한 주요 설비",
-      },
-      {
-        imgSrc: require("@/assets/images/CardBack/NotUsedAssiFacCardBack.png"),
-        alt: "notUsedAssiFacCard",
-        modal: notUsedAssiFacCardModal,
-        cards: notUsedAssiFacCard,
-        cardType: "사용하지 않은 보조 설비",
-      },
-      {
-        imgSrc: require("@/assets/images/CardBack/NotUsedJobCardBack.png"),
-        alt: "notUsedJobCard",
-        modal: notUsedJobCardModal,
-        cards: notUsedJobCard,
-        cardType: "사용하지 않은 직업",
       },
     ];
     const isMyTurn = ref(computed(() => {
@@ -363,14 +345,14 @@ export default {
         alt: "oppoUsedJobCard",
         modal: oppoUsedJobCardModal,
         cards: oppoUsedJobCard,
-        cardType: "상대가 사용한 직업",
+        cardType: "상대 직업",
       },
       {
         imgSrc: require("@/assets/images/CardBack/AssiFacCardBack.png"),
         alt: "oppoUsedAssiFacCard",
         modal: oppoUsedAssiFacCardModal,
         cards: oppoUsedAssiFacCard,
-        cardType: "상대가 사용한 보조 설비",
+        cardType: "상대 보조 설비",
       },
       {
         imgSrc: require("@/assets/images/CardBack/MajorFacCardBack.png"),
