@@ -110,7 +110,12 @@
         <!--  본인  -->
         <div class="flex flex-row-reverse gap-x-10">
           <!--  본인 농장판  -->
-          <InitialMyFarmBoard :myFarm="myFarm" />
+          <div v-if="showR8StartMyFarmBoard">
+            <R8StartMyFarmBoard :MyFarm="myFarm" />
+          </div>
+          <div v-else>
+            <InitialMyFarmBoard :myFarm="myFarm" />
+          </div>
           <!--  본인 카드  -->
           <div v-for="(card, index) in myCardData" :key="index" class="relative group">
             <img
@@ -161,6 +166,7 @@ import ScoreTableModal from '@/components/ScoreTableModal.vue';
 //* FarmBoard */
 import InitialOppoFarmBoard from '@/components/FarmBoard/InitialOppoFarmBoard.vue';
 import InitialMyFarmBoard from '@/components/FarmBoard/InitialMyFarmBoard.vue';
+import R8StartMyFarmBoard from "@/components/FarmBoard/R8StartMyFarmBoard.vue";
 //* Basic Actions */
 import FarmExpand from "@/components/BasicActions/FarmExpand.vue";
 import MeetingPlace from "@/components/BasicActions/MeetingPlace.vue";
@@ -183,8 +189,9 @@ export default {
     RoundModal,
     CardFlip,
     //* FarmBoard */
-    InitialOppoFarmBoard,
     InitialMyFarmBoard,
+    InitialOppoFarmBoard,
+    R8StartMyFarmBoard,
     //* Basic Actions */
     ScoreTableModal,
     FarmExpand,
@@ -204,6 +211,7 @@ export default {
   },
 
   setup() {
+    const showR8StartMyFarmBoard = ref(false);
     const socket = io("localhost:3000");
     const store = useStore();
     const playersInRoom = ref(computed(() => store.state.playersInRoom));
@@ -415,6 +423,7 @@ export default {
             ]
         });
       });
+      showR8StartMyFarmBoard.value = true;
     };
 
     // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
@@ -427,7 +436,6 @@ export default {
         showRoundModal.value = false;
       }, 2000);
     };
-
 
     onMounted(() => {
       showRound();
@@ -487,7 +495,8 @@ export default {
       skipGame,
       currentRound,
       showRoundModal,
-      scoreTableModal
+      scoreTableModal,
+      showR8StartMyFarmBoard
     };
   },
 };
