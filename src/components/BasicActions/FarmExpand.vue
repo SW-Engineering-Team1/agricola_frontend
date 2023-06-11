@@ -11,6 +11,11 @@
   </div>
 </template>
 <script>
+import { computed, onMounted, ref } from "vue";
+import { io } from "socket.io-client";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+
 export default {
   props: {
     isMyTurn: {
@@ -19,13 +24,47 @@ export default {
     },
   },
   setup() {
+    const socket = io("localhost:3000");
+    const store = useStore();
+    const route = useRoute();
+
+    const roomId = ref("");
+    const user = computed(() => store.state.user);
+
+    const useFarmExpand = () => {
+      socket.emit("useActionSpace", {
+          "actionName": "else", // TODO: 수정 필요
+          "userId": user.value,
+          "roomId": roomId.value,
+          "goods" : [
+            {
+              "name": "wood",
+              "num": 10,
+              "isAdd": false
+            },
+            {
+              "name": "reed",
+              "num": 4,
+              "isAdd": false
+            },
+            {
+              "name": "woodHouse",
+              "num": 2,
+              "isAdd": true
+            }
+        ]
+      });
+    };
 
     const handleClick = (isMyTurn) => {
       if (isMyTurn) {
-        // 아무것도 하지 않음
-        console.log("농장 확장");
+        useFarmExpand();
       }
     }
+
+    onMounted(async () => {
+      roomId.value = route.params.room;
+    });
 
     return {
       handleClick,
