@@ -402,6 +402,19 @@ export default {
         userId: [{ userId: host.value }, { userId: guest.value }],
       };
       socket.emit("skipGame", skipGameData);
+      socket.once("skipGame",() => {
+        socket.emit("accumulateGoods",{
+          roomId: roomId,
+          accList: [
+            "woodAccumulated", 
+            "sandAccumulated", 
+            "reedAccumulated", 
+            "foodAccumulated",
+            "sheepAccumulated", 
+            "stoneAccumulatedWest"
+            ]
+        });
+      });
     };
 
     const myFarmBoard = ref(farmBoardRef);
@@ -445,6 +458,21 @@ export default {
         store.commit("setGameStatus", updatedStatus);
         store.commit("setMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);
         showRound();
+      });
+
+      socket.on("useActionSpace",(data) => {
+        for(let player of gameStatus.value){
+          if(player.UserId == data.UserId){
+            if(data.UserId === host.value){
+              gameStatus.value[0] = data;
+              console.log(user.value);
+          } else{
+              gameStatus.value[1] = data;
+              console.log(user.value);
+            }
+          }
+        }
+        store.commit("setGameStatus",gameStatus);
       });
     });
 
