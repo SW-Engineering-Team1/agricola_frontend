@@ -107,11 +107,11 @@
           </div>
         </div>
 
-        <!--  나  -->
+        <!--  본인  -->
         <div class="flex flex-row-reverse gap-x-10">
-          <!--  내 농장판  -->
+          <!--  본인 농장판  -->
           <InitialMyFarmBoard :myFarm="myFarm" />
-          <!--  내 카드  -->
+          <!--  본인 카드  -->
           <div v-for="(card, index) in myCardData" :key="index" class="relative group">
             <img
               class="w-auto h-56 cursor-pointer transform transition duration-500 ease-in-out hover:scale-110"
@@ -129,7 +129,7 @@
         </div>
       </div>
 
-      <!--  내 자원 표시  -->
+      <!--  본인 자원 표시  -->
       <div>
         <div class="grid grid-rows-12 fixed right-0 top-1/4 bg-[#A2CF5F]">
           <div class="flex">
@@ -153,7 +153,7 @@
 import {computed, onMounted, ref} from "vue";
 import { io } from "socket.io-client";
 import {useStore} from 'vuex';
-import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef, farmRef } from '@/constants';
+import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef } from '@/constants';
 import CardModal from "@/components/CardModal.vue";
 import RoundModal from "@/components/RoundModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
@@ -417,21 +417,6 @@ export default {
       });
     };
 
-    const myFarm = ref(farmRef);
-    const oppoFarm = ref(farmRef);
-    // myFarm을 위한 함수들을 동적으로 생성
-    const myFarmFunctions = {};
-    for (let i = 1; i <= 15; i++) {
-      const myFarmName = `openMyFarm${i}`;
-      myFarmFunctions[myFarmName] = () => {
-        console.log(myFarmName);
-      };
-      // 해당 myFarm의 clickHandler를 등록
-      for (const farm of myFarm.value) {
-        farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
-      }
-    }
-
     // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
 
     // RoundModal
@@ -497,8 +482,6 @@ export default {
       oppoGameResources,
       oppoCardData,
       notUsedMajorFacCardData,
-      myFarm,
-      oppoFarm,
       resetCurrentRound,
       startRound,
       skipGame,
