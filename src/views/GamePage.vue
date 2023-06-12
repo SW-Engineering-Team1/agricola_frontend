@@ -49,13 +49,13 @@
         <div class="flex gap-x-10">
           <!--  상대 농장판  -->
           <div v-if="showR8StartFarmBoard">
-            <R8StartOppoFarmBoard :OppoFarm="oppoFarm" />
+            <R8StartOppoFarmBoard/>
           </div>
           <div v-else-if="showR14StartFarmBoard">
-            <R14StartOppoFarmBoard :OppoFarm="oppoFarm" />
+            <R14StartOppoFarmBoard/>
           </div>
           <div v-else>
-            <InitialOppoFarmBoard :OppoFarm="oppoFarm" />
+            <InitialOppoFarmBoard/>
           </div>
           <!--  상대가 사용한 카드  -->
           <div v-for="(card, index) in oppoCardData" :key="index">
@@ -91,7 +91,7 @@
             <GrainSeed class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <Forest class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <CardFlip :round="3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
-            <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" />
+            <DefaultAddFam :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" :isMyTurn="isMyTurn" />
             <PigMarket :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" :isMyTurn="isMyTurn" />
             <EastQuarry :round="11" :frontImage="rounds[10].imgSrc" :backImage="rounds[10].backImgSrc" :isMyTurn="isMyTurn" />
             <CardFlip :round="13" :frontImage="rounds[12].imgSrc" :backImage="rounds[12].backImgSrc" />
@@ -128,13 +128,13 @@
         <div class="flex flex-row-reverse gap-x-10">
           <!--  본인 농장판  -->
           <div v-if="showR8StartFarmBoard">
-            <R8StartMyFarmBoard :MyFarm="myFarm" />
+            <R8StartMyFarmBoard/>
           </div>
           <div v-else-if="showR14StartFarmBoard">
-            <R14StartMyFarmBoard :MyFarm="myFarm" />
+            <R14StartMyFarmBoard/>
           </div>
           <div v-else>
-            <InitialMyFarmBoard :myFarm="myFarm" />
+            <InitialMyFarmBoard/>
           </div>
           <!--  본인 카드  -->
           <div v-for="(card, index) in myCardData" :key="index" class="relative group">
@@ -211,6 +211,7 @@ import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
 import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
 import EastQuarry from "@/components/RoundCardActions/EastQuarry.vue";
 import FieldFarming from "@/components/RoundCardActions/FieldFarming.vue";
+import DefaultAddFam from "@/components/RoundCardActions/DefaultAddFam.vue"
 //* ServeModal */
 import IsGrainUtil from "@/components/ServeModal/IsGrainUtil.vue"
 import IsBaked from "@/components/ServeModal/IsBaked.vue"
@@ -256,6 +257,7 @@ export default {
     CowMarket,
     EastQuarry,
     FieldFarming,
+    DefaultAddFam,
     //* ServeModal */
     IsGrainUtil,
     IsBaked
@@ -455,10 +457,35 @@ export default {
       socket.emit("skipGame", skipGameData);
 
       if (round === 8) {
+        socket.emit("accumulateGoods", {
+          roomId: roomId,
+          accList: [
+            "woodAccumulated",
+            "sandAccumulated",
+            "reedAccumulated",
+            "foodAccumulated",
+            "sheepAccumulated",
+            "stoneAccumulatedWest"
+          ]
+        });
         showR8StartFarmBoard.value = true;
         showR14StartFarmBoard.value = false;
       }
       else if (round === 14) {
+        socket.emit("accumulateGoods", {
+          roomId: roomId,
+          accList: [
+            "woodAccumulated",
+            "sandAccumulated",
+            "reedAccumulated",
+            "foodAccumulated",
+            "sheepAccumulated",
+            "stoneAccumulatedWest",
+            "pigAccumulated",
+            "cowAccumulated",
+            "stoneAccumulatedEast"
+          ]
+        });
         showR8StartFarmBoard.value = false;
         showR14StartFarmBoard.value = true;
       }
@@ -499,29 +526,17 @@ export default {
 
       store.commit("setRemainedMajorFac", majorFacCardsList);
 
-      socket.on("startRound", () => {
+      socket.on("startRound", (data) => {
+        const updatedStatus = data.updateResult.map(player => player.playerDetail);
         remainedMyTurn = myGameStatus.value.family;
         remainedOppoTurn = oppoGameStatus.value.family;
         store.commit("setCurrentRound", currentRound.value + 1);
+        store.commit("setGameStatus", updatedStatus);
+        showRound();
       });
 
       socket.on("skipGame", (data) => {
         store.commit("setCurrentRound", data.skipRound);
-        socket.emit("accumulateGoods", {
-          roomId: roomId,
-          accList: [
-            "foodAccumulated",
-            "woodAccumulated",
-            "sandAccumulated",
-            "reedAccumulated",
-            "stoneAccumulatedEast",
-            "stoneAccumulatedWest",
-            "sheepAccumulated",
-            "cowAccumulated",
-            "pigAccumulated",
-          ]
-        });
-
         const updatedStatus = data.updatedPlayer.map(player => player.playerDetail);
         store.commit("setGameStatus", updatedStatus);
         store.commit("setRemainedMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);
@@ -535,7 +550,7 @@ export default {
       socket.on("useActionSpace", (data) => {
         console.log("useActionSpace", data);
         const handleData = (data) => {
-          const {remainedMainFacilityCard, ...rest} = data;
+          const { remainedMainFacilityCard, ...rest } = data;
           // gameStatus 내에 data.UserId와 일치하는 player의 정보를 data로 업데이트
           const updatedStatus = gameStatus.value.map(status => {
             if (status.UserId === rest.UserId) return rest;
@@ -641,7 +656,7 @@ export default {
       });
     });
 
-      return {
+    return {
       actions,
       ...actionFunctions,
       rounds,
