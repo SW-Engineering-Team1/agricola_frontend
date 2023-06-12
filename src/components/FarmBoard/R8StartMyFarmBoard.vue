@@ -23,6 +23,7 @@
 import { ref } from "vue";
 import { farmRef } from '@/constants';
 import GrainUtilization from '../RoundCardActions/GrainUtilization.vue';
+
 export default {
   setup() {
     const myFarm = ref(farmRef);
@@ -61,16 +62,16 @@ export default {
       type: Array,
       required: true,
       default: () => [
-        { id: 1, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 1, imgSrc: require('@/assets/images/Farm/Field.png') },
         { id: 2, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 3, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 4, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
-        { id: 5, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 5, imgSrc: require('@/assets/images/Farm/WoodRoom.png') },
         { id: 6, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true, isRedBorderLeft: true },
         { id: 7, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true },
         { id: 8, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true },
         { id: 9, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true, isRedBorderRight: true },
-        { id: 10, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 10, imgSrc: require('@/assets/images/Farm/WoodRoom.png') },
         { id: 11, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true, isRedBorderLeft: true },
         { id: 12, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true },
         { id: 13, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true },
