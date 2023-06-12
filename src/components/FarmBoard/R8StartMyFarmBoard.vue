@@ -2,19 +2,65 @@
 <template>
   <div class="flex justify-center">
     <div class="bg-green-700 grid grid-cols-5 gap-2 p-2">
-      <img
+      <div
         v-for="farm in MyFarm"
         :key="farm.id"
-        :src="farm.imgSrc"
-        alt="oppoFarm"
-        :class="[
-          'w-16 h-16',
-          { 'border-red-700 border-l-8': farm.isRedBorderLeft },
-          { 'border-red-700 border-r-8': farm.isRedBorderRight },
-          { 'border-red-700 border-t-8': farm.isRedBorderTop },
-          { 'border-red-700 border-b-8': farm.isRedBorderBottom }
-        ]"
-      />
+        class="image-container"
+      >
+        <img
+            :src="farm.imgSrc"
+            :alt="myFarm"
+            :class="[
+              'w-16 h-16',
+              { 'border-red-700 border-t-8': farm.isRedBorderTop },
+              { 'border-red-700 border-b-8': farm.isRedBorderBottom },
+              { 'border-red-700 border-l-8': farm.isRedBorderLeft },
+              { 'border-red-700 border-r-8': farm.isRedBorderRight }
+            ]"
+        />
+        <img
+            v-if="farm.id === 1"
+            src="@/assets/images/Resources/5_Grain_P1.png"
+            alt="additionalFarm"
+            class="w-10 h-10 overlay-image"
+            style="top: 13px; left: 13px;"
+        />
+        <img
+          v-if="farm.id === 6"
+          src="@/assets/images/Resources/8_Sheep_P1.png"
+          alt="additionalFarm"
+          class="w-8 h-8 overlay-image"
+          style="top: 16px; left: 8px; z-index: 2;"
+        />
+        <img
+            v-if="farm.id === 6"
+            src="@/assets/images/Resources/8_Sheep_P1.png"
+            alt="additionalFarm"
+            class="w-8 h-8 overlay-image"
+            style="top: 16px; left: 32px; z-index: 2;"
+        />
+        <img
+            v-if="farm.id === 7"
+            src="@/assets/images/Resources/8_Sheep_P1.png"
+            alt="additionalFarm"
+            class="w-8 h-8 overlay-image"
+            style="top: 16px; left: 15px;"
+        />
+        <img
+          v-if="farm.id === 11"
+          src="@/assets/images/Resources/8_Sheep_P1.png"
+          alt="additionalFarm"
+          class="w-8 h-8 overlay-image"
+          style="top: 16px; left: 8px; z-index: 2;"
+        />
+        <img
+            v-if="farm.id === 11"
+            src="@/assets/images/Resources/8_Sheep_P1.png"
+            alt="additionalFarm"
+            class="w-8 h-8 overlay-image"
+            style="top: 16px; left: 32px; z-index: 2;"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -82,3 +128,20 @@ export default {
   },
 };
 </script>
+
+<style>
+.image-container {
+  position: relative;
+}
+
+.overlay-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.image-container img:first-child {
+  z-index: 2;
+}
+</style>
