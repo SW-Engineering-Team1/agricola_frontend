@@ -1,7 +1,8 @@
 <template>
   <div>
-    <RoundModal v-if="showRoundModal" :round="currentRound" />
-    <TurnModal v-if="isMyTurn && !showRoundModal" />
+    <RoundModal v-if="showRoundModal && !showEndRoundModal" :round="currentRound" />
+    <EndRoundModal v-if="showEndRoundModal && !showRoundModal" :round="currentRound" />
+    <TurnModal v-if="isMyTurn && !showRoundModal && !showEndRoundModal" />
     <ScoreTableModal :show="scoreTableModal.showModal.value" @close="scoreTableModal.toggleModal"/>
     <button class="flex justify-center fixed w-36 left-5 top-5 bg-cyan-400 text-white font-bold p-3 rounded hover:bg-cyan-600" @click="scoreTableModal.toggleModal">
       점수표
@@ -174,12 +175,13 @@
 </template>
 
 <script>
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import { io } from "socket.io-client";
 import {useStore} from 'vuex';
 import { resourceMap, assiFacCardMap, majorFacCardMap, jobCardMap, roundsRef, actionsRef } from '@/constants';
 import CardModal from "@/components/CardModal.vue";
 import RoundModal from "@/components/RoundModal.vue";
+import EndRoundModal from "@/components/EndRoundModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
 import ScoreTableModal from '@/components/ScoreTableModal.vue';
 import TurnModal from '@/components/TurnModal.vue'
@@ -212,6 +214,7 @@ import FieldFarming from "@/components/RoundCardActions/FieldFarming.vue";
 //* ServeModal */
 import IsGrainUtil from "@/components/ServeModal/IsGrainUtil.vue"
 import IsBaked from "@/components/ServeModal/IsBaked.vue"
+import {useRouter} from 'vue-router'
 
 export default {
   data() {
@@ -224,6 +227,7 @@ export default {
     TurnModal,
     CardModal,
     RoundModal,
+    EndRoundModal,
     CardFlip,
     //* FarmBoard */
     InitialMyFarmBoard,
@@ -258,6 +262,7 @@ export default {
   },
 
   setup() {
+    const router = useRouter();
     const showR8StartFarmBoard = ref(false);
     const showR14StartFarmBoard = ref(false);
     const socket = io("localhost:3000");
@@ -287,6 +292,7 @@ export default {
     const scoreTableModal = createModalState();
     const grainUseModal = createModalState();
     const isBakeModal = createModalState();
+
     // helper functions
     const getUserStatus = (gameStatus, userId) => {
       return gameStatus.value.find((status) => status.UserId === userId);
@@ -343,11 +349,8 @@ export default {
         cardType: "사용한 주요 설비",
       },
     ];
-    const isMyTurn = ref(computed(() => {
-      return myGameStatus.value.isMyTurn;
-    }))
-
-    console.log("나", user);
+    let remainedMyTurn = myGameStatus.value.family;
+    console.log(remainedMyTurn);
 
     // opponent(상대방) 정보
     const opponent = computed(() => playersInRoom.value.find(player => player !== user.value));
@@ -379,8 +382,12 @@ export default {
         cardType: "상대가 사용한 주요 설비",
       },
     ];
+    let remainedOppoTurn = oppoGameStatus.value.family;
+    console.log(remainedOppoTurn);
 
-    console.log("상대방", opponent);
+    const isMyTurn = ref(computed(() => {
+      return myGameStatus.value.isMyTurn;
+    }));
 
     const host = ref(computed(() => store.state.host));
     // host가 user인 경우 guest는 opponent
@@ -434,9 +441,11 @@ export default {
     const resetCurrentRound = () => {
       store.commit("setCurrentRound", 1);
     };
+
     const startRound = () => {
       socket.emit("startRound", gameStatus.value[0]);
     };
+
     const skipGame = (round) => {
       const skipGameData = {
         roomId: roomId,
@@ -457,12 +466,19 @@ export default {
 
     // TODO: myFarm과 oppoFarm에 Room이 있다면, Room에 가족 구성원 올려놓기
 
-    // 현재 라운드 모달
+    // 라운드 모달
     const showRoundModal = ref(false);
     const showRound = () => {
       showRoundModal.value = true;
       setTimeout(() => {
         showRoundModal.value = false;
+      }, 2000);
+    };
+    const showEndRoundModal = ref(false);
+    const showEndRound = () => {
+      showEndRoundModal.value = true;
+      setTimeout(() => {
+        showEndRoundModal.value = false;
       }, 2000);
     };
 
@@ -476,12 +492,17 @@ export default {
 
     onMounted(() => {
       showRound();
+      // currentRound 값이 바뀌면 showRound 실행
+      watch(currentRound, () => {
+        showRound();
+      });
 
       store.commit("setRemainedMajorFac", majorFacCardsList);
 
       socket.on("startRound", () => {
+        remainedMyTurn = myGameStatus.value.family;
+        remainedOppoTurn = oppoGameStatus.value.family;
         store.commit("setCurrentRound", currentRound.value + 1);
-        showRound();
       });
 
       socket.on("skipGame", (data) => {
@@ -514,7 +535,7 @@ export default {
       socket.on("useActionSpace", (data) => {
         console.log("useActionSpace", data);
         const handleData = (data) => {
-          const { remainedMainFacilityCard, ...rest } = data;
+          const {remainedMainFacilityCard, ...rest} = data;
           // gameStatus 내에 data.UserId와 일치하는 player의 정보를 data로 업데이트
           const updatedStatus = gameStatus.value.map(status => {
             if (status.UserId === rest.UserId) return rest;
@@ -535,11 +556,92 @@ export default {
       });
 
       socket.on("endTurn", (data) => {
-        store.commit("setGameStatus", data.result);
+        if (user.value === data.result[0].UserId) {
+          remainedMyTurn--;
+        } else {
+          if (remainedMyTurn > 0) remainedOppoTurn--;
+        }
+        console.log("remainedMyTurn", remainedMyTurn);
+        console.log("remainedOppoTurn", remainedOppoTurn);
+
+        const updatedStatus = gameStatus.value.map(status => {
+          if (status.UserId === data.result[0].UserId) {
+            return data.result[0];
+          } else {
+            status.isMyTurn = true;
+            return status;
+          }
+        });
+        // gameStatus 업데이트
+        store.commit("setGameStatus", updatedStatus);
+
+        // remainedMyTurn과 remainedOppoTurn이 둘다 0이면 라운드 종료
+        if (remainedMyTurn === 0 && remainedOppoTurn === 0) {
+          // 현재 라운드가 4, 7, 9, 11, 13, 14라운드일 경우, endCycle 실행
+          if (currentRound.value === 4 || currentRound.value === 7 ||
+              currentRound.value === 9 || currentRound.value === 11 ||
+              currentRound.value === 13 || currentRound.value === 14) {
+            socket.emit("endCycleHarvestCrop", {roomId: roomId});
+            socket.emit("endCyclePayFood", {roomId: roomId});
+            socket.emit("endCycleBreedAnimal", {roomId: roomId});
+            if (currentRound.value === 14) {
+              socket.emit("endGame", {roomId: roomId});
+            }
+          } else { // 그 외의 경우, endRound 실행
+            socket.emit("endRound");
+          }
+        }
+      });
+
+      socket.on("endRound", () => {
+        showEndRound();
+        // 2초 뒤 실행
+        setTimeout(() => {
+          remainedMyTurn = myGameStatus.value.family;
+          remainedOppoTurn = oppoGameStatus.value.family;
+          store.commit("setCurrentRound", currentRound.value + 1);
+        }, 2000);
+      });
+
+      const updateGameStatus = (data, index) => {
+        const {remainedMainFacilityCard, ...rest} = data.result.gameStatusList[index];
+        // gameStatus 내에 data.UserId와 일치하는 player의 정보를 data로 업데이트
+        const updatedStatus = gameStatus.value.map(status => {
+          if (status.UserId === rest.UserId) return rest;
+          else return status;
+        });
+        // gameStatus 업데이트
+        store.commit("setGameStatus", updatedStatus);
+        // remainedMajorFacilityCard 업데이트
+        store.commit("setRemainedMajorFac", remainedMainFacilityCard);
+      };
+
+      socket.on("endCycleHarvestCrop", (data) => {
+        console.log("endCycleHarvestCrop", data);
+        updateGameStatus(data, 0);
+        updateGameStatus(data, 1);
+      });
+
+      socket.on("endCyclePayFood", (data) => {
+        console.log("endCyclePayFood", data);
+        updateGameStatus(data, 0);
+        updateGameStatus(data, 1);
+      });
+
+      socket.on("endCycleBreedAnimal", (data) => {
+        console.log("endCycleBreedAnimal", data);
+        updateGameStatus(data, 0);
+      });
+
+      socket.on("endGame", (data) => {
+        console.log("endGame", data);
+        store.commit("setGameResult", data);
+        // 게임 결과 페이지로 이동
+        router.push(`/room/${roomId}/gameResult`);
       });
     });
 
-    return {
+      return {
       actions,
       ...actionFunctions,
       rounds,
@@ -558,6 +660,7 @@ export default {
       skipGame,
       currentRound,
       showRoundModal,
+      showEndRoundModal,
       scoreTableModal,
       grainUseModal,
       endTurn,
