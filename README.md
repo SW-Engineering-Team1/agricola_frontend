@@ -6,10 +6,6 @@
   <br>
 </h1>
 
-> 여기 나와있는 뭔가 이상한 아이콘들은
-> https://yermi.tistory.com/entry/%EA%BF%80%ED%8C%81-Github-Readme-%EC%98%88%EC%81%98%EA%B2%8C-%EA%BE%B8%EB%AF%B8%EA%B8%B0-Readme-Header-Badge-Widget-%EB%93%B1
-> 여기 참고
-
 <h2>Environment</h2>
 <p>
   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
@@ -20,10 +16,9 @@
 <h2>Stack</h2>
 <p>
   <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
-  <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
-  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
-  <img src="https://img.shields.io/badge/socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white">
-  <img src="https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white">
+  <img src="https://img.shields.io/badge/vue.js-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white">
+    <img src="https://img.shields.io/badge/vuex-1F1F1F?style=for-the-badge&logo=vuedotjs&logoColor=white">
+  <img src="https://img.shields.io/badge/tailwind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
 </p>
 
 <h2>Communication</h2>
@@ -51,60 +46,191 @@
 
 ## Repository Structure
 
-> 아래 트리 구조는 tree 명령어 사용하면 됨! tree -I "node_modules"하는 걸 추천
-
 ```bash
 .
 ├── README.md
-├── app.js
-├── config # Some configs for project
-│   ├── baseResponseStatus.js
-│   ├── config.js
-│   ├── response.js
-│   └── secretKey.js
-├── controllers # Controller which get requests from frontend
-│   ├── actionSocketController.js
-│   ├── gameSocketController.js
-│   ├── roomController.js
-│   ├── roomSocketController.js
-│   └── userController.js
-├── middlewares # For middlewares - In this case, for Sign up/in
-│   └── auth.js
-├── migrations # Migration files for backup using sequelize
-│   ├── 20230514164610-Users.js
-│   ├── 20230515074818-game_room.js
-│   └── 20230517152458-UserGameRoom.js
-├── models // Data models
-│   ├── Card.js
-│   ├── GameRoom.js
-│   ├── GameStatus.js
-│   ├── User.js
-│   ├── UserGameRoom.js
-│   └── index.js
-├── modules # Files and modules which are used entire project
-│   ├── jwt.js
-│   └── utility.js
+├── babel.config.js
+├── jsconfig.json
 ├── package-lock.json
 ├── package.json
-├── pr_checklist.md
-├── readme_src
-│   └── agricola.gif
-├── routes
-│   ├── roomRoute.js
-│   └── userRoute.js
-├── services # Files where entire service logics in
-│   ├── gameService.js
-│   ├── roomService.js
-│   └── userService.js
-└── test # Files for unit test
-    └── test.js
+├── postcss.config.js
+├── public
+│   ├── favicon.ico
+│   └── index.html
+├── src # Main source code directory
+│   ├── App.vue
+│   ├── assets # Materials used in this web page ex) image files, css files etc
+│   │   ├── facility.jpeg
+│   │   ├── images # Image files archieve
+│   │   │   ├── Action
+│   │   │   │   ├── 10_Fishing.jpg
+│   │   │   │   ├── 1_FarmExpand.jpg
+│   │   │   │   ├── 2_MeetingPlace.jpg
+│   │   │   │   ├── 3_GrainSeed.jpg
+│   │   │   │   ├── 4_Farmland.jpg
+│   │   │   │   ├── 5_Instruction.jpg
+│   │   │   │   ├── 6_DayLabor.jpg
+│   │   │   │   ├── 7_Forest.jpg
+│   │   │   │   ├── 8_SoilMining.jpg
+│   │   │   │   └── 9_ReedField.jpg
+│   │   │   ├── AssiFacCard
+│   │   │   │   ├── Bottle.png
+│   │   │   │   ├── CarpenterRoom.png
+│   │   │   │   ├── ClayMine.png
+│   │   │   │   ├── CornShovel.png
+│   │   │   │   ├── CrushedSoil.png
+│   │   │   │   ├── FieldOfBeans.png
+│   │   │   │   ├── HardCeramic.png
+│   │   │   │   ├── Junkyard.png
+│   │   │   │   ├── KitchenRoom.png
+│   │   │   │   ├── LogBoat.png
+│   │   │   │   ├── Manger.png
+│   │   │   │   ├── StreetVendor.png
+│   │   │   │   ├── ThickForest.png
+│   │   │   │   └── ThreshingPlate.png
+│   │   │   ├── CardBack
+│   │   │   │   ├── AssiFacCardBack.png
+│   │   │   │   ├── JobCardBack.png
+│   │   │   │   ├── MajorFacCardBack.png
+│   │   │   │   ├── NotUsedAssiFacCardBack.png
+│   │   │   │   └── NotUsedJobCardBack.png
+│   │   │   ├── Etc
+│   │   │   │   ├── BeggingToken.png
+│   │   │   │   ├── Order.png
+│   │   │   │   ├── Player1.png
+│   │   │   │   └── Player2.png
+│   │   │   ├── Farm
+│   │   │   │   ├── Farm.jpg
+│   │   │   │   ├── Field.png
+│   │   │   │   ├── SoilRoom.png
+│   │   │   │   ├── StoneRoom.png
+│   │   │   │   └── WoodRoom.png
+│   │   │   ├── JobCard
+│   │   │   │   ├── AdoptiveParents.png
+│   │   │   │   ├── Counselor.png
+│   │   │   │   ├── HedgeKeeper.png
+│   │   │   │   ├── Merchandiser.png
+│   │   │   │   ├── OrganicFarmer.png
+│   │   │   │   ├── Palanquinist.png
+│   │   │   │   ├── Plowman.png
+│   │   │   │   ├── PropertyManager.png
+│   │   │   │   ├── RoofMower.png
+│   │   │   │   ├── Servant.png
+│   │   │   │   ├── SmallerFarmer.png
+│   │   │   │   ├── SubsidiaryFarmer.png
+│   │   │   │   ├── WalledWorkman.png
+│   │   │   │   └── Woodcutter.png
+│   │   │   ├── MajorFacCard
+│   │   │   │   ├── 10_BasketFactory.png
+│   │   │   │   ├── 1_Brazier1.png
+│   │   │   │   ├── 2_Brazier2.png
+│   │   │   │   ├── 3_Stove1.png
+│   │   │   │   ├── 4_Stove2.png
+│   │   │   │   ├── 5_Well.png
+│   │   │   │   ├── 6_EarthenKiln.png
+│   │   │   │   ├── 7_StoneKiln.png
+│   │   │   │   ├── 8_FurnitureFactory.png
+│   │   │   │   └── 9_BowlFactory.png
+│   │   │   ├── Resources
+│   │   │   │   ├── 10_Cow.png
+│   │   │   │   ├── 1_Wood.png
+│   │   │   │   ├── 2_Sand.png
+│   │   │   │   ├── 3_Stone.png
+│   │   │   │   ├── 4_Reed.png
+│   │   │   │   ├── 5_Grain.png
+│   │   │   │   ├── 6_Vegetable.png
+│   │   │   │   ├── 7_Food.png
+│   │   │   │   ├── 8_Sheep.png
+│   │   │   │   └── 9_Pig.png
+│   │   │   ├── RoundCard
+│   │   │   │   ├── 10R.png
+│   │   │   │   ├── 11R.png
+│   │   │   │   ├── 12R.png
+│   │   │   │   ├── 13R.png
+│   │   │   │   ├── 14R.png
+│   │   │   │   ├── 1R.png
+│   │   │   │   ├── 2R.png
+│   │   │   │   ├── 3R.png
+│   │   │   │   ├── 4R.png
+│   │   │   │   ├── 5R.png
+│   │   │   │   ├── 6R.png
+│   │   │   │   ├── 7R.png
+│   │   │   │   ├── 8R.png
+│   │   │   │   └── 9R.png
+│   │   │   ├── RoundCardBack
+│   │   │   │   ├── 1Cycle.png
+│   │   │   │   ├── 2Cycle.png
+│   │   │   │   ├── 3Cycle.png
+│   │   │   │   ├── 4Cycle.png
+│   │   │   │   ├── 5Cycle.png
+│   │   │   │   └── 6Cycle.png
+│   │   │   └── ScoreTable.png
+│   │   ├── logo.png
+│   │   └── styles.css
+│   ├── components # Vue components folder used for high order components
+│   │   ├── BasicActions
+│   │   │   ├── DayLabor.vue
+│   │   │   ├── FarmExpand.vue
+│   │   │   ├── Farmland.vue
+│   │   │   ├── Fishing.vue
+│   │   │   ├── Forest.vue
+│   │   │   ├── GrainSeed.vue
+│   │   │   ├── Instruction.vue
+│   │   │   ├── MeetingPlace.vue
+│   │   │   ├── ReedField.vue
+│   │   │   └── SoilMining.vue
+│   │   ├── CardFlip.vue
+│   │   ├── CardModal.vue
+│   │   ├── CreateRoomButton.vue
+│   │   ├── CreateRoomModal.vue
+│   │   ├── FarmBoard
+│   │   │   ├── InitialMyFarmBoard.vue
+│   │   │   ├── InitialOppoFarmBoard.vue
+│   │   │   ├── R14StartMyFarmBoard.vue
+│   │   │   ├── R14StartOppoFarmBoard.vue
+│   │   │   ├── R8StartMyFarmBoard.vue
+│   │   │   └── R8StartOppoFarmBoard.vue
+│   │   ├── InputField.vue
+│   │   ├── RoomList.vue
+│   │   ├── RoundCardActions
+│   │   │   ├── CowMarket.vue
+│   │   │   ├── EastQuarry.vue
+│   │   │   ├── FieldFarming.vue
+│   │   │   ├── GrainUtilization.vue
+│   │   │   ├── PigMarket.vue
+│   │   │   ├── SheepMarket.vue
+│   │   │   ├── VegetableSeed.vue
+│   │   │   └── WestQuarry.vue
+│   │   ├── RoundModal.vue
+│   │   ├── ScoreTableModal.vue
+│   │   ├── ServeModal
+│   │   │   ├── IsBaked.vue
+│   │   │   └── IsGrainUtil.vue
+│   │   └── TurnModal.vue
+│   ├── constants # For creating the main game board
+│   │   └── index.js
+│   ├── index.css
+│   ├── main.js
+│   ├── router
+│   │   └── routes.js
+│   ├── service
+│   │   └── authService.js
+│   ├── store # Manage data status used in vue 
+│   │   └── store.js
+│   └── views # Major web page
+│       ├── GamePage.vue
+│       ├── LobbyPage.vue
+│       ├── LoginPage.vue
+│       ├── ReadyRoomPage.vue
+│       └── RegisterPage.vue
+├── tailwind.config.js
+└── vue.config.js
 
 ```
 
 ## How To Start
 
-> 아래 프리리쿼짙은 이 프로젝트를 돌릴 떄 필요한 거 써놓으면 돼
-> **Prerequiste:** _installation of node_ and have _mysql database access information_
+> **Prerequiste:** _installation of node_ and should run _agricola backend web server_ before
 
 ```bash
 
@@ -114,27 +240,16 @@ $ npm install
 # Compiles and hot-reloads for development
 $ npm run serve
 
-# Compiles and minifies for production
-$ npm run build
-
-# Lints and fixes files
-$ npm run lint
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-Test
 ```
 
-> 아래는 맞춰서 쓰세용
 
 ## Contributor
 
 |     | name          | main               | github address                        | contact             |
 | --- | ------------- | ------------------ | ------------------------------------- | ------------------- |
-|     | Jeongbin Park | Frontend Developer| https://github.com/dev-jjjjjeong-bin  | 0226pjb@naver.com   |
-|     | Seoungho Kim  | Frontend Developer | https://github.com/Minjae-vincent     | alswo9853@gmail.com |
-|     | Yohan An      | Frontend Developer | asdf                                  | adsf                |
+|     | Jeongbin Park | Frontend Developer| https://github.com/dev-jjjjjeong-bin  | 0226pjb@naver.com   |
+|     | Seoungho Kim  | Frontend Developer | https://github.com/Minjae-vincent     | ohgnues@hanyang.ac.kr |
+|     | Yohan An      | Frontend Developer | https://github.com/Anyohan       | dygks3240@hanyang.ac.kr |
 
 ## How to contribute
 
