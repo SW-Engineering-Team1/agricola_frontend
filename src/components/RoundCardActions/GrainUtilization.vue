@@ -1,4 +1,4 @@
-<!--  RoundCardAction9 돼지 시장  -->
+<!-- RoundCardAction2 곡식 활용 -->
 <template>
   <div
     @click="handleClick(isMyTurn)"
@@ -32,9 +32,9 @@ export default {
     const socket = io("localhost:3000");
     const route = useRoute();
     const roomId = ref("");
-
     const user = ref(computed(() => store.state.user));
-    const pigAccumulated = ref(computed(() => store.state.accumulatedResources.pigAccumulated));
+    const myFarm = ref(props.MyFarm);
+    const myFarmFunctions = {};
 
     if (store.state.currentRound >= props.round) {
       isFlipped.value = true;
@@ -45,37 +45,50 @@ export default {
         isFlipped.value = true;
       }
     });
-
-    const usePigMarket = () => {
-      if (props.round === 9) {
-        socket.emit("useActionSpace", {
-          actionName: "Use Accumulated Goods",
-          userId: user.value,
-          roomId: roomId.value,
-          goods : [
-            { 
-              name: "pigAccumulated",
-              num: pigAccumulated.value,
-              isAdd: true
-            }
-          ] 
-        });
-      }
-    }
-
-    const handleClick = (isMyTurn) => {
-      if (isMyTurn) {
-        usePigMarket();
-      }
-    }
-
+    
     onMounted(async () => {
       roomId.value = route.params.room;
+      for (let i = 1; i <= 15; i++) {
+        const myFarmName = `openMyFarm${i}`;
+        if (i === 15) {
+          myFarmFunctions[myFarmName] = () => {
+            socket.emit("useActionSpace",{
+              "actionName":"Grain Utilization",
+              "userId": user.value,
+              "roomId": roomId.value,
+              "goods":[
+                {
+                  "name":"vege",
+                  "num":1,
+                  "isAdd":false
+                },
+                {
+                  "id":15,
+                  "kind":"vege"
+                }
+              ]
+            })
+          };
+        }
+        else {
+          myFarmFunctions[myFarmName] = () => {
+            console.log(myFarmName);
+          };
+        }
+        // 해당 myFarm의 clickHandler를 등록
+        for (const farm of myFarm.value) {
+            farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
+        }
+      }
     });
 
-    return { isFlipped, handleClick };
-  }
-};
+    return {
+        myFarm,
+        roomId,
+        user
+    };
+  },
+}
 </script>
 
 <style scoped>

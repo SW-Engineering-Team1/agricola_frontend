@@ -1,4 +1,4 @@
-<!--  RoundCardAction9 돼지 시장  -->
+<!--  RoundCardAction5 서부 채석장  -->
 <template>
   <div
     @click="handleClick(isMyTurn)"
@@ -34,7 +34,7 @@ export default {
     const roomId = ref("");
 
     const user = ref(computed(() => store.state.user));
-    const pigAccumulated = ref(computed(() => store.state.accumulatedResources.pigAccumulated));
+    const stoneAccumulatedWest = ref(computed(() => store.state.accumulatedResources.stoneAccumulatedWest));
 
     if (store.state.currentRound >= props.round) {
       isFlipped.value = true;
@@ -46,16 +46,16 @@ export default {
       }
     });
 
-    const usePigMarket = () => {
-      if (props.round === 9) {
+    const useWestQuarry = () => {
+      if (props.round === 5) {
         socket.emit("useActionSpace", {
           actionName: "Use Accumulated Goods",
           userId: user.value,
           roomId: roomId.value,
           goods : [
             { 
-              name: "pigAccumulated",
-              num: pigAccumulated.value,
+              name: "stoneAccumulatedWest",
+              num: stoneAccumulatedWest.value,
               isAdd: true
             }
           ] 
@@ -65,7 +65,7 @@ export default {
 
     const handleClick = (isMyTurn) => {
       if (isMyTurn) {
-        usePigMarket();
+        useWestQuarry();
       }
     }
 
@@ -75,6 +75,7 @@ export default {
 
     return { isFlipped, handleClick };
   }
+
 };
 </script>
 

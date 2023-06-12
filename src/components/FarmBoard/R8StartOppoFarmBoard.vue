@@ -2,19 +2,37 @@
 <template>
   <div class="flex justify-center">
     <div class="bg-green-700 grid grid-cols-5 gap-2 p-2">
-      <img
+      <div
         v-for="farm in OppoFarm"
         :key="farm.id"
-        :src="farm.imgSrc"
-        alt="oppoFarm"
-        :class="[
-          'w-16 h-16',
-          { 'border-blue-600 border-t-8': farm.isBlueBorderTop },
-          { 'border-blue-600 border-b-8': farm.isBlueBorderBottom },
-          { 'border-blue-600 border-l-8': farm.isBlueBorderLeft },
-          { 'border-blue-600 border-r-8': farm.isBlueBorderRight }
-        ]"
-      />
+        class="image-container"
+      >
+        <img
+            :src="farm.imgSrc"
+            :alt="oppoFarm"
+            :class="[
+              'w-16 h-16',
+              { 'border-blue-500 border-t-8': farm.isBlueBorderTop },
+              { 'border-blue-500 border-b-8': farm.isBlueBorderBottom },
+              { 'border-blue-500 border-l-8': farm.isBlueBorderLeft },
+              { 'border-blue-500 border-r-8': farm.isBlueBorderRight }
+            ]"
+        />
+        <img
+            v-if="farm.id === 6"
+            src="@/assets/images/Etc/Player2.png"
+            alt="additionalFarm"
+            class="w-13 h-13 overlay-image"
+            style="top: 5px; left: 0px;"
+        />
+        <img
+            v-if="farm.id === 11"
+            src="@/assets/images/Etc/Player2.png"
+            alt="additionalFarm"
+            class="w-13 h-13 overlay-image"
+            style="top: 5px; left: 0px;"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -48,17 +66,17 @@ export default {
       type: Array,
       required: true,
       default: () => [
-        { id: 1, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 1, imgSrc: require('@/assets/images/Farm/Field.png') },
         { id: 2, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 3, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 4, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 5, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isBlueBorderTop: true, isBlueBorderLeft: true, isBlueBorderRight: true },
-        { id: 6, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 6, imgSrc: require('@/assets/images/Farm/WoodRoom.png') },
         { id: 7, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 8, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 9, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 10, imgSrc: require('@/assets/images/Farm/Farm.jpg'), isBlueBorderLeft: true, isBlueBorderRight: true },
-        { id: 11, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 11, imgSrc: require('@/assets/images/Farm/WoodRoom.png') },
         { id: 12, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 13, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 14, imgSrc: require('@/assets/images/Farm/Farm.jpg') },

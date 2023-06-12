@@ -48,13 +48,13 @@
         <div class="flex gap-x-10">
           <!--  상대 농장판  -->
           <div v-if="showR8StartFarmBoard">
-            <R8StartOppoFarmBoard :OppoFarm="oppoFarm" />
+            <R8StartOppoFarmBoard/>
           </div>
           <div v-else-if="showR14StartFarmBoard">
-            <R14StartOppoFarmBoard :OppoFarm="oppoFarm" />
+            <R14StartOppoFarmBoard/>
           </div>
           <div v-else>
-            <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
+            <InitialOppoFarmBoard/>
           </div>
           <!--  상대가 사용한 카드  -->
           <div v-for="(card, index) in oppoCardData" :key="index">
@@ -76,29 +76,31 @@
         <!--  게임 진행판  -->
         <div class="bg-gradient-to-r from-[#B2C95E] via-[#95AD4B] to-[#7C9432] p-2">
           <div class="grid grid-cols-8 gap-2 p-2">
-            <FarmExpand class="flex justify-center items-center"/>
+            <FarmExpand class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <CardFlip :round="1" :frontImage="rounds[0].imgSrc" :backImage="rounds[0].backImgSrc" />
-            <CardFlip :round="2" :frontImage="rounds[1].imgSrc" :backImage="rounds[1].backImgSrc" />
-            <CardFlip :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" />
-            <VegetableSeed :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" />
-            <CardFlip :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
-            <CowMarket :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" />
-            <CardFlip :round="12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
+            <CardFlip :onclick="grainUseModal.toggleModal" :round="2" :frontImage="rounds[1].imgSrc" :backImage="rounds[1].backImgSrc" />
+            <IsGrainUtil :onclick="isBakeModal.toggleModal" :show="grainUseModal.showModal.value" @close="grainUseModal.toggleModal" />
+            <IsBaked :show="isBakeModal.showModal.value" @close="isBakeModal.toggleModal" />
+            <WestQuarry :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" :isMyTurn="isMyTurn" />
+            <VegetableSeed :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" :isMyTurn="isMyTurn" />
+            <CowMarket :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" :isMyTurn="isMyTurn" />
+            <FieldFarming :round="12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" :isMyTurn="isMyTurn" />
             <CardFlip :round="14" :frontImage="rounds[13].imgSrc" :backImage="rounds[13].backImgSrc" />
-            <MeetingPlace class="flex justify-center items-center"/>
-            <GrainSeed class="flex justify-center items-center"/>
-            <Forest class="flex justify-center items-center"/>
+            <MeetingPlace class="flex justify-center items-center" :isMyTurn="isMyTurn"/>
+            <GrainSeed class="flex justify-center items-center" :isMyTurn="isMyTurn" />
+            <Forest class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <CardFlip :round="3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
-            <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" />
-            <PigMarket :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" />
-            <CardFlip :round="11" :frontImage="rounds[10].imgSrc" :backImage="rounds[10].backImgSrc" />
+            <DefaultAddFam :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" :isMyTurn="isMyTurn" />
+            <!-- <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" /> -->
+            <PigMarket :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" :isMyTurn="isMyTurn" />
+            <EastQuarry :round="11" :frontImage="rounds[10].imgSrc" :backImage="rounds[10].backImgSrc" :isMyTurn="isMyTurn" />
             <CardFlip :round="13" :frontImage="rounds[12].imgSrc" :backImage="rounds[12].backImgSrc" />
             <div class="row-span-2" />
-            <Farmland class="flex justify-center items-center"/>
-            <SoilMining class="flex justify-center items-center"/>
-            <Instruction class="flex justify-center items-center"/>
-            <ReedField class="flex justify-center items-center"/>
-            <CardFlip :round="4" :frontImage="rounds[3].imgSrc" :backImage="rounds[3].backImgSrc" />
+            <Farmland class="flex justify-center items-center" :isMyTurn="isMyTurn" />
+            <SoilMining class="flex justify-center items-center" :isMyTurn="isMyTurn" />
+            <Instruction class="flex justify-center items-center" :isMyTurn="isMyTurn" />
+            <ReedField class="flex justify-center items-center" :isMyTurn="isMyTurn" />
+            <SheepMarket :round="4" :frontImage="rounds[3].imgSrc" :backImage="rounds[3].backImgSrc" :isMyTurn="isMyTurn" />
             <CardFlip :round="7" :frontImage="rounds[6].imgSrc" :backImage="rounds[6].backImgSrc" />
             <div class="row-span-2" />
             <div class="row-span-2" />
@@ -117,8 +119,8 @@
                 :cardType="notUsedMajorFacCardData.cardType"
               />
             </div>
-            <DayLabor class="flex justify-center items-center" />
-            <Fishing class="flex justify-center items-center" />
+            <DayLabor class="flex justify-center items-center" :isMyTurn="isMyTurn" />
+            <Fishing class="flex justify-center items-center" :isMyTurn="isMyTurn" />
           </div>
         </div>
 
@@ -126,13 +128,13 @@
         <div class="flex flex-row-reverse gap-x-10">
           <!--  본인 농장판  -->
           <div v-if="showR8StartFarmBoard">
-            <R8StartMyFarmBoard :MyFarm="myFarm" />
+            <R8StartMyFarmBoard/>
           </div>
           <div v-else-if="showR14StartFarmBoard">
-            <R14StartMyFarmBoard :MyFarm="myFarm" />
+            <R14StartMyFarmBoard/>
           </div>
           <div v-else>
-            <InitialMyFarmBoard :myFarm="myFarm" />
+            <InitialMyFarmBoard/>
           </div>
           <!--  본인 카드  -->
           <div v-for="(card, index) in myCardData" :key="index" class="relative group">
@@ -181,6 +183,7 @@ import CardModal from "@/components/CardModal.vue";
 import RoundModal from "@/components/RoundModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
 import ScoreTableModal from '@/components/ScoreTableModal.vue';
+import TurnModal from '@/components/TurnModal.vue'
 //* FarmBoard */
 import InitialOppoFarmBoard from '@/components/FarmBoard/InitialOppoFarmBoard.vue';
 import InitialMyFarmBoard from '@/components/FarmBoard/InitialMyFarmBoard.vue';
@@ -200,10 +203,17 @@ import SoilMining from "@/components/BasicActions/SoilMining.vue";
 import ReedField from "@/components/BasicActions/ReedField.vue";
 import Fishing from "@/components/BasicActions/Fishing.vue";
 //* RoundCard Actions */
+import SheepMarket from "@/components/RoundCardActions/SheepMarket.vue";
+import WestQuarry from "@/components/RoundCardActions/WestQuarry.vue";
 import VegetableSeed from "@/components/RoundCardActions/VegetableSeed.vue";
 import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
 import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
-import TurnModal from '@/components/TurnModal.vue'
+import EastQuarry from "@/components/RoundCardActions/EastQuarry.vue";
+import FieldFarming from "@/components/RoundCardActions/FieldFarming.vue";
+import DefaultAddFam from "@/components/RoundCardActions/DefaultAddFam.vue"
+//* ServeModal */
+import IsGrainUtil from "@/components/ServeModal/IsGrainUtil.vue"
+import IsBaked from "@/components/ServeModal/IsBaked.vue"
 
 export default {
   data() {
@@ -237,9 +247,17 @@ export default {
     ReedField,
     Fishing,
     //* RoundCard Actions */
+    SheepMarket,
+    WestQuarry,
     VegetableSeed,
     PigMarket,
     CowMarket,
+    EastQuarry,
+    FieldFarming,
+    DefaultAddFam,
+    //* ServeModal */
+    IsGrainUtil,
+    IsBaked
   },
 
   setup() {
@@ -270,7 +288,8 @@ export default {
     const oppoUsedMajorFacCardModal = createModalState();
     const notUsedMajorFacCardModal = createModalState();
     const scoreTableModal = createModalState();
-
+    const grainUseModal = createModalState();
+    const isBakeModal = createModalState();
     // helper functions
     const getUserStatus = (gameStatus, userId) => {
       return gameStatus.value.find((status) => status.UserId === userId);
@@ -393,7 +412,7 @@ export default {
       alt: "notUsedMajorFacCard",
       modal: notUsedMajorFacCardModal,
       cards: notUsedMajorFacCard,
-      cardType: "사용되지 않는 주요 설비",
+      cardType: "사용되지 않은 주요 설비",
     };
 
     // 행동 칸 정보
@@ -419,7 +438,10 @@ export default {
       store.commit("setCurrentRound", 1);
     };
     const startRound = () => {
-      socket.emit("startRound", gameStatus.value[0]);
+      console.log(roomId)
+      socket.emit("startRound", {
+        roomId: roomId
+      });
     };
     const skipGame = (round) => {
       const skipGameData = {
@@ -428,8 +450,9 @@ export default {
         userId: [{ userId: host.value }, { userId: guest.value }],
       };
       socket.emit("skipGame", skipGameData);
-      socket.once("skipGame",() => {
-        socket.emit("accumulateGoods",{
+
+      if (round === 8) {
+        socket.emit("accumulateGoods", {
           roomId: roomId,
           accList: [
             "woodAccumulated", 
@@ -438,15 +461,26 @@ export default {
             "foodAccumulated",
             "sheepAccumulated", 
             "stoneAccumulatedWest"
-            ]
+          ]
         });
-      });
-
-      if (round === 8) {
         showR8StartFarmBoard.value = true;
         showR14StartFarmBoard.value = false;
       }
       else if (round === 14) {
+        socket.emit("accumulateGoods", {
+          roomId: roomId,
+          accList: [
+            "woodAccumulated", 
+            "sandAccumulated", 
+            "reedAccumulated", 
+            "foodAccumulated",
+            "sheepAccumulated", 
+            "stoneAccumulatedWest", 
+            "pigAccumulated", 
+            "cowAccumulated", 
+            "stoneAccumulatedEast"
+          ]
+        });
         showR8StartFarmBoard.value = false;
         showR14StartFarmBoard.value = true;
       }
@@ -476,8 +510,10 @@ export default {
 
       store.commit("setRemainedMajorFac", majorFacCardsList);
 
-      socket.on("startRound", () => {
+      socket.on("startRound", (data) => {
+        const updatedStatus = data.updateResult.map(player => player.playerDetail);
         store.commit("setCurrentRound", currentRound.value + 1);
+        store.commit("setGameStatus", updatedStatus);
         showRound();
       });
 
@@ -489,7 +525,12 @@ export default {
         showRound();
       });
 
+      socket.on("accumulateGoods", (data) => {
+        store.commit("setAccumulatedResources", data.result);
+      });
+
       socket.on("useActionSpace", (data) => {
+        console.log("useActionSpace", data);
         const handleData = (data) => {
           const { remainedMainFacilityCard, ...rest } = data;
           // gameStatus 내에 data.UserId와 일치하는 player의 정보를 data로 업데이트
@@ -505,6 +546,7 @@ export default {
 
         if ('updateResult' in data) { // data에 'updateResult'가 있는 경우 (ex. 숲)
           handleData(data.updateResult);
+          store.commit("setAccumulatedResources", data.accResult);
         } else { // data에 'updateResult'가 없고 바로 result만 있는 경우 (ex. 채소종자)
           handleData(data);
         }
@@ -535,10 +577,12 @@ export default {
       currentRound,
       showRoundModal,
       scoreTableModal,
+      grainUseModal,
       endTurn,
       isMyTurn,
       showR8StartFarmBoard,
       showR14StartFarmBoard,
+      isBakeModal
     };
   },
 };

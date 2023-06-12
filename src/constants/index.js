@@ -3,12 +3,12 @@ export const resourceMap = {
   sand: { name: 'sand', image: require('@/assets/images/Resources/2_Sand.png') },
   stone: { name: 'stone', image: require('@/assets/images/Resources/3_Stone.png') },
   reed: { name: 'reed', image: require('@/assets/images/Resources/4_Reed.png') },
-  grainOnStorage: { name: 'grain', image: require('@/assets/images/Resources/5_Grain.png') },
-  vegeOnStorage: { name: 'vegetable', image: require('@/assets/images/Resources/6_Vegetable.png') },
+  grainOnStorage: { name: 'grain', image: require('@/assets/images/Resources/5_Grain_P1.png') },
+  vegeOnStorage: { name: 'vegetable', image: require('@/assets/images/Resources/6_Vegetable_P1.png') },
   food: { name: 'food', image: require('@/assets/images/Resources/7_Food.png') },
-  sheep: { name: 'sheep', image: require('@/assets/images/Resources/8_Sheep.png') },
-  pig: { name: 'pig', image: require('@/assets/images/Resources/9_Pig.png') },
-  cow: { name: 'cow', image: require('@/assets/images/Resources/10_Cow.png') },
+  sheep: { name: 'sheep', image: require('@/assets/images/Resources/8_Sheep_P1.png') },
+  pig: { name: 'pig', image: require('@/assets/images/Resources/9_Pig_P1.png') },
+  cow: { name: 'cow', image: require('@/assets/images/Resources/10_Cow_P1.png') },
   numOfBeggingToken: { name: 'debt', image: require('@/assets/images/Etc/BeggingToken.png') },
 };
 

@@ -7,21 +7,20 @@
         :key="farm.id"
         :src="farm.imgSrc"
         alt="myFarm"
-        :class="[ 'w-16 h-16' ]"
-      />
+        :class="[ 'w-16 h-16' ]"/>
     </div>
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
-import { farmRef } from '@/constants';
+// import { farmRef } from '@/constants';
 export default {
-  setup() {
-    const myFarm = ref(farmRef);
+  setup(props) {
+    const myFarm = ref(props.MyFarm);
     // myFarm을 위한 함수들을 동적으로 생성
     const myFarmFunctions = {};
-    for (let i = 1; i <= 15; i++) {
+     for (let i = 1; i <= 15; i++) {
       const myFarmName = `openMyFarm${i}`;
       myFarmFunctions[myFarmName] = () => {
         console.log(myFarmName);
@@ -32,7 +31,7 @@ export default {
       }
     }
     return {
-        myFarm
+        myFarm 
     };
   },
   
@@ -46,12 +45,12 @@ export default {
         { id: 2, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 3, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 4, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
-        { id: 5, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 5, imgSrc: require('@/assets/images/Farm/WoodRoom.png') },
         { id: 6, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 7, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 8, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 9, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
-        { id: 10, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
+        { id: 10, imgSrc: require('@/assets/images/Farm/WoodRoom.png') },
         { id: 11, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 12, imgSrc: require('@/assets/images/Farm/Farm.jpg') },
         { id: 13, imgSrc: require('@/assets/images/Farm/Farm.jpg') },

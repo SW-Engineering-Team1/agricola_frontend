@@ -74,13 +74,6 @@ export default {
           },
         ],
       });
-      socket.on("useActionSpace", (data) => {
-        if (data.isSuccess === false) {
-          alert("자원이 부족합니다.");
-        } else {
-          alert(CardName);
-        }
-      });
     };
 
     onMounted(async () => {
