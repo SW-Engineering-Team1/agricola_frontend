@@ -245,11 +245,11 @@ $ npm run serve
 
 ## Contributor
 
-|     | name          | main               | github address                        | contact             |
-| --- | ------------- | ------------------ | ------------------------------------- | ------------------- |
-|     | Jeongbin Park | Frontend Developer| https://github.com/dev-jjjjjeong-bin  | 0226pjb@naver.com   |
-|     | Seoungho Kim  | Frontend Developer | https://github.com/Minjae-vincent     | ohgnues@hanyang.ac.kr |
-|     | Yohan An      | Frontend Developer | https://github.com/Anyohan       | dygks3240@hanyang.ac.kr |
+|     | name          | main               | github address                        | contact                 |
+| --- | ------------- | ------------------ | ------------------------------------- | ----------------------- |
+|     | Jeongbin Park | Frontend Developer | https://github.com/dev-jjjjjeong-bin  | 0226pjb@naver.com       |
+|     | Seoungho Kim  | Frontend Developer | https://github.com/oh-gnues           | ohgnues@hanyang.ac.kr   |
+|     | Yohan An      | Frontend Developer | https://github.com/Anyohan            | dygks3240@hanyang.ac.kr |
 
 ## How to contribute
 
