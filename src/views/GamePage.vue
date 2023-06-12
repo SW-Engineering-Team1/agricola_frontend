@@ -99,7 +99,7 @@
             <SoilMining class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <Instruction class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <ReedField class="flex justify-center items-center" :isMyTurn="isMyTurn" />
-            <CardFlip :round="4" :frontImage="rounds[3].imgSrc" :backImage="rounds[3].backImgSrc" />
+            <SheepMarket :round="4" :frontImage="rounds[3].imgSrc" :backImage="rounds[3].backImgSrc" :isMyTurn="isMyTurn" />
             <CardFlip :round="7" :frontImage="rounds[6].imgSrc" :backImage="rounds[6].backImgSrc" />
             <div class="row-span-2" />
             <div class="row-span-2" />
@@ -201,6 +201,7 @@ import SoilMining from "@/components/BasicActions/SoilMining.vue";
 import ReedField from "@/components/BasicActions/ReedField.vue";
 import Fishing from "@/components/BasicActions/Fishing.vue";
 //* RoundCard Actions */
+import SheepMarket from "@/components/RoundCardActions/SheepMarket.vue";
 import VegetableSeed from "@/components/RoundCardActions/VegetableSeed.vue";
 import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
 import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
@@ -241,6 +242,7 @@ export default {
     ReedField,
     Fishing,
     //* RoundCard Actions */
+    SheepMarket,
     VegetableSeed,
     PigMarket,
     CowMarket,
