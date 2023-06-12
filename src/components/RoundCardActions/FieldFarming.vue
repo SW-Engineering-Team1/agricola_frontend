@@ -77,10 +77,6 @@ export default {
             console.log(myFarmName);
           };
         }
-        // 해당 myFarm의 clickHandler를 등록
-        for (const farm of myFarm.value) {
-            farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
-        }
       }
     });
 
