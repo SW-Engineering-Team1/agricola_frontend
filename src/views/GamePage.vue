@@ -48,13 +48,13 @@
         <div class="flex gap-x-10">
           <!--  상대 농장판  -->
           <div v-if="showR8StartFarmBoard">
-            <R8StartOppoFarmBoard :OppoFarm="oppoFarm" />
+            <R8StartOppoFarmBoard/>
           </div>
           <div v-else-if="showR14StartFarmBoard">
-            <R14StartOppoFarmBoard :OppoFarm="oppoFarm" />
+            <R14StartOppoFarmBoard/>
           </div>
           <div v-else>
-            <InitialOppoFarmBoard :OppoFarm="oppoFarm" />
+            <InitialOppoFarmBoard/>
           </div>
           <!--  상대가 사용한 카드  -->
           <div v-for="(card, index) in oppoCardData" :key="index">
@@ -127,13 +127,13 @@
         <div class="flex flex-row-reverse gap-x-10">
           <!--  본인 농장판  -->
           <div v-if="showR8StartFarmBoard">
-            <R8StartMyFarmBoard :MyFarm="myFarm" />
+            <R8StartMyFarmBoard/>
           </div>
           <div v-else-if="showR14StartFarmBoard">
-            <R14StartMyFarmBoard :MyFarm="myFarm" />
+            <R14StartMyFarmBoard/>
           </div>
           <div v-else>
-            <InitialMyFarmBoard :myFarm="myFarm" />
+            <InitialMyFarmBoard/>
           </div>
           <!--  본인 카드  -->
           <div v-for="(card, index) in myCardData" :key="index" class="relative group">
