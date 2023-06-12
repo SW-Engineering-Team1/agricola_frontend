@@ -54,7 +54,7 @@
             <R14StartOppoFarmBoard :OppoFarm="oppoFarm" />
           </div>
           <div v-else>
-            <InitialOppoFarmBoard :oppoFarm="oppoFarm" />
+            <InitialOppoFarmBoard :OppoFarm="oppoFarm" />
           </div>
           <!--  상대가 사용한 카드  -->
           <div v-for="(card, index) in oppoCardData" :key="index">
