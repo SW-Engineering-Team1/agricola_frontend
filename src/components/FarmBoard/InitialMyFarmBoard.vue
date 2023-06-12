@@ -14,10 +14,10 @@
 
 <script>
 import { ref } from "vue";
-import { farmRef } from '@/constants';
+// import { farmRef } from '@/constants';
 export default {
-  setup() {
-    const myFarm = ref(farmRef);
+  setup(props) {
+    const myFarm = ref(props.MyFarm);
     // myFarm을 위한 함수들을 동적으로 생성
     const myFarmFunctions = {};
      for (let i = 1; i <= 15; i++) {

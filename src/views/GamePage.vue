@@ -90,7 +90,8 @@
             <GrainSeed class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <Forest class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <CardFlip :round="3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
-            <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" />
+            <DefaultAddFam :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" :isMyTurn="isMyTurn" />
+            <!-- <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" /> -->
             <PigMarket :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" :isMyTurn="isMyTurn" />
             <EastQuarry :round="11" :frontImage="rounds[10].imgSrc" :backImage="rounds[10].backImgSrc" :isMyTurn="isMyTurn" />
             <CardFlip :round="13" :frontImage="rounds[12].imgSrc" :backImage="rounds[12].backImgSrc" />
@@ -209,6 +210,7 @@ import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
 import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
 import EastQuarry from "@/components/RoundCardActions/EastQuarry.vue";
 import FieldFarming from "@/components/RoundCardActions/FieldFarming.vue";
+import DefaultAddFam from "@/components/RoundCardActions/DefaultAddFam.vue"
 //* ServeModal */
 import IsGrainUtil from "@/components/ServeModal/IsGrainUtil.vue"
 import IsBaked from "@/components/ServeModal/IsBaked.vue"
@@ -252,6 +254,7 @@ export default {
     CowMarket,
     EastQuarry,
     FieldFarming,
+    DefaultAddFam,
     //* ServeModal */
     IsGrainUtil,
     IsBaked
@@ -435,7 +438,10 @@ export default {
       store.commit("setCurrentRound", 1);
     };
     const startRound = () => {
-      socket.emit("startRound", gameStatus.value[0]);
+      console.log(roomId)
+      socket.emit("startRound", {
+        roomId: roomId
+      });
     };
     const skipGame = (round) => {
       const skipGameData = {
@@ -446,10 +452,35 @@ export default {
       socket.emit("skipGame", skipGameData);
 
       if (round === 8) {
+        socket.emit("accumulateGoods", {
+          roomId: roomId,
+          accList: [
+            "woodAccumulated", 
+            "sandAccumulated", 
+            "reedAccumulated", 
+            "foodAccumulated",
+            "sheepAccumulated", 
+            "stoneAccumulatedWest"
+          ]
+        });
         showR8StartFarmBoard.value = true;
         showR14StartFarmBoard.value = false;
       }
       else if (round === 14) {
+        socket.emit("accumulateGoods", {
+          roomId: roomId,
+          accList: [
+            "woodAccumulated", 
+            "sandAccumulated", 
+            "reedAccumulated", 
+            "foodAccumulated",
+            "sheepAccumulated", 
+            "stoneAccumulatedWest", 
+            "pigAccumulated", 
+            "cowAccumulated", 
+            "stoneAccumulatedEast"
+          ]
+        });
         showR8StartFarmBoard.value = false;
         showR14StartFarmBoard.value = true;
       }
@@ -479,28 +510,15 @@ export default {
 
       store.commit("setRemainedMajorFac", majorFacCardsList);
 
-      socket.on("startRound", () => {
+      socket.on("startRound", (data) => {
+        const updatedStatus = data.updateResult.map(player => player.playerDetail);
         store.commit("setCurrentRound", currentRound.value + 1);
+        store.commit("setGameStatus", updatedStatus);
         showRound();
       });
 
       socket.on("skipGame", (data) => {
         store.commit("setCurrentRound", data.skipRound);
-        socket.emit("accumulateGoods", {
-          roomId: roomId,
-          accList: [
-            "foodAccumulated",
-            "woodAccumulated",
-            "sandAccumulated",
-            "reedAccumulated",
-            "stoneAccumulatedEast",
-            "stoneAccumulatedWest",
-            "sheepAccumulated",
-            "cowAccumulated",
-            "pigAccumulated",
-          ]
-        });
-
         const updatedStatus = data.updatedPlayer.map(player => player.playerDetail);
         store.commit("setGameStatus", updatedStatus);
         store.commit("setRemainedMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);

@@ -11,7 +11,7 @@
   </transition>
 </template>
 <script>
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { io } from "socket.io-client";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -27,7 +27,7 @@ export default {
   //     this.$emit('close');
   //   },
   // },
-  setup(props,context){
+  setup(props, context){
     const socket = io("localhost:3000");
     const store = useStore();
     const route = useRoute();
@@ -35,9 +35,6 @@ export default {
     const roomId = ref("");
     const user = computed(() => store.state.user);
 
-    const closeModal = () => {
-      context.emit("close");
-    }
     const bakeBread = () => {
       socket.emit("useActionSpace",{
         "actionName":"Bake Bread",
@@ -51,19 +48,19 @@ export default {
           }
         ]
       });
-      closeModal();
+      closeModal()
+    }
+    const closeModal = () => {
+      context.emit("close");
     }
     onMounted(async () => {
       roomId.value = route.params.room;
     });
-
-    onUnmounted(() => {
-      socket.off("useActionSpace");
-    });
     return{
       roomId,
       user,
-      bakeBread
+      bakeBread,
+      closeModal
     }
   }
 }
