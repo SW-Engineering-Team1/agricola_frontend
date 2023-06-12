@@ -25,7 +25,7 @@
             class="w-10 h-10 overlay-image"
             style="top: 13px; left: 13px;"
         />
-         <img
+        <img
             v-if="farm.id === 5"
             src="@/assets/images/Etc/Player1.png"
             alt="additionalFarm"

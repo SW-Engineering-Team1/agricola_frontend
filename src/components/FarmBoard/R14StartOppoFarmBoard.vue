@@ -54,11 +54,32 @@
             style="top: 16px; left: 25px; z-index: 2;"
         />
         <img
+            v-if="farm.id === 6"
+            src="@/assets/images/Etc/Player2.png"
+            alt="additionalFarm"
+            class="w-13 h-13 overlay-image"
+            style="top: 5px; left: 0px;"
+        />
+        <img
             v-if="farm.id === 10"
             src="@/assets/images/Resources/8_Sheep_P2.png"
             alt="additionalFarm"
             class="w-8 h-8 overlay-image"
             style="top: 16px; left: 15px;"
+        />
+        <img
+            v-if="farm.id === 6"
+            src="@/assets/images/Etc/Player2.png"
+            alt="additionalFarm"
+            class="w-13 h-13 overlay-image"
+            style="top: 32px; left: -20px;"
+        />
+        <img
+            v-if="farm.id === 11"
+            src="@/assets/images/Etc/Player2.png"
+            alt="additionalFarm"
+            class="w-13 h-13 overlay-image"
+            style="top: 5px; left: 0px;"
         />
       </div>
     </div>

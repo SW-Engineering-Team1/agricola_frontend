@@ -23,14 +23,14 @@
             src="@/assets/images/Etc/Player2.png"
             alt="additionalFarm"
             class="w-13 h-13 overlay-image"
-            style="top: 5px; left: 1px;"
+            style="top: 5px; left: 0px;"
         />
         <img
             v-if="farm.id === 11"
             src="@/assets/images/Etc/Player2.png"
             alt="additionalFarm"
             class="w-13 h-13 overlay-image"
-            style="top: 5px; left: 1px;"
+            style="top: 5px; left: 0px;"
         />
       </div>
     </div>
