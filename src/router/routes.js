@@ -6,6 +6,7 @@ import LobbyPage from '../views/LobbyPage'
 import ReadyRoomPage from '../views/ReadyRoomPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import GamePage from '../views/GamePage.vue'
+import GameResultPage from '@/views/GameResultPage.vue'
 
 const routes = [
   {
@@ -32,7 +33,12 @@ const routes = [
     path: '/room/:room/game',
     name: 'game',
     component: GamePage,
-  }
+  },
+  {
+    path: '/room/:room/gameResult',
+    name: 'gameResult',
+    component: GameResultPage,
+  },
 ]
 
 const router = createRouter({

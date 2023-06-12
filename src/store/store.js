@@ -12,6 +12,7 @@ const getDefaultState = () => {
     remainedMajorFac: [],
     currentRound: 1,
     accumulatedResources: [],
+    gameResult: [],
   }
 }
 
@@ -44,6 +45,9 @@ export default createStore({
     },
     setAccumulatedResources(state, accumulatedResources) {
       state.accumulatedResources = accumulatedResources;
+    },
+    setGameResult(state, gameResult) {
+      state.gameResult = gameResult;
     },
     resetStore(state) {
       Object.assign(state, getDefaultState());
