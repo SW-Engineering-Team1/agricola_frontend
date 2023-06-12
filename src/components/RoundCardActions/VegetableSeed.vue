@@ -47,11 +47,11 @@ export default {
 
     const useVegetableSeed = () => {
       if (props.round === 8) {
-        socket.emit("useActionSpace", {
-          actionName: "addVegetableSeed",
-          userId: user.value,
-          roomId: roomId.value,
-          goods : [
+        socket.emit("useActionSpace",{
+          "actionName": "GetVegetable",
+          "userId": user.value,
+          "roomId": roomId,
+          "goods" : [
             { 
               name: "vegeOnStorage",
               num: 1,
