@@ -81,7 +81,7 @@
             <CardFlip :onclick="grainUseModal.toggleModal" :round="2" :frontImage="rounds[1].imgSrc" :backImage="rounds[1].backImgSrc" />
             <IsGrainUtil :onclick="isBakeModal.toggleModal" :show="grainUseModal.showModal.value" @close="grainUseModal.toggleModal" />
             <IsBaked :show="isBakeModal.showModal.value" @close="isBakeModal.toggleModal" />
-            <CardFlip :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" />
+            <WestQuarry :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" :isMyTurn="isMyTurn" />
             <VegetableSeed :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" :isMyTurn="isMyTurn" />
             <CowMarket :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" :isMyTurn="isMyTurn" />
             <CardFlip :round="12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
@@ -182,6 +182,7 @@ import CardModal from "@/components/CardModal.vue";
 import RoundModal from "@/components/RoundModal.vue";
 import CardFlip from "@/components/CardFlip.vue";
 import ScoreTableModal from '@/components/ScoreTableModal.vue';
+import TurnModal from '@/components/TurnModal.vue'
 //* FarmBoard */
 import InitialOppoFarmBoard from '@/components/FarmBoard/InitialOppoFarmBoard.vue';
 import InitialMyFarmBoard from '@/components/FarmBoard/InitialMyFarmBoard.vue';
@@ -201,11 +202,11 @@ import SoilMining from "@/components/BasicActions/SoilMining.vue";
 import ReedField from "@/components/BasicActions/ReedField.vue";
 import Fishing from "@/components/BasicActions/Fishing.vue";
 //* RoundCard Actions */
+import WestQuarry from "@/components/RoundCardActions/WestQuarry.vue";
 import SheepMarket from "@/components/RoundCardActions/SheepMarket.vue";
 import VegetableSeed from "@/components/RoundCardActions/VegetableSeed.vue";
 import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
 import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
-import TurnModal from '@/components/TurnModal.vue'
 //* ServeModal */
 import IsGrainUtil from "@/components/ServeModal/IsGrainUtil.vue"
 import IsBaked from "@/components/ServeModal/IsBaked.vue"
@@ -243,6 +244,7 @@ export default {
     Fishing,
     //* RoundCard Actions */
     SheepMarket,
+    WestQuarry,
     VegetableSeed,
     PigMarket,
     CowMarket,
