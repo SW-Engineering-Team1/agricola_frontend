@@ -99,7 +99,7 @@ export default {
         { id: 8, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true },
         { id: 9, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderTop: true, isRedBorderRight: true },
         { id: 10, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg') },
-        { id: 11, type: "farm" , mgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true, isRedBorderLeft: true },
+        { id: 11, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true, isRedBorderLeft: true },
         { id: 12, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true },
         { id: 13, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true },
         { id: 14, type: "farm" , imgSrc: require('@/assets/images/Farm/Farm.jpg'), isRedBorderBottom: true, isRedBorderRight: true },
