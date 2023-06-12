@@ -1,4 +1,4 @@
-<!-- Action10 낚시 행동칸 -->
+<!--  BasicAction10 낚시 행동칸  -->
 <template>
   <div>
     <img
@@ -15,6 +15,7 @@ import { computed, onMounted, ref } from "vue";
 import { io } from "socket.io-client";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+
 export default {
   props: {
     isMyTurn: {
@@ -29,21 +30,26 @@ export default {
 
     const roomId = ref("");
     const user = computed(() => store.state.user);
+    const foodAccumulated = ref(computed(() => store.state.accumulatedResources.foodAccumulated));
 
     const useFishing = () => {
       socket.emit("useActionSpace", {
-        actionName: "GetFood",
+        actionName: "Use Accumulated Goods",
         userId: user.value,
         roomId: roomId.value,
         goods: [
           {
-            name: "food",
-            num: 1,
+            name: "foodAccumulated",
+            num: foodAccumulated.value,
             isAdd: true,
           },
         ],
       });
     };
+
+    onMounted(async () => {
+      roomId.value = route.params.room;
+    });
 
     const handleClick = (isMyTurn) => {
       if (isMyTurn) {
@@ -51,12 +57,8 @@ export default {
       }
     }
 
-    onMounted(async () => {
-      roomId.value = route.params.room;
-    });
-
     return {
-      handleClick
+      handleClick,
     };
   },
 };
