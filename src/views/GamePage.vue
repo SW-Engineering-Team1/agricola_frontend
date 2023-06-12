@@ -84,7 +84,7 @@
             <WestQuarry :round="5" :frontImage="rounds[4].imgSrc" :backImage="rounds[4].backImgSrc" :isMyTurn="isMyTurn" />
             <VegetableSeed :round="8" :frontImage="rounds[7].imgSrc" :backImage="rounds[7].backImgSrc" :isMyTurn="isMyTurn" />
             <CowMarket :round="10" :frontImage="rounds[9].imgSrc" :backImage="rounds[9].backImgSrc" :isMyTurn="isMyTurn" />
-            <CardFlip :round="12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" />
+            <FieldFarming :round="12" :frontImage="rounds[11].imgSrc" :backImage="rounds[11].backImgSrc" :isMyTurn="isMyTurn" />
             <CardFlip :round="14" :frontImage="rounds[13].imgSrc" :backImage="rounds[13].backImgSrc" />
             <MeetingPlace class="flex justify-center items-center" :isMyTurn="isMyTurn"/>
             <GrainSeed class="flex justify-center items-center" :isMyTurn="isMyTurn" />
@@ -208,6 +208,7 @@ import VegetableSeed from "@/components/RoundCardActions/VegetableSeed.vue";
 import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
 import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
 import EastQuarry from "@/components/RoundCardActions/EastQuarry.vue";
+import FieldFarming from "@/components/RoundCardActions/FieldFarming.vue";
 //* ServeModal */
 import IsGrainUtil from "@/components/ServeModal/IsGrainUtil.vue"
 import IsBaked from "@/components/ServeModal/IsBaked.vue"
@@ -250,6 +251,7 @@ export default {
     PigMarket,
     CowMarket,
     EastQuarry,
+    FieldFarming,
     //* ServeModal */
     IsGrainUtil,
     IsBaked
@@ -407,7 +409,7 @@ export default {
       alt: "notUsedMajorFacCard",
       modal: notUsedMajorFacCardModal,
       cards: notUsedMajorFacCard,
-      cardType: "사용되지 않는 주요 설비",
+      cardType: "사용되지 않은 주요 설비",
     };
 
     // 행동 칸 정보
