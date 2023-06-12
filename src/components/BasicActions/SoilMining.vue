@@ -32,7 +32,7 @@ export default {
     const user = computed(() => store.state.user);
     const sandAccumulated = ref(computed(() => store.state.accumulatedResources.sandAccumulated));
 
-    const useForest = () => {
+    const useSoilMining = () => {
       socket.emit("useActionSpace", {
         actionName: "Use Accumulated Goods",
         userId: user.value,
@@ -53,7 +53,7 @@ export default {
 
     const handleClick = (isMyTurn) => {
       if (isMyTurn) {
-        useForest();
+        useSoilMining();
       }
     }
 
