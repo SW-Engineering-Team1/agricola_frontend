@@ -90,3 +90,11 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.card-face { backface-visibility: hidden; transition: transform 0.6s }
+.back { transform: rotateY(0deg); }
+.front { transform: rotateY(180deg); }
+.flip .back { transform: rotateY(-180deg); }
+.flip .front { transform: rotateY(0deg); }
+</style>
