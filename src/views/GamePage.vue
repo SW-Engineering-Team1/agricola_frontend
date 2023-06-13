@@ -91,7 +91,7 @@
             <GrainSeed class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <Forest class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <CardFlip :round="3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
-            <DefaultAddFam :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" :isMyTurn="isMyTurn" />
+            <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" :isMyTurn="isMyTurn" />
             <PigMarket :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" :isMyTurn="isMyTurn" />
             <EastQuarry :round="11" :frontImage="rounds[10].imgSrc" :backImage="rounds[10].backImgSrc" :isMyTurn="isMyTurn" />
             <CardFlip :round="13" :frontImage="rounds[12].imgSrc" :backImage="rounds[12].backImgSrc" />
@@ -215,7 +215,7 @@ import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
 import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
 import EastQuarry from "@/components/RoundCardActions/EastQuarry.vue";
 import FieldFarming from "@/components/RoundCardActions/FieldFarming.vue";
-import DefaultAddFam from "@/components/RoundCardActions/DefaultAddFam.vue"
+// import DefaultAddFam from "@/components/RoundCardActions/DefaultAddFam.vue"
 //* ServeModal */
 import IsGrainUtil from "@/components/ServeModal/IsGrainUtil.vue"
 import IsBaked from "@/components/ServeModal/IsBaked.vue"
@@ -261,7 +261,7 @@ export default {
     CowMarket,
     EastQuarry,
     FieldFarming,
-    DefaultAddFam,
+    // DefaultAddFam,
     //* ServeModal */
     IsGrainUtil,
     IsBaked
