@@ -16,9 +16,10 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import {computed, onMounted, ref} from "vue";
 import { io } from "socket.io-client";
 import { useStore } from "vuex";
+import {useRoute} from 'vue-router'
 
 export default {
   props: {
@@ -27,26 +28,15 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      showImage: false,
-    };
-  },
-  methods: {
-    handleClick(isMyTurn) {
-      if (isMyTurn) {
-        this.showImage = !this.showImage;
-        this.useFarmExpand();
-      }
-    },
-    useFarmExpand() {
-      const socket = io("localhost:3000");
-      const store = useStore();
+  setup() {
+    const socket = io("localhost:3000");
+    const store = useStore();
+    const route = useRoute();
+    const roomId = ref("");
+    const user = computed(() => store.state.user);
+    const showImage = ref(false),
 
-      const roomId = ref("");
-      const user = computed(() => store.state.user);
-      console.log(user);
-
+    useFarmExpand = () => {
       socket.emit("useActionSpace", {
         actionName: "else", // TODO: 수정 필요
         userId: user.value,
@@ -69,7 +59,33 @@ export default {
           },
         ],
       });
-    },
+    };
+
+    const handleClick = (isMyTurn) => {
+      if (isMyTurn) {
+        useFarmExpand();
+      }
+    };
+
+    onMounted(async () => {
+      showImage.value = !showImage.value;
+      roomId.value = route.params.room;
+
+      socket.on("endRound", () => {
+        showImage.value = !showImage.value;
+      });
+    });
+
+    return {
+      handleClick,
+      showImage
+    }
   },
 };
 </script>
+
+<style>
+.pointer-events-none {
+  pointer-events: none;
+}
+</style>
