@@ -2,13 +2,34 @@
 <template>
   <div class="flex justify-center">
     <div class="bg-green-700 grid grid-cols-5 gap-2 p-2">
-      <img
+      <div
         v-for="farm in OppoFarm"
         :key="farm.id"
-        :src="farm.imgSrc"
-        alt="oppoFarm"
-        :class="[ 'w-16 h-16' ]"
-      />
+        class="image-container"
+      >
+        <img
+          :src="farm.imgSrc"
+          alt="oppoFarm"
+          @click="farm.clickHandler"
+          :class="[ 'w-16 h-16' ]"
+        />
+        <img
+          v-if="farm.id === 6"
+          src="@/assets/images/Etc/Player2.png"
+          alt="additionalFarm"
+          @click="farm.clickHandler"
+          class="w-13 h-13 overlay-image"
+          style="top: 1px; left: 2px;"
+        />
+        <img
+          v-if="farm.id === 11"
+          src="@/assets/images/Etc/Player2.png"
+          alt="additionalFarm"
+          @click="farm.clickHandler"
+          class="w-13 h-13 overlay-image"
+          style="top: 1px; left: 2px;"
+        />
+      </div>
     </div>
   </div>
 </template>
