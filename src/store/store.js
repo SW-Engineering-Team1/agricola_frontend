@@ -10,6 +10,8 @@ const getDefaultState = () => {
     playersInRoom: [],
     gameStatus: [],
     remainedMajorFac: [],
+    remainedP1AssiFac: [],
+    remainedP2AssiFac: [],
     currentRound: 1,
     accumulatedResources: [],
   }
@@ -38,6 +40,12 @@ export default createStore({
     },
     setRemainedMajorFac(state, remainedMajorFac) {
       state.remainedMajorFac = remainedMajorFac;
+    },
+    setRemainedP1AssiFac(state, remainedP1AssiFac){
+      state.remainedP1AssiFac = remainedP1AssiFac;
+    },
+    setRemainedP2AssiFac(state, remainedP2AssiFac){
+      state.remainedP2AssiFac = remainedP2AssiFac;
     },
     setCurrentRound(state, currentRound) {
       state.currentRound = currentRound;

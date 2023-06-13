@@ -90,8 +90,12 @@
             <GrainSeed class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <Forest class="flex justify-center items-center" :isMyTurn="isMyTurn" />
             <CardFlip :round="3" :frontImage="rounds[2].imgSrc" :backImage="rounds[2].backImgSrc" />
-            <DefaultAddFam :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" :isMyTurn="isMyTurn" />
-            <!-- <CardFlip :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" /> -->
+            <AddDefaultFam :onclick="AddFamModal.toggleModal" :round="6" :frontImage="rounds[5].imgSrc" :backImage="rounds[5].backImgSrc" :isMyTurn="isMyTurn" />
+            <AddDefaultFamModal 
+              :show="AddFamModal.showModal.value"
+              
+              @close="AddFamModal.toggleModal"
+            />
             <PigMarket :round="9" :frontImage="rounds[8].imgSrc" :backImage="rounds[8].backImgSrc" :isMyTurn="isMyTurn" />
             <EastQuarry :round="11" :frontImage="rounds[10].imgSrc" :backImage="rounds[10].backImgSrc" :isMyTurn="isMyTurn" />
             <CardFlip :round="13" :frontImage="rounds[12].imgSrc" :backImage="rounds[12].backImgSrc" />
@@ -202,6 +206,7 @@ import Forest from "@/components/BasicActions/Forest.vue";
 import SoilMining from "@/components/BasicActions/SoilMining.vue";
 import ReedField from "@/components/BasicActions/ReedField.vue";
 import Fishing from "@/components/BasicActions/Fishing.vue";
+import AddDefaultFam from "@/components/RoundCardActions/AddDefaultFam.vue"
 //* RoundCard Actions */
 import SheepMarket from "@/components/RoundCardActions/SheepMarket.vue";
 import WestQuarry from "@/components/RoundCardActions/WestQuarry.vue";
@@ -210,10 +215,10 @@ import PigMarket from "@/components/RoundCardActions/PigMarket.vue";
 import CowMarket from "@/components/RoundCardActions/CowMarket.vue";
 import EastQuarry from "@/components/RoundCardActions/EastQuarry.vue";
 import FieldFarming from "@/components/RoundCardActions/FieldFarming.vue";
-import DefaultAddFam from "@/components/RoundCardActions/DefaultAddFam.vue"
 //* ServeModal */
 import IsGrainUtil from "@/components/ServeModal/IsGrainUtil.vue"
 import IsBaked from "@/components/ServeModal/IsBaked.vue"
+import AddDefaultFamModal from '@/components/ServeModal/AddDefaultFamModal.vue';
 
 export default {
   data() {
@@ -254,10 +259,11 @@ export default {
     CowMarket,
     EastQuarry,
     FieldFarming,
-    DefaultAddFam,
+    AddDefaultFam,
     //* ServeModal */
     IsGrainUtil,
-    IsBaked
+    IsBaked,
+    AddDefaultFamModal
   },
 
   setup() {
@@ -268,7 +274,6 @@ export default {
     const playersInRoom = ref(computed(() => store.state.playersInRoom));
     const gameStatus = ref(computed(() => store.state.gameStatus));
     const roomId = gameStatus.value[0].roomId;
-    console.log(gameStatus);
 
     // 모달 창 관련 함수
     const createModalState = () => {
@@ -276,7 +281,6 @@ export default {
       const toggleModal = () => {
         showModal.value = !showModal.value;
       };
-
       return { showModal, toggleModal };
     };
 
@@ -290,6 +294,7 @@ export default {
     const scoreTableModal = createModalState();
     const grainUseModal = createModalState();
     const isBakeModal = createModalState();
+    const AddFamModal = createModalState();
     // helper functions
     const getUserStatus = (gameStatus, userId) => {
       return gameStatus.value.find((status) => status.UserId === userId);
@@ -321,6 +326,7 @@ export default {
     const myGameStatus = computed(() => getUserStatus(gameStatus, user.value));
     const myGameResources = computed(() => getGameResources(resourceMap, myGameStatus));
     const myUsedAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'usedSubFacilityCard');
+    const notUsedMyAssiFacCard = getCards(assiFacCardMap, myGameStatus, 'remainedSubFacilityCard');
     const myUsedJobCard = getCards(jobCardMap, myGameStatus, 'usedJobCard');
     const myUsedMajorFacCard = getCards(majorFacCardMap, myGameStatus, 'usedMainFacilityCard');
     const myCardData = [
@@ -346,11 +352,21 @@ export default {
         cardType: "사용한 주요 설비",
       },
     ];
+    const notUsedMyCard = [
+      {
+        alt: "notUsedMyAssiFacCard",
+        cards: notUsedMyAssiFacCard,
+        cardType: "사용하지 않은 보조 설비"
+      }
+    ];
     const isMyTurn = ref(computed(() => {
       return myGameStatus.value.isMyTurn;
     }))
-
-    console.log("나", user);
+    console.log("0",myGameStatus)
+    console.log("=========")
+    console.log("1",myUsedAssiFacCard)
+    console.log("=========")
+    console.log("2", notUsedMyAssiFacCard)
 
     // opponent(상대방) 정보
     const opponent = computed(() => playersInRoom.value.find(player => player !== user.value));
@@ -382,8 +398,6 @@ export default {
         cardType: "상대가 사용한 주요 설비",
       },
     ];
-
-    console.log("상대방", opponent);
 
     const host = ref(computed(() => store.state.host));
     // host가 user인 경우 guest는 opponent
@@ -481,6 +495,7 @@ export default {
             "stoneAccumulatedEast"
           ]
         });
+        console.log()
         showR8StartFarmBoard.value = false;
         showR14StartFarmBoard.value = true;
       }
@@ -518,10 +533,15 @@ export default {
       });
 
       socket.on("skipGame", (data) => {
+        console.log(gameStatus)
+        // console.log(data.updatedPlayer[0].playerDetail.remainedSubFacilityCard)
+        // console.log(data.updatedPlayer[1].playerDetail.remainedSubFacilityCard)
         store.commit("setCurrentRound", data.skipRound);
         const updatedStatus = data.updatedPlayer.map(player => player.playerDetail);
         store.commit("setGameStatus", updatedStatus);
         store.commit("setRemainedMajorFac", data.updatedPlayer[0].remainedMainFacilityCard);
+        // store.commit("setRemainedP1AssiFac", data.updatedPlayer[0].playerDetail.remainedSubFacilityCard);
+        // store.commit("setRemainedP2AssiFac", data.updatedPlayer[1].playerDetail.remainedSubFacilityCard);
         showRound();
       });
 
@@ -566,11 +586,13 @@ export default {
       myGameStatus,
       myGameResources,
       myCardData,
+      notUsedMyCard,
       opponent,
       oppoGameStatus,
       oppoGameResources,
       oppoCardData,
       notUsedMajorFacCardData,
+      // notUsedAssiFacCardData,
       resetCurrentRound,
       startRound,
       skipGame,
@@ -582,7 +604,8 @@ export default {
       isMyTurn,
       showR8StartFarmBoard,
       showR14StartFarmBoard,
-      isBakeModal
+      isBakeModal,
+      AddFamModal
     };
   },
 };
