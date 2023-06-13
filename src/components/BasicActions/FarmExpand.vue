@@ -1,5 +1,3 @@
-<!-- Action1 농장확장 행동칸 -->
-<!-- 농장 확장 행동칸에서 외양간 기능은 없습니다 -->
 <template>
   <div>
     <img
@@ -8,13 +6,19 @@
       :class="{'w-full cursor-pointer transform transition duration-500 ease-in-out hover:scale-110': true, 'pointer-events-none': !isMyTurn}"
       alt="farmExpand"
     />
+    <img
+      v-if="showImage"
+      src="@/assets/images/Etc/Player1.png"
+      alt="Player1 Image"
+      class="position-absolute object-cover z-10"
+    />
   </div>
 </template>
+
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { io } from "socket.io-client";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
 
 export default {
   props: {
@@ -23,52 +27,48 @@ export default {
       required: true,
     },
   },
-  setup() {
-    const socket = io("localhost:3000");
-    const store = useStore();
-    const route = useRoute();
-
-    const roomId = ref("");
-    const user = computed(() => store.state.user);
-
-    const useFarmExpand = () => {
-      socket.emit("useActionSpace", {
-          "actionName": "else", // TODO: 수정 필요
-          "userId": user.value,
-          "roomId": roomId.value,
-          "goods" : [
-            {
-              "name": "wood",
-              "num": 10,
-              "isAdd": false
-            },
-            {
-              "name": "reed",
-              "num": 4,
-              "isAdd": false
-            },
-            {
-              "name": "woodHouse",
-              "num": 2,
-              "isAdd": true
-            }
-        ]
-      });
-    };
-
-    const handleClick = (isMyTurn) => {
-      if (isMyTurn) {
-        useFarmExpand();
-      }
-    }
-
-    onMounted(async () => {
-      roomId.value = route.params.room;
-    });
-
+  data() {
     return {
-      handleClick,
+      showImage: false,
     };
+  },
+  methods: {
+    handleClick(isMyTurn) {
+      if (isMyTurn) {
+        this.showImage = !this.showImage;
+        this.useFarmExpand();
+      }
+    },
+    useFarmExpand() {
+      const socket = io("localhost:3000");
+      const store = useStore();
+
+      const roomId = ref("");
+      const user = computed(() => store.state.user);
+
+      socket.emit("useActionSpace", {
+        actionName: "else", // TODO: 수정 필요
+        userId: user.value,
+        roomId: roomId.value,
+        goods: [
+          {
+            name: "wood",
+            num: 10,
+            isAdd: false,
+          },
+          {
+            name: "reed",
+            num: 4,
+            isAdd: false,
+          },
+          {
+            name: "woodHouse",
+            num: 2,
+            isAdd: true,
+          },
+        ],
+      });
+    },
   },
 };
 </script>
