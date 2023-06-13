@@ -171,6 +171,10 @@
         </div>
       </div>
     </div>
+
+    <audio id="background-music" loop>
+      <source ref="audio" src="../assets/bg-music.mp3" type="audio/mpeg">
+    </audio>
   </div>
 </template>
 
@@ -654,6 +658,11 @@ export default {
         // 게임 결과 페이지로 이동
         router.push(`/room/${roomId}/gameResult`);
       });
+
+      const audioElement = document.getElementById('background-music');
+      if (audioElement) {
+        audioElement.play();
+      }
     });
 
     return {
