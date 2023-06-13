@@ -7,6 +7,12 @@
   >
     <img class="card-face back absolute w-full bg-cover bg-center" :src="backImage" alt="card-back"/>
     <img class="card-face front absolute w-full bg-cover bg-center" :src="frontImage" alt="card-front"/>
+    <img
+      v-if="showImage"
+      src="@/assets/images/Etc/Player1.png"
+      alt="Player1 Image"
+      class="overlay absolute inset-0 w-full h-full"
+    />
   </div>
 </template>
 
@@ -32,8 +38,8 @@ export default {
     const socket = io("localhost:3000");
     const route = useRoute();
     const roomId = ref("");
-
     const user = ref(computed(() => store.state.user));
+    const showImage = ref(false);
     const sheepAccumulated = ref(computed(() => store.state.accumulatedResources.sheepAccumulated));
 
     if (store.state.currentRound >= props.round) {
@@ -66,14 +72,18 @@ export default {
     const handleClick = (isMyTurn) => {
       if (isMyTurn) {
         useSheepMarket();
+        showImage.value = !showImage.value;
       }
     }
 
     onMounted(async () => {
       roomId.value = route.params.room;
+      socket.on("endRound", () => {
+        showImage.value = !showImage.value;
+      });
     });
 
-    return { isFlipped, handleClick };
+    return { isFlipped, handleClick, showImage };
   }
 
 };
@@ -85,4 +95,7 @@ export default {
 .front { transform: rotateY(180deg); }
 .flip .back { transform: rotateY(-180deg); }
 .flip .front { transform: rotateY(0deg); }
+.pointer-events-none {
+  pointer-events: none;
+}
 </style>

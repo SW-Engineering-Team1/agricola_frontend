@@ -7,6 +7,12 @@
   >
     <img class="card-face back absolute w-full bg-cover bg-center" :src="backImage" alt="card-back"/>
     <img class="card-face front absolute w-full bg-cover bg-center" :src="frontImage" alt="card-front"/>
+    <img
+      v-if="showImage"
+      src="@/assets/images/Etc/Player1.png"
+      alt="Player1 Image"
+      class="overlay absolute inset-0 w-full h-full"
+    />
   </div>
 </template>
 
@@ -34,6 +40,7 @@ export default {
     const roomId = ref("");
     const user = ref(computed(() => store.state.user));
     const myFarm = ref(props.MyFarm);
+    const showImage = ref(false);
     const myFarmFunctions = {};
 
     if (store.state.currentRound >= props.round) {
@@ -45,26 +52,25 @@ export default {
         isFlipped.value = true;
       }
     });
-    
-    onMounted(async () => {
-      roomId.value = route.params.room;
+
+    const useGrainUtilization = () => {
       for (let i = 1; i <= 15; i++) {
         const myFarmName = `openMyFarm${i}`;
         if (i === 15) {
           myFarmFunctions[myFarmName] = () => {
             socket.emit("useActionSpace",{
-              "actionName":"Grain Utilization",
-              "userId": user.value,
-              "roomId": roomId.value,
-              "goods":[
+              actionName: "Grain Utilization",
+              userId: user.value,
+              roomId: roomId.value,
+              goods:[
                 {
-                  "name":"vege",
-                  "num":1,
-                  "isAdd":false
+                  name: "vege",
+                  num: 1,
+                  isAdd: false
                 },
                 {
-                  "id":15,
-                  "kind":"vege"
+                  id: 15,
+                  kind: "vege"
                 }
               ]
             })
@@ -77,16 +83,26 @@ export default {
         }
         // 해당 myFarm의 clickHandler를 등록
         for (const farm of myFarm.value) {
-            farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
+          farm.clickHandler = myFarmFunctions[`openMyFarm${farm.id}`];
         }
       }
+    }
+
+    const handleClick = (isMyTurn) => {
+      if (isMyTurn) {
+        useGrainUtilization();
+        showImage.value = !showImage.value;
+      }
+    }
+
+    onMounted(async () => {
+      roomId.value = route.params.room;
+      socket.on("endRound", () => {
+        showImage.value = !showImage.value;
+      });
     });
 
-    return {
-        myFarm,
-        roomId,
-        user
-    };
+    return { isFlipped, handleClick, showImage };
   },
 }
 </script>
@@ -97,4 +113,7 @@ export default {
 .front { transform: rotateY(180deg); }
 .flip .back { transform: rotateY(-180deg); }
 .flip .front { transform: rotateY(0deg); }
+.pointer-events-none {
+  pointer-events: none;
+}
 </style>

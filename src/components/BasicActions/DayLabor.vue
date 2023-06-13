@@ -1,11 +1,17 @@
 <!--   BasicAction6 날품팔이 행동칸  -->
 <template>
-  <div>
+  <div class="relative">
     <img
       src="@/assets/images/Action/6_DayLabor.jpg"
       @click="handleClick(isMyTurn)"
       :class="{'w-full cursor-pointer transform transition duration-500 ease-in-out hover:scale-110': true, 'pointer-events-none': !isMyTurn}"
       alt="dayLabor"
+    />
+    <img
+      v-if="showImage"
+      src="@/assets/images/Etc/Player1.png"
+      alt="Player1 Image"
+      class="overlay absolute inset-0 w-full h-full"
     />
   </div>
 </template>
@@ -29,6 +35,7 @@ export default {
 
     const roomId = ref("");
     const user = computed(() => store.state.user);
+    const showImage = ref(false);
 
     const useDayLabor = () => {
       socket.emit("useActionSpace", {
@@ -48,15 +55,20 @@ export default {
     const handleClick = (isMyTurn) => {
       if (isMyTurn) {
         useDayLabor();
+        showImage.value = !showImage.value;
       }
     }
 
     onMounted(async () => {
       roomId.value = route.params.room;
+      socket.on("endRound", () => {
+        showImage.value = !showImage.value;
+      });
     });
 
     return {
       handleClick,
+      showImage
     };
   },
 };

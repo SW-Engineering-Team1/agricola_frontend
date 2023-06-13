@@ -7,6 +7,12 @@
   >
     <img class="card-face back absolute w-full bg-cover bg-center" :src="backImage" alt="card-back"/>
     <img class="card-face front absolute w-full bg-cover bg-center" :src="frontImage" alt="card-front"/>
+    <img
+      v-if="showImage"
+      src="@/assets/images/Etc/Player1.png"
+      alt="Player1 Image"
+      class="overlay absolute inset-0 w-full h-full"
+    />
   </div>
 </template>
 
@@ -34,9 +40,8 @@ export default {
     const route = useRoute();
     const roomId = ref("");
     const user = ref(computed(() => store.state.user));
-    const myFarm = ref(props.MyFarm);
+    const showImage = ref(false);
     const myFarmFunctions = {};
-
     if (store.state.currentRound >= props.round) {
       isFlipped.value = true;
     }
@@ -47,26 +52,25 @@ export default {
       }
     });
 
-    onMounted(async () => {
-      roomId.value = route.params.room;
+    const useFiledFarming = () => {
       for (let i = 1; i <= 15; i++) {
         const myFarmName = `openMyFarm${i}`;
         if (i === 4) {
           myFarmFunctions[myFarmName] = () => {
             socket.emit("useActionSpace",{
-              "actionName":"Cultivation",
-              "userId": user.value,
-              "roomId": roomId.value,
-              "goods": [
+              actionName: "Cultivation",
+              userId: user.value,
+              roomId: roomId.value,
+              goods: [
                 {
-                  "name": "field",
-                  "num": 1,
-                  "isAdd": true
+                  name: "field",
+                  num: 1,
+                  isAdd: true
                 },
                 {
-                  "naem": "vege",
-                  "num":1,
-                  "isAdd": true
+                  name: "vege",
+                  num: 1,
+                  isAdd: true
                 }
               ]
             })
@@ -78,13 +82,26 @@ export default {
           };
         }
       }
+    }
+
+    const handleClick = (isMyTurn) => {
+      if (isMyTurn) {
+        useFiledFarming();
+        showImage.value = !showImage.value;
+      }
+    }
+
+    onMounted(async () => {
+      roomId.value = route.params.room;
+      socket.on("endRound", () => {
+        showImage.value = !showImage.value;
+      });
     });
 
     return {
-        isFlipped,
-        myFarm,
-        roomId,
-        user
+      isFlipped,
+      handleClick,
+      showImage
     };
   },
 }
@@ -96,4 +113,7 @@ export default {
 .front { transform: rotateY(180deg); }
 .flip .back { transform: rotateY(-180deg); }
 .flip .front { transform: rotateY(0deg); }
+.pointer-events-none {
+  pointer-events: none;
+}
 </style>

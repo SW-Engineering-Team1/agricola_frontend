@@ -1,11 +1,17 @@
 <!-- Action7 숲 행동칸 -->
 <template>
-  <div>
+  <div class="relative">
     <img
       src="@/assets/images/Action/7_Forest.jpg"
       @click="handleClick(isMyTurn)"
       :class="{'w-full cursor-pointer transform transition duration-500 ease-in-out hover:scale-110': true, 'pointer-events-none': !isMyTurn}"
       alt="forest"
+    />
+    <img
+      v-if="showImage"
+      src="@/assets/images/Etc/Player1.png"
+      alt="Player1 Image"
+      class="overlay absolute inset-0 w-full h-full"
     />
   </div>
 </template>
@@ -26,9 +32,9 @@ export default {
     const socket = io("localhost:3000");
     const store = useStore();
     const route = useRoute();
-
     const roomId = ref("");
     const user = computed(() => store.state.user);
+    const showImage = ref(false);
     const woodAccumulated = ref(computed(() => store.state.accumulatedResources.woodAccumulated));
 
     const useForest = () => {
@@ -46,19 +52,30 @@ export default {
       });
     };
 
-    onMounted(async () => {
-      roomId.value = route.params.room;
-    });
-
     const handleClick = (isMyTurn) => {
       if (isMyTurn) {
         useForest();
+        showImage.value = !showImage.value;
       }
     }
 
+    onMounted(async () => {
+      roomId.value = route.params.room;
+      socket.on("endRound", () => {
+        showImage.value = !showImage.value;
+      });
+    });
+
     return {
       handleClick,
+      showImage
     };
   },
 };
 </script>
+
+<style>
+.pointer-events-none {
+  pointer-events: none;
+}
+</style>

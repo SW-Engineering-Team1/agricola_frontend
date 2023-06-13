@@ -34,9 +34,9 @@ export default {
     const route = useRoute();
     const roomId = ref("");
     const user = computed(() => store.state.user);
-    const showImage = ref(false),
+    const showImage = ref(false);
 
-    useFarmExpand = () => {
+    const useFarmExpand = () => {
       socket.emit("useActionSpace", {
         actionName: "else", // TODO: 수정 필요
         userId: user.value,
@@ -64,13 +64,12 @@ export default {
     const handleClick = (isMyTurn) => {
       if (isMyTurn) {
         useFarmExpand();
+        showImage.value = !showImage.value;
       }
     };
 
     onMounted(async () => {
-      showImage.value = !showImage.value;
       roomId.value = route.params.room;
-
       socket.on("endRound", () => {
         showImage.value = !showImage.value;
       });

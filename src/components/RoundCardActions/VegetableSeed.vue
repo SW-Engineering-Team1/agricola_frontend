@@ -7,6 +7,12 @@
   >
     <img class="card-face back absolute w-full bg-cover bg-center" :src="backImage" alt="card-back"/>
     <img class="card-face front absolute w-full bg-cover bg-center" :src="frontImage" alt="card-front"/>
+    <img
+      v-if="showImage"
+      src="@/assets/images/Etc/Player1.png"
+      alt="Player1 Image"
+      class="overlay absolute inset-0 w-full h-full"
+    />
   </div>
 </template>
 
@@ -32,8 +38,8 @@ export default {
     const socket = io("localhost:3000");
     const route = useRoute();
     const roomId = ref("");
-
     const user = ref(computed(() => store.state.user));
+    const showImage = ref(false);
 
     if (store.state.currentRound >= props.round) {
       isFlipped.value = true;
@@ -47,10 +53,10 @@ export default {
 
     const useVegetableSeed = () => {
       socket.emit("useActionSpace",{
-        "actionName": "GetVegetable",
-        "userId": user.value,
-        "roomId": roomId.value,
-        "goods" : [
+        actionName: "GetVegetable",
+        userId: user.value,
+        roomId: roomId.value,
+        goods : [
           { 
             name: "vegeOnStorage",
             num: 1,
@@ -63,14 +69,18 @@ export default {
     const handleClick = (isMyTurn) => {
       if (isMyTurn) {
         useVegetableSeed();
+        showImage.value = !showImage.value;
       }
     }
 
     onMounted(async () => {
       roomId.value = route.params.room;
+      socket.on("endRound", () => {
+        showImage.value = !showImage.value;
+      });
     });
 
-    return { isFlipped, handleClick };
+    return { isFlipped, handleClick, showImage };
   }
 };
 </script>
@@ -81,4 +91,7 @@ export default {
 .front { transform: rotateY(180deg); }
 .flip .back { transform: rotateY(-180deg); }
 .flip .front { transform: rotateY(0deg); }
+.pointer-events-none {
+  pointer-events: none;
+}
 </style>
