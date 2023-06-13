@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative">
     <img
       src="@/assets/images/Action/1_FarmExpand.jpg"
       @click="handleClick(isMyTurn)"
@@ -10,7 +10,7 @@
       v-if="showImage"
       src="@/assets/images/Etc/Player1.png"
       alt="Player1 Image"
-      class="position-absolute object-cover z-10"
+      class="overlay absolute inset-0 w-full h-full"
     />
   </div>
 </template>
@@ -45,6 +45,7 @@ export default {
 
       const roomId = ref("");
       const user = computed(() => store.state.user);
+      console.log(user);
 
       socket.emit("useActionSpace", {
         actionName: "else", // TODO: 수정 필요
